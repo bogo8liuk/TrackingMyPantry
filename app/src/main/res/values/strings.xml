@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Tracking My Pantry</string>
+
+    <!--Buttons texts-->
+    <string name="buy">Buy product</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <!--Buttons texts-->
+
+    <!--Hints-->
+    <string name="email_hint">Email</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <!--Hints-->
+</resources>
