@@ -1,6 +1,7 @@
 package com.example.trackingmypantry
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -18,9 +19,9 @@ class SignInActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign) //TODO: change layout
+        this.setContentView(R.layout.activity_sign)
 
-        var insertingArea = findViewById<LinearLayout>(R.id.insertingArea)
+        var insertingArea = findViewById<LinearLayout>(R.id.inserting_area)
         var usernameEditText = EditText(this)
         var passwordEditText = EditText(this)
         var signInButton = findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.signButton)
@@ -28,5 +29,8 @@ class SignInActivity : AppCompatActivity() {
         insertingArea.addView(usernameEditText)
         insertingArea.addView(passwordEditText)
         signInButton.setText(R.string.sign_in)
+
+        setEditText(usernameEditText, R.string.username_hint, InputType.TYPE_TEXT_VARIATION_PERSON_NAME)
+        setEditText(passwordEditText, R.string.password_hint, InputType.TYPE_TEXT_VARIATION_PASSWORD)
     }
 }

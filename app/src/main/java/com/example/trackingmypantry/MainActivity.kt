@@ -15,24 +15,32 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var buy_button = findViewById<AppCompatButton>(R.id.buy_button)
-        buy_button.setOnClickListener {
+        var buyButton = findViewById<AppCompatButton>(R.id.buy_button)
+        buyButton.setOnClickListener {
             fun onClick(view: View) {
                 var intent = Intent(this, BuyerActivity::class.java)
-                startActivity(intent)
+                this.startActivity(intent)
             }
         }
 
-        var signup_button = findViewById<AppCompatButton>(R.id.signup_button)
-        signup_button.setOnClickListener {
-            var intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
+        var signupButton = findViewById<AppCompatButton>(R.id.signup_button)
+        signupButton.setOnClickListener {
+            fun onClick(view: View) {
+                var intent = Intent(this, SignUpActivity::class.java)
+                this.startActivity(intent)
+            }
+        }
+
+        var signinButton = findViewById<AppCompatButton>(R.id.signin_button)
+        signinButton.setOnClickListener {
+            fun onClick(view: View) {
+                var intent = Intent(this, SignInActivity::class.java)
+                this.startActivity(intent)
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
-
-
     }
 }
