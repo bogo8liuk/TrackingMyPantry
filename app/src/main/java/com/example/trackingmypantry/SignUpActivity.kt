@@ -2,21 +2,12 @@ package com.example.trackingmypantry
 
 import android.os.Bundle
 import android.text.InputType
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.example.trackingmypantry.lib.Utils
 
 class SignUpActivity : AppCompatActivity() {
-    private fun setEditText(editText: EditText, hint: Int, inputType: Int) {
-        editText.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT)
-        editText.setEms(10)
-        editText.setHint(hint)
-        editText.setRawInputType(inputType)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_sign)
@@ -33,9 +24,10 @@ class SignUpActivity : AppCompatActivity() {
         insertingArea.addView(passwordEditText)
         signUpButton.setText(R.string.sign_up)
 
-        setEditText(usernameEditText, R.string.username_hint, InputType.TYPE_TEXT_VARIATION_PERSON_NAME)
-        setEditText(emailEditText, R.string.email_hint, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
-        setEditText(passwordEditText, R.string.password_hint, InputType.TYPE_TEXT_VARIATION_PASSWORD)
+        Utils.setEditText(usernameEditText, R.string.username_hint, InputType.TYPE_TEXT_VARIATION_PERSON_NAME)
+        Utils.setEditText(emailEditText, R.string.email_hint, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+        Utils.setEditText(passwordEditText, R.string.password_hint, InputType.TYPE_TEXT_VARIATION_PASSWORD)
+
     }
 
 
