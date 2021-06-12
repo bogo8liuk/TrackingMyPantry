@@ -13,6 +13,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // TODO: wip
+        var buyButton_ = AppCompatButton(this)
+        var signinButton_ = AppCompatButton(this)
+        var signupButton_ = AppCompatButton(this)
+        // TODO: end
+
         var buyButton = findViewById<AppCompatButton>(R.id.buy_button)
         buyButton.setOnClickListener {
             var intent = Intent(this, BuyerActivity::class.java)

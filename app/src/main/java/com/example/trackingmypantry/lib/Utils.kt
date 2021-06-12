@@ -4,6 +4,8 @@ import android.content.Context
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatButton
+import com.example.trackingmypantry.R
 
 class Utils {
     companion object {
@@ -14,6 +16,11 @@ class Utils {
             editText.setEms(10)
             editText.setHint(hint)
             editText.setRawInputType(inputType)
+        }
+
+        fun setButtonForMain(button: AppCompatButton, background: Int) {
+            button.setBackgroundResource(background)
+            /* TODO: finish */
         }
 
         fun toastShow(context: Context, msg: String) {
