@@ -1,5 +1,6 @@
 package com.example.trackingmypantry
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -46,12 +47,16 @@ class SignUpActivity : AppCompatActivity() {
                 val password = passwordEditText.getText().toString()
                 HttpHandler.serviceRegister(this, username, email, password,
                     { res ->
-                        //TODO: start a new activity
-                        Utils.toastShow(this, "ok")
+                        Utils.toastShow(this, "You are now registered to the service!")
+                        var intent = Intent()
+                        this.setResult(RESULT_OK, intent)
+                        this.finish()
                     },
                     { err ->
-                        //TODO: start a new activity
-                        Utils.toastShow(this, "wrong req")
+                        Utils.toastShow(this, "Registration failure")
+                        var intent = Intent()
+                        this.setResult(Utils.ResultCode.NETWORK_ERR, intent)
+                        this.finish()
                     })
             }
         }

@@ -20,4 +20,10 @@ class Utils {
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
         }
     }
+
+    class ResultCode {
+        companion object {
+            const val NETWORK_ERR = 2
+        }
+    }
 }

@@ -10,13 +10,13 @@ import org.json.JSONObject
 /* This offers the methods to make the requests to the web service. */
 class HttpHandler() {
     companion object {
-        private val DOMAIN = "https://lam21.modron.network"
-        private val AUTH_PATH = "/auth/login"
-        private val REGISTER_PATH = "/users"
-        private val PRODUCT_PATH = "/products"
-        private val VOTE_PATH = "/votes"
+        private const val DOMAIN = "https://lam21.modron.network"
+        private const val AUTH_PATH = "/auth/login"
+        private const val REGISTER_PATH = "/users"
+        private const val PRODUCT_PATH = "/products"
+        private const val VOTE_PATH = "/votes"
 
-        private val TESTING_MODE = true
+        private const val TESTING_MODE = true
 
         fun serviceAuthenticate(
             context: Context,
@@ -35,7 +35,13 @@ class HttpHandler() {
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
         }
 
-        fun serviceRegister(context: Context, username: String, email: String, password: String, successCallback: (JSONObject) -> Unit, errorCallback: (String) -> Unit) {
+        fun serviceRegister(
+            context: Context,
+            username: String,
+            email: String,
+            password: String,
+            successCallback: (JSONObject) -> Unit,
+            errorCallback: (String) -> Unit) {
             val req = JsonObjectRequest(
                 Request.Method.POST,
                 "$DOMAIN$REGISTER_PATH",

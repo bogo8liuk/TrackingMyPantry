@@ -12,18 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrackingMyPantry">
-        android:theme="@style/AppTheme"
-        
-        <!--TMP activities-->
+        <!-- TMP activities -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BuyerActivity"/>
-        <activity android:name=".SignUpActivity"/>
-        <activity android:name=".SignInActivity"/>
+        <activity android:name=".BuyerActivity" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".SignInActivity" />
     </application>
 
 </manifest>
