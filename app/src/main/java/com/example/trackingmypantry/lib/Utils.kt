@@ -1,11 +1,17 @@
 package com.example.trackingmypantry.lib
 
 import android.content.Context
+import android.os.Build
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import com.example.trackingmypantry.R
+import org.json.JSONObject
+import java.io.File
+import java.io.InputStream
 
 class Utils {
     companion object {
@@ -18,9 +24,10 @@ class Utils {
             editText.setRawInputType(inputType)
         }
 
-        fun setButtonForMain(button: AppCompatButton, background: Int) {
-            button.setBackgroundResource(background)
-            /* TODO: finish */
+        fun isLogged(context: Context): Boolean {
+            var input = File(context.filesDir,"../../../../../res/raw/log.json").readText(Charsets.UTF_8)
+            var log = JSONObject(input)
+            return log.get("status") == "yes"
         }
 
         fun toastShow(context: Context, msg: String) {
