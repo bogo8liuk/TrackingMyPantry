@@ -3,6 +3,7 @@ package com.example.trackingmypantry.lib
 import android.content.Context
 import android.os.Build
 import android.util.JsonWriter
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -24,15 +25,18 @@ class Utils {
             editText.setRawInputType(inputType)
         }
 
+        /* TODO: in order to maintain app performance, do not open files multiple times.
+        *   Keep a stream in the ViewModel(???) */
+
         fun getLoginToken(context: Context): String {
-            val input = File(context.filesDir,"../../../../../res/raw/log.json").readText(Charsets.UTF_8)
+            val input = context.resources.openRawResource(R.raw.log).bufferedReader().use { it.readText() }
             val json = JSONObject(input).getJSONObject("log")
             // Safe cast: "accessToken" value is assured to be a string
             return json.get("accessToken") as String
         }
 
         fun getLoginStatus(context: Context): String {
-            var input = File(context.filesDir,"../../../../../res/raw/log.json").readText(Charsets.UTF_8)
+            val input = context.resources.openRawResource(R.raw.log).bufferedReader().use { it.readText() }
             var log = JSONObject(input)
             return log.get("status") as String
         }
@@ -43,7 +47,8 @@ class Utils {
 
         fun setToken(context: Context, token: String) {
             var jsonwriter = JsonWriter(
-                OutputStreamWriter(File(context.filesDir, "../../../../../res/raw/log.json").outputStream())
+                OutputStreamWriter(context.resources.openRawResource(R.raw.log))
+                /* TODO: delete log.json. It must be an internal app file. */
             )
             val curStatus = this.getLoginStatus(context)
             jsonwriter.beginObject()
@@ -58,7 +63,7 @@ class Utils {
 
         fun setLogin(context: Context) {
             var jsonwriter = JsonWriter(
-                OutputStreamWriter(File(context.filesDir, "../../../../../res/raw/log.json").outputStream())
+                OutputStreamWriter(File(context.filesDir, "res/raw/log.json").outputStream())
             )
             val curToken = this.getLoginToken(context)
             jsonwriter.beginObject()
@@ -73,7 +78,7 @@ class Utils {
 
         fun setLogout(context: Context) {
             var jsonwriter = JsonWriter(
-                OutputStreamWriter(File(context.filesDir, "../../../../../res/raw/log.json").outputStream())
+                OutputStreamWriter(File(context.filesDir, "res/raw/log.json").outputStream())
             )
             val curToken = this.getLoginToken(context)
             jsonwriter.beginObject()
