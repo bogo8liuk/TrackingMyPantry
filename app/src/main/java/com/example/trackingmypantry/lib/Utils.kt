@@ -24,19 +24,48 @@ class Utils {
             editText.setRawInputType(inputType)
         }
 
-        fun isLogged(context: Context): Boolean {
-            var input = File(context.filesDir,"../../../../../res/raw/log.json").readText(Charsets.UTF_8)
-            var log = JSONObject(input)
-            return log.get("status") == "yes"
+        fun getLoginToken(context: Context): String {
+            val input = File(context.filesDir,"../../../../../res/raw/log.json").readText(Charsets.UTF_8)
+            val json = JSONObject(input).getJSONObject("log")
+            // Safe cast: "accessToken" value is assured to be a string
+            return json.get("accessToken") as String
         }
 
-        fun setLogin(context: Context, token: String) {
+        fun getLoginStatus(context: Context): String {
+            var input = File(context.filesDir,"../../../../../res/raw/log.json").readText(Charsets.UTF_8)
+            var log = JSONObject(input)
+            return log.get("status") as String
+        }
+
+        fun isLogged(context: Context): Boolean {
+             return this.getLoginStatus(context) == "yes"
+        }
+
+        fun setToken(context: Context, token: String) {
             var jsonwriter = JsonWriter(
                 OutputStreamWriter(File(context.filesDir, "../../../../../res/raw/log.json").outputStream())
             )
+            val curStatus = this.getLoginStatus(context)
+            jsonwriter.beginObject()
+            jsonwriter.name("log")
+            jsonwriter.beginObject()
+            jsonwriter.name("status").value(curStatus)
+            jsonwriter.name("accessToken").value(token)
+            jsonwriter.endObject()
+            jsonwriter.endObject()
+        }
+
+        fun setLogin(context: Context) {
+            var jsonwriter = JsonWriter(
+                OutputStreamWriter(File(context.filesDir, "../../../../../res/raw/log.json").outputStream())
+            )
+            val curToken = this.getLoginToken(context)
+            jsonwriter.beginObject()
+            jsonwriter.name("log")
             jsonwriter.beginObject()
             jsonwriter.name("status").value("yes")
-            jsonwriter.name("accessToken").value(token)
+            jsonwriter.name("accessToken").value(curToken)
+            jsonwriter.endObject()
             jsonwriter.endObject()
         }
 
@@ -44,17 +73,14 @@ class Utils {
             var jsonwriter = JsonWriter(
                 OutputStreamWriter(File(context.filesDir, "../../../../../res/raw/log.json").outputStream())
             )
+            val curToken = this.getLoginToken(context)
             jsonwriter.beginObject()
-            jsonwriter.name("status").value("no")
-            jsonwriter.name("accessToken").value("null")
+            jsonwriter.name("log")
+            jsonwriter.beginObject()
+            jsonwriter.name("status").value("yes")
+            jsonwriter.name("accessToken").value(curToken)
             jsonwriter.endObject()
-        }
-
-        fun getToken(context: Context): String {
-            var input = File(context.filesDir,"../../../../../res/raw/log.json").readText(Charsets.UTF_8)
-            var log = JSONObject(input)
-            // Safe cast: "accessToken" value is assured to be a string
-            return log.get("accessToken") as String
+            jsonwriter.endObject()
         }
 
         fun toastShow(context: Context, msg: String) {
