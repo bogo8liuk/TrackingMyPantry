@@ -74,4 +74,12 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="715dp" />
 
+    <EditText
+        android:id="@+id/barcode_text"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:text="Insert a barcode"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

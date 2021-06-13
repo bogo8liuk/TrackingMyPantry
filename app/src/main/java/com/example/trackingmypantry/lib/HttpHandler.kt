@@ -25,14 +25,16 @@ class HttpHandler() {
             password: String,
             successCallback: (JSONObject) -> Unit,
             errorCallback: (String) -> Unit) {
-            val req = JsonObjectRequest(
+            val req = object: JsonObjectRequest(
                 Request.Method.POST,
                 "$DOMAIN$AUTH_PATH",
                 JSONObject("{ \"email\": \"$email\", \"password\": \"$password\"}"),
                 { res -> successCallback(res) },
                 { err -> errorCallback(err.toString())
                 }
-            )
+            ) {
+
+            }
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
         }
 
@@ -56,7 +58,7 @@ class HttpHandler() {
         fun serviceGetProduct(
             context: Context,
             barcode: String,
-            token: String,
+            accessToken: String,
             successCallback: (String) -> Unit,
             errorCallback: (String) -> Unit) {
             /* object expression to override getHeaders() in order to add custom headers. */
@@ -68,7 +70,7 @@ class HttpHandler() {
             ){
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = super.getHeaders()
-                    headers.put("Authorization", "Bearer $token")
+                    headers.put("Authorization", "Bearer $accessToken")
                     return headers
                 }
             }

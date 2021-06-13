@@ -47,12 +47,12 @@ class SignUpActivity : AppCompatActivity() {
                 val password = passwordEditText.getText().toString()
                 HttpHandler.serviceRegister(this, username, email, password,
                     { res ->
-                        var intent = Intent()
+                        val intent = Intent()
                         this.setResult(RESULT_OK, intent)
                         this.finish()
                     },
                     { err ->
-                        var intent = Intent()
+                        val intent = Intent()
                         this.setResult(Utils.ResultCode.NETWORK_ERR, intent)
                         this.finish()
                     })
