@@ -6,6 +6,7 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import org.json.JSONObject
+import java.util.HashMap
 
 /* This offers the methods to make the requests to the web service. */
 class HttpHandler() {
@@ -55,14 +56,22 @@ class HttpHandler() {
         fun serviceGetProduct(
             context: Context,
             barcode: String,
+            token: String,
             successCallback: (String) -> Unit,
             errorCallback: (String) -> Unit) {
-            val req = StringRequest(
-                Request.Method.GET,
+            /* object expression to override getHeaders() in order to add custom headers. */
+            val req = object: StringRequest(
+                Method.GET,
                 "$DOMAIN$PRODUCT_PATH?barcode=$barcode",
                 { res -> successCallback(res) },
                 { err -> errorCallback(err.toString()) }
-            )
+            ){
+                override fun getHeaders(): MutableMap<String, String> {
+                    val headers = super.getHeaders()
+                    headers.put("Authorization", "Bearer $token")
+                    return headers
+                }
+            }
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
         }
 

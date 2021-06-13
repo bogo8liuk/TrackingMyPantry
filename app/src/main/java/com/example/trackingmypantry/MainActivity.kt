@@ -53,15 +53,12 @@ class MainActivity : AppCompatActivity() {
 
         when (requestCode) {
             AUTH_REQ_CODE -> {
+                this.setButtonsVisibility()
                 when (resultCode) {
                     RESULT_OK -> {
-                        buyButton.visibility = android.view.View.VISIBLE
-                        signinButton.visibility = android.view.View.GONE
-                        signupButton.visibility = android.view.View.GONE
                         Utils.toastShow(this, "You are now registered to the service!")
                     }
                     Utils.ResultCode.NETWORK_ERR -> {
-                        /*TODO*/
                         Utils.toastShow(this, "Registration failure")
                     }
                 }

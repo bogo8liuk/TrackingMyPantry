@@ -2,6 +2,7 @@ package com.example.trackingmypantry.lib
 
 import android.content.Context
 import android.os.Build
+import android.util.JsonWriter
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -10,8 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import com.example.trackingmypantry.R
 import org.json.JSONObject
-import java.io.File
-import java.io.InputStream
+import java.io.*
 
 class Utils {
     companion object {
@@ -28,6 +28,33 @@ class Utils {
             var input = File(context.filesDir,"../../../../../res/raw/log.json").readText(Charsets.UTF_8)
             var log = JSONObject(input)
             return log.get("status") == "yes"
+        }
+
+        fun setLogin(context: Context, token: String) {
+            var jsonwriter = JsonWriter(
+                OutputStreamWriter(File(context.filesDir, "../../../../../res/raw/log.json").outputStream())
+            )
+            jsonwriter.beginObject()
+            jsonwriter.name("status").value("yes")
+            jsonwriter.name("accessToken").value(token)
+            jsonwriter.endObject()
+        }
+
+        fun setLogout(context: Context) {
+            var jsonwriter = JsonWriter(
+                OutputStreamWriter(File(context.filesDir, "../../../../../res/raw/log.json").outputStream())
+            )
+            jsonwriter.beginObject()
+            jsonwriter.name("status").value("no")
+            jsonwriter.name("accessToken").value("null")
+            jsonwriter.endObject()
+        }
+
+        fun getToken(context: Context): String {
+            var input = File(context.filesDir,"../../../../../res/raw/log.json").readText(Charsets.UTF_8)
+            var log = JSONObject(input)
+            // Safe cast: "accessToken" value is assured to be a string
+            return log.get("accessToken") as String
         }
 
         fun toastShow(context: Context, msg: String) {
