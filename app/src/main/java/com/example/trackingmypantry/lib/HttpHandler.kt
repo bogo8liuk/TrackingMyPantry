@@ -63,7 +63,7 @@ class HttpHandler() {
             errorCallback: (String) -> Unit) {
             /* object expression to override getHeaders() in order to add custom headers. */
             val req = object: StringRequest(
-                Method.GET,
+                Request.Method.GET,
                 "$DOMAIN$PRODUCT_PATH?barcode=$barcode",
                 { res -> successCallback(res) },
                 { err -> errorCallback(err.toString()) }
@@ -79,7 +79,7 @@ class HttpHandler() {
 
         fun serviceDescribeProduct(
             context: Context,
-            token: String /* TODO: necessary? */,
+            sessionToken: String,
             name: String,
             description: String,
             barcode: String,
@@ -90,7 +90,7 @@ class HttpHandler() {
                 Request.Method.POST,
                 "$DOMAIN$PRODUCT_PATH",
                 JSONObject(
-                    "{ \"token\": \"$token\", " +
+                    "{ \"token\": \"$sessionToken\", " +
                             "\"name\": \"$name\"," +
                             "\"description\": \"$description\"," +
                             "\"barcode\": \"$barcode\"," +
@@ -118,7 +118,7 @@ class HttpHandler() {
 
         fun serviceVoteProduct(
             context: Context,
-            token: String /* TODO: necessary? */,
+            sessionToken: String,
             rating: Int,
             id: String,
             successCallback: (JSONObject) -> Unit,
@@ -127,7 +127,7 @@ class HttpHandler() {
             val req = JsonObjectRequest(
                 Request.Method.POST,
                 "$DOMAIN$VOTE_PATH",
-                JSONObject("{ \"token\": \"$token\", \"rating\": \"$rating\", \"productId\": \"$id\"}"),
+                JSONObject("{ \"token\": \"$sessionToken\", \"rating\": \"$rating\", \"productId\": \"$id\"}"),
                 { res -> successCallback(res) },
                 { err -> errorCallback(err.toString()) }
             )
