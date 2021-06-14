@@ -25,12 +25,13 @@ class Utils {
             editText.setRawInputType(inputType)
         }
 
-        /* TODO: in order to maintain app performance, do not open files multiple times.
-        *   Keep a stream in the ViewModel(???) */
-
         fun getLoginToken(context: Context): String {
-            val input = context.resources.openRawResource(R.raw.log).bufferedReader().use { it.readText() }
-            val json = JSONObject(input).getJSONObject("log")
+            val input = context.openFileInput("log.json").bufferedReader().useLines { lines ->
+                lines.fold("") { some, text ->
+                    "$some\n$text"
+                }
+            }
+            val json = JSONObject(input)
             // Safe cast: "accessToken" value is assured to be a string
             return json.get("accessToken") as String
         }
@@ -46,7 +47,7 @@ class Utils {
         }
 
         fun setToken(context: Context, token: String) {
-            var jsonwriter = JsonWriter(
+/*            var jsonwriter = JsonWriter(
                 OutputStreamWriter(context.resources.openRawResource(R.raw.log))
                 /* TODO: delete log.json. It must be an internal app file. */
             )
@@ -58,7 +59,7 @@ class Utils {
             jsonwriter.name("status").value(curStatus)
             jsonwriter.name("accessToken").value(token)
             jsonwriter.endObject()
-            jsonwriter.endObject()
+            jsonwriter.endObject()*/
         }
 
         fun setLogin(context: Context) {

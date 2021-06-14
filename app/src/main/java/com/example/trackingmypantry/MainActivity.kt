@@ -1,5 +1,6 @@
 package com.example.trackingmypantry
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import com.example.trackingmypantry.lib.Utils
+import java.io.File
+import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
     private val REGISTER_REQ_CODE = 0
@@ -37,9 +40,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun createLogOnNotExist() {
+        val logFile = File(this.filesDir, "log.json")
+
+        if (!logFile.exists()) {
+            this.openFileOutput(logFile.name, Context.MODE_PRIVATE).use {
+                it.write("""
+{
+    "status": "no",
+    "accessToken": "null"
+}
+                """.trimIndent().encodeToByteArray())
+            }
+        }
+    }
+
+    private fun getLogInfo(): Pair<String, String> {
+        return Pair(Utils.getLoginStatus(this), Utils.getLoginToken(this))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        this.createLogOnNotExist()
+
+        this.setContentView(R.layout.activity_main)
         buyButton = findViewById<AppCompatButton>(R.id.buy_button)
         signupButton = findViewById<AppCompatButton>(R.id.signup_button)
         signinButton = findViewById<AppCompatButton>(R.id.signin_button)
