@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
      * Do not call this function before onCreate()
      */
     private fun setButtonsVisibility() {
-        if (Utils.isLogged(this)) {
+        if (Utils.isLogged("no")) {
             buyButton.visibility = android.view.View.VISIBLE
             signupButton.visibility = android.view.View.GONE
             signinButton.visibility = android.view.View.GONE
@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /* TODO: Putting it in a viewmodel. */
     private fun getLogInfo(): Pair<String, String> {
         return Pair(Utils.getLoginStatus(this), Utils.getLoginToken(this))
     }
@@ -65,11 +66,11 @@ class MainActivity : AppCompatActivity() {
         this.createLogOnNotExist()
 
         this.setContentView(R.layout.activity_main)
-        buyButton = findViewById<AppCompatButton>(R.id.buy_button)
-        signupButton = findViewById<AppCompatButton>(R.id.signup_button)
-        signinButton = findViewById<AppCompatButton>(R.id.signin_button)
-        cameraButton = findViewById<AppCompatButton>(R.id.camera_button)
-        barcodeText = findViewById<EditText>(R.id.barcode_text)
+        buyButton = findViewById(R.id.buy_button)
+        signupButton = findViewById(R.id.signup_button)
+        signinButton = findViewById(R.id.signin_button)
+        cameraButton = findViewById(R.id.camera_button)
+        barcodeText = findViewById(R.id.barcode_text)
 
         buyButton.setOnClickListener {
             var intent = Intent(this, BuyerActivity::class.java)
@@ -95,12 +96,18 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             REGISTER_REQ_CODE -> {
                 this.setButtonsVisibility()
+
                 when (resultCode) {
                     RESULT_OK -> {
                         Utils.toastShow(this, "You are now registered to the service!")
                     }
+
                     Utils.ResultCode.NETWORK_ERR -> {
                         Utils.toastShow(this, "Registration failure")
+                    }
+
+                    Utils.ResultCode.EXISTENT_USER -> {
+                        Utils.toastShow(this, "Username already in use")
                     }
                 }
             }

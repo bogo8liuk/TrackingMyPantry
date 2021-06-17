@@ -24,13 +24,13 @@ class HttpHandler() {
             email: String,
             password: String,
             successCallback: (JSONObject) -> Unit,
-            errorCallback: (String) -> Unit) {
+            errorCallback: (Int, String) -> Unit) {
             val req = object: JsonObjectRequest(
                 Request.Method.POST,
                 "$DOMAIN$AUTH_PATH",
                 JSONObject("{ \"email\": \"$email\", \"password\": \"$password\"}"),
                 { res -> successCallback(res) },
-                { err -> errorCallback(err.toString())
+                { err -> errorCallback(err.networkResponse.statusCode, err.toString())
                 }
             ) {
 
@@ -44,13 +44,13 @@ class HttpHandler() {
             email: String,
             password: String,
             successCallback: (JSONObject) -> Unit,
-            errorCallback: (String) -> Unit) {
+            errorCallback: (Int, String) -> Unit) {
             val req = JsonObjectRequest(
                 Request.Method.POST,
                 "$DOMAIN$REGISTER_PATH",
                 JSONObject("{ \"username\": \"$username\", \"email\": \"$email\", \"password\": \"$password\"}"),
                 { res -> successCallback(res) },
-                { err -> errorCallback(err.toString()) }
+                { err -> errorCallback(err.networkResponse.statusCode, err.toString()) }
             )
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
         }
@@ -60,13 +60,13 @@ class HttpHandler() {
             barcode: String,
             accessToken: String,
             successCallback: (String) -> Unit,
-            errorCallback: (String) -> Unit) {
+            errorCallback: (Int, String) -> Unit) {
             /* object expression to override getHeaders() in order to add custom headers. */
             val req = object: StringRequest(
                 Request.Method.GET,
                 "$DOMAIN$PRODUCT_PATH?barcode=$barcode",
                 { res -> successCallback(res) },
-                { err -> errorCallback(err.toString()) }
+                { err -> errorCallback(err.networkResponse.statusCode, err.toString()) }
             ){
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = super.getHeaders()

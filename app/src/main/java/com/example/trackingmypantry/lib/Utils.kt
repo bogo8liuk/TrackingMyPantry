@@ -25,10 +25,13 @@ class Utils {
             editText.setRawInputType(inputType)
         }
 
+        /*
+        * WARNING: Do not call this function several times: since it reads a file, it can decrease
+        * app's performance. */
         fun getLoginToken(context: Context): String {
             val input = context.openFileInput("log.json").bufferedReader().useLines { lines ->
-                lines.fold("") { some, text ->
-                    "$some\n$text"
+                lines.fold("") { accumulated, value ->
+                    "$accumulated\n$value"
                 }
             }
             val json = JSONObject(input)
@@ -36,14 +39,27 @@ class Utils {
             return json.get("accessToken") as String
         }
 
+        /*
+        * WARNING: Do not call this function several times: since it reads a file, it can decrease
+        * app's performance.
+        */
         fun getLoginStatus(context: Context): String {
-            val input = context.resources.openRawResource(R.raw.log).bufferedReader().use { it.readText() }
+            val input = context.openFileInput("log.json").bufferedReader().useLines { lines ->
+                lines.fold("") { accumulated, value ->
+                    "$accumulated\n$value"
+                }
+            }
             var log = JSONObject(input)
             return log.get("status") as String
         }
 
-        fun isLogged(context: Context): Boolean {
-             return this.getLoginStatus(context) == "yes"
+        /*
+        * WARNING: parameter @loginStatus should have been got by getLoginStatus() method. It is not
+        * directly called inside this function because it could cause the worsening of app's
+        * performance.
+        */
+        fun isLogged(loginStatus: String): Boolean {
+             return loginStatus == "yes"
         }
 
         fun setToken(context: Context, token: String) {
@@ -100,6 +116,7 @@ class Utils {
     class ResultCode {
         companion object {
             const val NETWORK_ERR = 2
+            const val EXISTENT_USER = 3
         }
     }
 }
