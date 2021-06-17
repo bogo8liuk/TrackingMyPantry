@@ -84,7 +84,7 @@ class HttpHandler() {
             description: String,
             barcode: String,
             successCallback: (JSONObject) -> Unit,
-            errorCallback: (String) -> Unit
+            errorCallback: (Int, String) -> Unit
         ) {
             val req = JsonObjectRequest(
                 Request.Method.POST,
@@ -97,7 +97,7 @@ class HttpHandler() {
                             "\"test\": \"$TESTING_MODE\" }"
                 ),
                 { res -> successCallback(res) },
-                { err -> errorCallback(err.toString()) }
+                { err -> errorCallback(err.networkResponse.statusCode, err.toString()) }
             )
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
         }
@@ -106,12 +106,12 @@ class HttpHandler() {
             context: Context,
             id: String,
             successCallback: (String) -> Unit,
-            errorCallback: (String) -> Unit) {
+            errorCallback: (Int, String) -> Unit) {
             val req = StringRequest(
                 Request.Method.DELETE,
                 "$DOMAIN$PRODUCT_PATH/$id",
                 { res -> successCallback(res) },
-                { err -> errorCallback(err.toString()) }
+                { err -> errorCallback(err.networkResponse.statusCode, err.toString()) }
             )
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
         }
@@ -122,14 +122,14 @@ class HttpHandler() {
             rating: Int,
             id: String,
             successCallback: (JSONObject) -> Unit,
-            errorCallback: (String) -> Unit
+            errorCallback: (Int, String) -> Unit
         ) {
             val req = JsonObjectRequest(
                 Request.Method.POST,
                 "$DOMAIN$VOTE_PATH",
                 JSONObject("{ \"token\": \"$sessionToken\", \"rating\": \"$rating\", \"productId\": \"$id\"}"),
                 { res -> successCallback(res) },
-                { err -> errorCallback(err.toString()) }
+                { err -> errorCallback(err.networkResponse.statusCode, err.toString()) }
             )
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
         }

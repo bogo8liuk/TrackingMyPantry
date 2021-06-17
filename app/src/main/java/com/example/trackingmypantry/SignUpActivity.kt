@@ -51,9 +51,13 @@ class SignUpActivity : AppCompatActivity() {
                         this.setResult(RESULT_OK, intent)
                         this.finish()
                     },
-                    { err ->
+                    { statusCode, err ->
                         val intent = Intent()
-                        this.setResult(Utils.ResultCode.NETWORK_ERR, intent)
+                        if (statusCode == 500) {
+                            this.setResult(Utils.ResultCode.EXISTENT_USER, intent)
+                        } else {
+                            this.setResult(Utils.ResultCode.NETWORK_ERR, intent)
+                        }
                         this.finish()
                     })
             }
