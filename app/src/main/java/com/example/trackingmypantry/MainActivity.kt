@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createLogOnNotExist() {
-        val logFile = File(this.filesDir, "log.json")
+        val logFile = File(this.filesDir, Utils.logFileName)
 
         if (!logFile.exists()) {
             this.openFileOutput(logFile.name, Context.MODE_PRIVATE).use {

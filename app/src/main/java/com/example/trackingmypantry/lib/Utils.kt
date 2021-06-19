@@ -16,18 +16,22 @@ import java.io.*
 
 class Utils {
     companion object {
+        val logFileName = "log.json"
+
         /*
         * WARNING: Do not call this function several times: since it reads a file, it can decrease
         * app's performance. */
-        fun getLoginToken(context: Context): String {
-            val input = context.openFileInput("log.json").bufferedReader().useLines { lines ->
+        fun getLoginToken(context: Context): String? {
+            val input = context.openFileInput(logFileName).bufferedReader().useLines { lines ->
                 lines.fold("") { accumulated, value ->
                     "$accumulated\n$value"
                 }
             }
             val json = JSONObject(input)
             // Safe cast: "accessToken" value is assured to be a string
-            return json.get("accessToken") as String
+            val res = json.get("accessToken") as String
+            val status = json.get("accessToken") as String
+            return if (res == "null" && status != "yes") null else res
         }
 
         /*
@@ -35,7 +39,7 @@ class Utils {
         * app's performance.
         */
         fun getLoginStatus(context: Context): String {
-            val input = context.openFileInput("log.json").bufferedReader().useLines { lines ->
+            val input = context.openFileInput(logFileName).bufferedReader().useLines { lines ->
                 lines.fold("") { accumulated, value ->
                     "$accumulated\n$value"
                 }
@@ -54,49 +58,29 @@ class Utils {
         }
 
         fun setToken(context: Context, token: String) {
-/*            var jsonwriter = JsonWriter(
-                OutputStreamWriter(context.resources.openRawResource(R.raw.log))
-                /* TODO: delete log.json. It must be an internal app file. */
-            )
-            val curStatus = this.getLoginStatus(context)
-            jsonwriter.beginObject()
-            jsonwriter.name("warning").value("THIS FILE IS DYNAMICALLY EDITED, DO NOT WRITE IT")
-            jsonwriter.name("log")
-            jsonwriter.beginObject()
-            jsonwriter.name("status").value(curStatus)
-            jsonwriter.name("accessToken").value(token)
-            jsonwriter.endObject()
-            jsonwriter.endObject()*/
-        }
-
-        fun setLogin(context: Context) {
-            var jsonwriter = JsonWriter(
-                OutputStreamWriter(File(context.filesDir, "res/raw/log.json").outputStream())
-            )
-            val curToken = this.getLoginToken(context)
-            jsonwriter.beginObject()
-            jsonwriter.name("warning").value("THIS FILE IS DYNAMICALLY EDITED, DO NOT WRITE IT")
-            jsonwriter.name("log")
-            jsonwriter.beginObject()
-            jsonwriter.name("status").value("yes")
-            jsonwriter.name("accessToken").value(curToken)
-            jsonwriter.endObject()
-            jsonwriter.endObject()
+            context.openFileOutput(logFileName, Context.MODE_PRIVATE).use {
+                it.write(
+                    """
+{
+    "status": "yes",
+    "accessToken": "$token"
+}
+                """.trimIndent().encodeToByteArray()
+                )
+            }
         }
 
         fun setLogout(context: Context) {
-            var jsonwriter = JsonWriter(
-                OutputStreamWriter(File(context.filesDir, "res/raw/log.json").outputStream())
-            )
-            val curToken = this.getLoginToken(context)
-            jsonwriter.beginObject()
-            jsonwriter.name("warning").value("THIS FILE IS DYNAMICALLY EDITED, DO NOT WRITE IT")
-            jsonwriter.name("log")
-            jsonwriter.beginObject()
-            jsonwriter.name("status").value("yes")
-            jsonwriter.name("accessToken").value(curToken)
-            jsonwriter.endObject()
-            jsonwriter.endObject()
+            context.openFileOutput(logFileName, Context.MODE_PRIVATE).use {
+                it.write(
+                    """
+{
+    "status": "no",
+    "accessToken": "null"
+}
+                """.trimIndent().encodeToByteArray()
+                )
+            }
         }
 
         fun toastShow(context: Context, msg: String) {
