@@ -15,22 +15,12 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_sign)
 
-        var insertingArea = findViewById<LinearLayout>(R.id.inserting_area)
-        var usernameEditText = EditText(this)
-        var emailEditText = EditText(this)
-        var passwordEditText = EditText(this)
+        var usernameEditText = this.findViewById<EditText>(R.id.usernameEditText)
+        var emailEditText = this.findViewById<EditText>(R.id.emailEditText)
+        var passwordEditText = this.findViewById<EditText>(R.id.passwordEditText)
         var signUpButton = findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.signButton)
 
-        // Attaching views to linearLayout
-        insertingArea.addView(usernameEditText)
-        insertingArea.addView(emailEditText)
-        insertingArea.addView(passwordEditText)
         signUpButton.setText(R.string.sign_up)
-
-        Utils.setEditText(usernameEditText, R.string.username_hint, InputType.TYPE_TEXT_VARIATION_PERSON_NAME)
-        Utils.setEditText(emailEditText, R.string.email_hint, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
-        Utils.setEditText(passwordEditText, R.string.password_hint, InputType.TYPE_TEXT_VARIATION_PASSWORD)
-
         signUpButton.setOnClickListener {
             if (usernameEditText.getText().toString() == "") {
                 usernameEditText.requestFocus()
