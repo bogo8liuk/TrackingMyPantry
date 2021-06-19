@@ -22,26 +22,26 @@ class SignUpActivity : AppCompatActivity() {
 
         signUpButton.setText(R.string.sign_up)
         signUpButton.setOnClickListener {
-            if (usernameEditText.getText().toString() == "") {
+            if (usernameEditText.text.toString() == "") {
                 usernameEditText.requestFocus()
                 Utils.toastShow(this, "Username field is required")
-            } else if (emailEditText.getText().toString() == "") {
+            } else if (emailEditText.text.toString() == "") {
                 emailEditText.requestFocus()
                 Utils.toastShow(this, "Email field is required")
-            } else if (passwordEditText.getText().toString() == "") {
+            } else if (passwordEditText.text.toString() == "") {
                 passwordEditText.requestFocus()
                 Utils.toastShow(this, "Password field is required")
             } else {
-                val username = usernameEditText.getText().toString()
-                val email = emailEditText.getText().toString()
-                val password = passwordEditText.getText().toString()
+                val username = usernameEditText.text.toString()
+                val email = emailEditText.text.toString()
+                val password = passwordEditText.text.toString()
                 HttpHandler.serviceRegister(this, username, email, password,
                     { res ->
                         val intent = Intent()
                         this.setResult(RESULT_OK, intent)
                         this.finish()
                     },
-                    { statusCode, err ->
+                    { statusCode, _ ->
                         val intent = Intent()
                         if (statusCode == 500) {
                             this.setResult(Utils.ResultCode.EXISTENT_USER, intent)

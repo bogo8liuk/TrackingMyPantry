@@ -14,6 +14,7 @@ import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
     private val REGISTER_REQ_CODE = 0
+    private val AUTH_REQ_CODE = 1
 
     private lateinit var buyButton: AppCompatButton
     private lateinit var signupButton: AppCompatButton
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /* TODO: Putting it in a viewmodel. */
-    private fun getLogInfo(): Pair<String, String> {
+    private fun getLogInfo(): Pair<String, String?> {
         return Pair(Utils.getLoginStatus(this), Utils.getLoginToken(this))
     }
 

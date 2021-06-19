@@ -1,10 +1,12 @@
 package com.example.trackingmypantry
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.example.trackingmypantry.lib.HttpHandler
 import com.example.trackingmypantry.lib.Utils
 
 class SignInActivity : AppCompatActivity() {
@@ -19,5 +21,34 @@ class SignInActivity : AppCompatActivity() {
 
         signInButton.setText(R.string.sign_in)
         usernameEditText.visibility = android.view.View.GONE
+
+        signInButton.setOnClickListener {
+            if (emailEditText.text.toString() == "") {
+                emailEditText.requestFocus()
+                Utils.toastShow(this, "Email field is required")
+            } else if (passwordEditText.text.toString() == "") {
+                passwordEditText.requestFocus()
+                Utils.toastShow(this, "Password field is required")
+            } else {
+                val email = emailEditText.text.toString()
+                val password = passwordEditText.text.toString()
+                HttpHandler.serviceAuthenticate(this, email, password,
+                    { res ->
+                        val intent = Intent()
+                        this.setResult(RESULT_OK, intent)
+                        this.finish()
+                    },
+                    { statusCode, _ ->
+                        val intent = Intent()
+                        if (statusCode == 401) {
+                            this.setResult(Utils.ResultCode.EXPIRED_TOKEN, intent)
+                        } else {
+                            this.setResult(Utils.ResultCode.NETWORK_ERR, intent)
+                        }
+                        this.finish()
+                    }
+                )
+            }
+        }
     }
 }

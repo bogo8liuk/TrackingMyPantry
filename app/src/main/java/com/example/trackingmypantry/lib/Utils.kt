@@ -92,6 +92,7 @@ class Utils {
         companion object {
             const val NETWORK_ERR = 2
             const val EXISTENT_USER = 3
+            const val EXPIRED_TOKEN = 4
         }
     }
 }

@@ -30,8 +30,10 @@ class HttpHandler() {
                 "$DOMAIN$AUTH_PATH",
                 JSONObject("{ \"email\": \"$email\", \"password\": \"$password\"}"),
                 { res -> successCallback(res) },
-                { err -> errorCallback(err.networkResponse.statusCode, err.toString())
-                }
+                { err -> errorCallback(
+                    err.networkResponse.statusCode,
+                    JSONObject(String(err.networkResponse.data)).optString("message")
+                )}
             ) {
 
             }
@@ -50,7 +52,10 @@ class HttpHandler() {
                 "$DOMAIN$REGISTER_PATH",
                 JSONObject("{ \"username\": \"$username\", \"email\": \"$email\", \"password\": \"$password\"}"),
                 { res -> successCallback(res) },
-                { err -> errorCallback(err.networkResponse.statusCode, err.toString()) }
+                { err -> errorCallback(
+                    err.networkResponse.statusCode,
+                    JSONObject(String(err.networkResponse.data)).optString("message")
+                )}
             )
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
         }
@@ -66,7 +71,10 @@ class HttpHandler() {
                 Request.Method.GET,
                 "$DOMAIN$PRODUCT_PATH?barcode=$barcode",
                 { res -> successCallback(res) },
-                { err -> errorCallback(err.networkResponse.statusCode, err.toString()) }
+                { err -> errorCallback(
+                    err.networkResponse.statusCode,
+                    JSONObject(String(err.networkResponse.data)).optString("message")
+                )}
             ){
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = super.getHeaders()
@@ -97,7 +105,10 @@ class HttpHandler() {
                             "\"test\": \"$TESTING_MODE\" }"
                 ),
                 { res -> successCallback(res) },
-                { err -> errorCallback(err.networkResponse.statusCode, err.toString()) }
+                { err -> errorCallback(
+                    err.networkResponse.statusCode,
+                    JSONObject(String(err.networkResponse.data)).optString("message")
+                )}
             )
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
         }
@@ -111,7 +122,10 @@ class HttpHandler() {
                 Request.Method.DELETE,
                 "$DOMAIN$PRODUCT_PATH/$id",
                 { res -> successCallback(res) },
-                { err -> errorCallback(err.networkResponse.statusCode, err.toString()) }
+                { err -> errorCallback(
+                    err.networkResponse.statusCode,
+                    JSONObject(String(err.networkResponse.data)).optString("message")
+                )}
             )
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
         }
@@ -129,7 +143,10 @@ class HttpHandler() {
                 "$DOMAIN$VOTE_PATH",
                 JSONObject("{ \"token\": \"$sessionToken\", \"rating\": \"$rating\", \"productId\": \"$id\"}"),
                 { res -> successCallback(res) },
-                { err -> errorCallback(err.networkResponse.statusCode, err.toString()) }
+                { err -> errorCallback(
+                    err.networkResponse.statusCode,
+                    JSONObject(String(err.networkResponse.data)).optString("message")
+                )}
             )
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
         }
