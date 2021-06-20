@@ -65,16 +65,17 @@
 
     <EditText
         android:id="@+id/barcodeText"
-        android:layout_width="160dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/large_button_width"
+        android:layout_height="@dimen/circle_button_height"
         android:text="Insert a barcode"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/cameraButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/circle_button_width"
+        android:layout_height="@dimen/circle_button_height"
         android:background="@drawable/circle_button"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="@+id/signinButton"
