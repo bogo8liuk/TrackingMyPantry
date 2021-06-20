@@ -57,8 +57,8 @@ class MainActivity : AppCompatActivity() {
         buyButton = findViewById(R.id.buyButton)
         signupButton = findViewById(R.id.signupButton)
         signinButton = findViewById(R.id.signinButton)
-        cameraButton = findViewById(R.id.camera_button)
-        barcodeText = findViewById(R.id.barcode_text)
+        cameraButton = findViewById(R.id.cameraButton)
+        barcodeText = findViewById(R.id.barcodeText)
 
         buyButton.setOnClickListener {
             if (Utils.isLogged(loginStatus)) {
