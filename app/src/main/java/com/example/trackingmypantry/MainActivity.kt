@@ -14,7 +14,7 @@ import java.io.FileOutputStream
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
-    private var loginStatus = false
+    private var loginStatus = "no"
     private var accessToken: String? = null
 
     private val REGISTER_REQ_CODE = 0
@@ -25,25 +25,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var signinButton: AppCompatButton
     private lateinit var cameraButton: AppCompatButton
     private lateinit var barcodeText: EditText
-
-    /*
-     * Do not call this function before onCreate()
-     */
-    private fun setButtonsVisibility() {
-        if (Utils.isLogged("no")) {
-            buyButton.visibility = android.view.View.VISIBLE
-            signupButton.visibility = android.view.View.GONE
-            signinButton.visibility = android.view.View.GONE
-            cameraButton.visibility = android.view.View.VISIBLE
-            barcodeText.visibility = android.view.View.VISIBLE
-        } else {
-            buyButton.visibility = android.view.View.GONE
-            signupButton.visibility = android.view.View.VISIBLE
-            signinButton.visibility = android.view.View.VISIBLE
-            cameraButton.visibility = android.view.View.GONE
-            barcodeText.visibility = android.view.View.GONE
-        }
-    }
 
     private fun createLogOnNotExist() {
         val logFile = File(this.filesDir, Utils.logFileName)
@@ -62,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     /* TODO: Putting it in a viewmodel. */
     private fun getLogInfo() {
-        loginStatus = Utils.getLoginStatus(this) == "yes"
+        loginStatus = Utils.getLoginStatus(this)
         accessToken = Utils.getLoginToken(this)
     }
 
@@ -80,8 +61,12 @@ class MainActivity : AppCompatActivity() {
         barcodeText = findViewById(R.id.barcode_text)
 
         buyButton.setOnClickListener {
-            var intent = Intent(this, BuyerActivity::class.java)
-            this.startActivity(intent)
+            if (Utils.isLogged(loginStatus)) {
+                var intent = Intent(this, BuyerActivity::class.java)
+                this.startActivity(intent)
+            } else {
+                Utils.toastShow(this, "First sign in to buy a product")
+            }
         }
 
         signupButton.setOnClickListener {
@@ -93,8 +78,6 @@ class MainActivity : AppCompatActivity() {
             var intent = Intent(this, SignInActivity::class.java)
             this.startActivity(intent)
         }
-
-        this.setButtonsVisibility()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -102,8 +85,6 @@ class MainActivity : AppCompatActivity() {
 
         when (requestCode) {
             REGISTER_REQ_CODE -> {
-                this.setButtonsVisibility()
-
                 when (resultCode) {
                     RESULT_OK -> {
                         Utils.toastShow(this, "You are now registered to the service!")

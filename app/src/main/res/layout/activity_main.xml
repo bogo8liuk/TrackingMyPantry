@@ -56,17 +56,6 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_end="547dp" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/camera_button"
-        android:layout_width="@dimen/circle_button_width"
-        android:layout_height="@dimen/circle_button_height"
-        android:background="@drawable/circle_button"
-        android:drawableStart="@android:drawable/ic_menu_camera"
-        android:paddingStart="@dimen/circle_button_camera_padding"
-        android:paddingEnd="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toEndOf="@+id/signinButton" />
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
         android:layout_width="wrap_content"
@@ -81,5 +70,14 @@
         android:text="Insert a barcode"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toStartOf="@+id/guideline2" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/circle_button"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toEndOf="@+id/signinButton"
+        app:srcCompat="@drawable/ic_baseline_photo_camera_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
