@@ -11,8 +11,12 @@ import androidx.appcompat.widget.AppCompatButton
 import com.example.trackingmypantry.lib.Utils
 import java.io.File
 import java.io.FileOutputStream
+import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
+    private var loginStatus = false
+    private var accessToken: String? = null
+
     private val REGISTER_REQ_CODE = 0
     private val AUTH_REQ_CODE = 1
 
@@ -57,14 +61,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     /* TODO: Putting it in a viewmodel. */
-    private fun getLogInfo(): Pair<String, String?> {
-        return Pair(Utils.getLoginStatus(this), Utils.getLoginToken(this))
+    private fun getLogInfo() {
+        loginStatus = Utils.getLoginStatus(this) == "yes"
+        accessToken = Utils.getLoginToken(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         this.createLogOnNotExist()
+        this.getLogInfo()   //TODO: temporary call, see getLogInfo() comment
 
         this.setContentView(R.layout.activity_main)
         buyButton = findViewById(R.id.buy_button)
