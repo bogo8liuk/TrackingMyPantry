@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatImageButton
 import com.example.trackingmypantry.lib.Utils
 import java.io.File
 import java.io.FileOutputStream
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buyButton: AppCompatButton
     private lateinit var signupButton: AppCompatButton
     private lateinit var signinButton: AppCompatButton
-    private lateinit var cameraButton: AppCompatButton
+    private lateinit var cameraButton: AppCompatImageButton
     private lateinit var barcodeText: EditText
 
     private fun createLogOnNotExist() {

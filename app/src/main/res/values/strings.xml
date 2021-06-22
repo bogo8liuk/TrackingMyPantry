@@ -6,6 +6,8 @@
     <string name="signIn">Sign in</string>
     <string name="signUp">Sign up</string>
     <string name="search">Search</string>
+    <string name="share">Share</string>
+    <string name="local">See local grocery</string>
     <!--Buttons texts-->
 
     <!--Hints-->
