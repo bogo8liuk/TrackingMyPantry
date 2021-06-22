@@ -19,7 +19,7 @@ class SignInActivity : AppCompatActivity() {
         var passwordEditText = this.findViewById<EditText>(R.id.passwordEditText)
         var signInButton = findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.signButton)
 
-        signInButton.setText(R.string.sign_in)
+        signInButton.setText(R.string.signIn)
         usernameEditText.visibility = android.view.View.GONE
 
         signInButton.setOnClickListener {

@@ -20,7 +20,7 @@ class SignUpActivity : AppCompatActivity() {
         var passwordEditText = this.findViewById<EditText>(R.id.passwordEditText)
         var signUpButton = findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.signButton)
 
-        signUpButton.setText(R.string.sign_up)
+        signUpButton.setText(R.string.signUp)
         signUpButton.setOnClickListener {
             if (usernameEditText.text.toString() == "") {
                 usernameEditText.requestFocus()

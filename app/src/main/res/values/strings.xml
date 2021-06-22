@@ -3,13 +3,15 @@
 
     <!--Buttons texts-->
     <string name="buy">Buy product</string>
-    <string name="sign_in">Sign in</string>
-    <string name="sign_up">Sign up</string>
+    <string name="signIn">Sign in</string>
+    <string name="signUp">Sign up</string>
+    <string name="search">Search</string>
     <!--Buttons texts-->
 
     <!--Hints-->
-    <string name="email_hint">Email</string>
-    <string name="username_hint">Username</string>
-    <string name="password_hint">Password</string>
+    <string name="emailHint">Email</string>
+    <string name="usernameHint">Username</string>
+    <string name="passwordHint">Password</string>
+    <string name="barcodeHint">Insert the barcode</string>
     <!--Hints-->
 </resources>
