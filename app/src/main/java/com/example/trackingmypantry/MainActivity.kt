@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     private val REGISTER_REQ_CODE = 0
     private val AUTH_REQ_CODE = 1
 
-    private lateinit var buyButton: AppCompatButton
     private lateinit var signupButton: AppCompatButton
     private lateinit var signinButton: AppCompatButton
     private lateinit var cameraButton: AppCompatImageButton
@@ -55,20 +54,10 @@ class MainActivity : AppCompatActivity() {
         this.getLogInfo()   //TODO: temporary call, see getLogInfo() comment
 
         this.setContentView(R.layout.activity_main)
-        buyButton = findViewById(R.id.buyButton)
         signupButton = findViewById(R.id.signupButton)
         signinButton = findViewById(R.id.signinButton)
         cameraButton = findViewById(R.id.cameraButton)
         barcodeText = findViewById(R.id.barcodeText)
-
-        buyButton.setOnClickListener {
-            if (Utils.isLogged(loginStatus)) {
-                var intent = Intent(this, BuyerActivity::class.java)
-                this.startActivity(intent)
-            } else {
-                Utils.toastShow(this, "First sign in to buy a product")
-            }
-        }
 
         signupButton.setOnClickListener {
             var intent = Intent(this, SignUpActivity::class.java)
