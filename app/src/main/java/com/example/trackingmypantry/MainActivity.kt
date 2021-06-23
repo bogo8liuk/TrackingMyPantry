@@ -23,7 +23,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var signupButton: AppCompatButton
     private lateinit var signinButton: AppCompatButton
+    private lateinit var localButton: AppCompatButton
     private lateinit var cameraButton: AppCompatImageButton
+    private lateinit var searchButton: AppCompatButton
     private lateinit var barcodeText: EditText
 
     private fun createLogOnNotExist() {
@@ -54,10 +56,12 @@ class MainActivity : AppCompatActivity() {
         this.getLogInfo()   //TODO: temporary call, see getLogInfo() comment
 
         this.setContentView(R.layout.activity_main)
-        signupButton = findViewById(R.id.signupButton)
-        signinButton = findViewById(R.id.signinButton)
-        cameraButton = findViewById(R.id.cameraButton)
-        barcodeText = findViewById(R.id.barcodeText)
+        signupButton = this.findViewById(R.id.signupButton)
+        signinButton = this.findViewById(R.id.signinButton)
+        localButton = this.findViewById(R.id.localButton)
+        cameraButton = this.findViewById(R.id.cameraButton)
+        searchButton = this.findViewById(R.id.searchButton)
+        barcodeText = this.findViewById(R.id.barcodeText)
 
         signupButton.setOnClickListener {
             var intent = Intent(this, SignUpActivity::class.java)
