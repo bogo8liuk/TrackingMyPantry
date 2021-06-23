@@ -8,37 +8,37 @@
 
     <LinearLayout
         android:id="@+id/inserting_area"
-        android:layout_width="247dp"
-        android:layout_height="229dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toTopOf="@+id/guideline7">
 
         <EditText
             android:id="@+id/usernameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="Username"/>
+            android:hint="Username"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textEmailAddress"
-            android:hint="Email"/>
+            android:hint="Email"
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPassword"
-            android:hint="Password"/>
+            android:hint="Password"
+            android:inputType="textPassword" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -51,4 +51,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inserting_area" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
 </androidx.constraintlayout.widget.ConstraintLayout>

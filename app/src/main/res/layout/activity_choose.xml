@@ -8,11 +8,11 @@
 
     <LinearLayout
         android:id="@+id/productArea"
-        android:layout_width="308dp"
-        android:layout_height="431dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -94,4 +94,18 @@
             android:text="@string/share"
             android:textColor="@color/white" />
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
 </androidx.constraintlayout.widget.ConstraintLayout>
