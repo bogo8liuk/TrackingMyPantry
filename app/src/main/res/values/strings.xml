@@ -3,11 +3,13 @@
 
     <!--Buttons texts-->
     <string name="buy">Buy product</string>
+    <string name="buy1">Buy</string>
     <string name="signIn">Sign in</string>
     <string name="signUp">Sign up</string>
     <string name="search">Search</string>
     <string name="share">Share</string>
     <string name="local">See local grocery</string>
+    <string name="cancel">Cancel</string>
     <!--Buttons texts-->
 
     <!--Hints-->

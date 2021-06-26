@@ -72,6 +72,11 @@ class MainActivity : AppCompatActivity() {
             var intent = Intent(this, SignInActivity::class.java)
             this.startActivity(intent)
         }
+
+        searchButton.setOnClickListener {
+            var intent = Intent(this, ChooseActionActivity::class.java)
+            this.startActivity(intent)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

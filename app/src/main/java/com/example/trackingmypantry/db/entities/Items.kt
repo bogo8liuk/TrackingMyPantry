@@ -4,7 +4,7 @@ import androidx.room.Entity
 import java.util.*
 
 @Entity
-data class items(
+data class Items(
     val barcode: String,
     val purchase_date: Date,
     val expiration_date: Date
