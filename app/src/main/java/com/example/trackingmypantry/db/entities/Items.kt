@@ -1,9 +1,18 @@
 package com.example.trackingmypantry.db.entities
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import java.util.*
 
-@Entity
+/* Abnormal entity, no present primary keys: it does not need a p.k. because it is simply
+* the list of current items in the pantry, so it's not necessary to select one and only one row. */
+@Entity(
+    foreignKeys = [ForeignKey(
+        entity = Product::class,
+        parentColumns = arrayOf("barcode"),
+        childColumns = arrayOf("barcode")
+    )]
+)
 data class Items(
     val barcode: String,
     val purchase_date: Date,

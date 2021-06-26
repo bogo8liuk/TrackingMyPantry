@@ -9,5 +9,5 @@ data class Product(
     val name: String,
     val description: String,
     val image: String?,     //TODO: format of the string
-    val personal_comment: String?
+    val Rating: Int
 )

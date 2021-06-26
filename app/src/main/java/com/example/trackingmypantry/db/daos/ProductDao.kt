@@ -22,6 +22,6 @@ interface ProductDao {
     @Query("update product set image = :image where barcode like :barcode")
     fun insertImageForProduct(barcode: String, image: String)
 
-    @Query("update product set personal_comment = :comment where barcode like :barcode")
-    fun insertCommentForProduct(barcode: String, comment: String)
+    @Query("update product set rating = :rating where barcode like :barcode")
+    fun insertCommentForProduct(barcode: String, rating: Int)
 }
