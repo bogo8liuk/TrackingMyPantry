@@ -2,10 +2,8 @@ package com.example.trackingmypantry.db.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import java.util.*
+import androidx.room.PrimaryKey
 
-/* Abnormal entity, no present primary keys: it does not need a p.k. because it is simply
-* the list of current items in the pantry, so it's not necessary to select one and only one row. */
 @Entity(
     foreignKeys = [ForeignKey(
         entity = Product::class,
@@ -13,8 +11,10 @@ import java.util.*
         childColumns = arrayOf("barcode")
     )]
 )
-data class Items(
+data class Suggestion(
+    @PrimaryKey(autoGenerate = true) val id: Int,
     val barcode: String,
-    val purchase_date: Date,
-    val expiration_date: Date
+    val image: String?, // TODO: see product table
+    val rating: Int,
+    val user: String    // The username that suggested the product
 )

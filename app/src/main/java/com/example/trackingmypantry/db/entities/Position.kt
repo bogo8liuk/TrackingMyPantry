@@ -11,7 +11,7 @@ import androidx.room.ForeignKey
     )],
     primaryKeys = ["barcode", "place"]
 )
-data class Positions(
+data class Position(
     val barcode: String,
     val place: String
 )

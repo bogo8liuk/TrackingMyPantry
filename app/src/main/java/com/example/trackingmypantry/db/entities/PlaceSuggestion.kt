@@ -5,13 +5,13 @@ import androidx.room.ForeignKey
 
 @Entity(
     foreignKeys = [ForeignKey(
-        entity = Suggestions::class,
+        entity = Suggestion::class,
         parentColumns = arrayOf("id"),
         childColumns = arrayOf("suggestion")
     )],
     primaryKeys = ["suggestion", "place"]
 )
-data class PlaceSuggestions(
+data class PlaceSuggestion(
     val suggestion: Int,
     val place: String
 )
