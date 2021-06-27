@@ -1,21 +1,14 @@
 package com.example.trackingmypantry.db.daos
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.trackingmypantry.db.entities.Item
-import java.util.*
+import com.example.trackingmypantry.db.entities.joinsResults.ProductItem
 
 @Dao
-interface ItemsDao {
-    /* "Return value" of the join between product and items */
-    data class ProductItem(
-        val barcode: String,
-        val name: String,
-        val purchase_date: Date,
-        val expiration_date: Date?
-    )
-
+interface ItemDao {
     @Query("select P.barcode, P.name, I.purchase_date, I.expiration_date " +
             "from items as I, product as P where I.barcode = P.barcode")
     fun getCurrentItems(): List<ProductItem>
@@ -29,7 +22,8 @@ interface ItemsDao {
     fun getItemById(id: Int): Item
 
     @Insert
-    fun insertItem(item: Item)
+    fun insertItems(vararg items: Item)
 
-    //TODO: finish
+    @Delete
+    fun deleteItems(vararg items: Item)
 }

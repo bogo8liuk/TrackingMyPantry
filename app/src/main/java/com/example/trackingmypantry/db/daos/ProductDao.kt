@@ -19,9 +19,11 @@ interface ProductDao {
     @Insert
     fun insertProduct(product: Product)
 
+    // Using query, because it is a specific update
     @Query("update product set image = :image where barcode like :barcode")
     fun insertImageForProduct(barcode: String, image: String)
 
+    // Using query, because it is a specific update
     @Query("update product set rating = :rating where barcode like :barcode")
     fun insertRatingForProduct(barcode: String, rating: Int)
 }
