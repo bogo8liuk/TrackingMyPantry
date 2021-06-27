@@ -6,7 +6,7 @@ class BuyHandler() {
 
         }
 
-        fun buy(quantity: Int) {
+        fun buy(barcode: String, quantity: Int) {
 
         }
     }
