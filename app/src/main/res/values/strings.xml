@@ -9,7 +9,8 @@
     <string name="search">Search</string>
     <string name="share">Share</string>
     <string name="local">See local grocery</string>
-    <string name="cancel">Cancel</string>
+    <string name="negative">No</string>
+    <string name="positive">Yes</string>
     <!--Buttons texts-->
 
     <!--Hints-->
