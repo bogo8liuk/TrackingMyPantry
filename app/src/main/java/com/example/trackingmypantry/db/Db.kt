@@ -9,6 +9,6 @@ import com.example.trackingmypantry.db.entities.PlaceSuggestion
 import com.example.trackingmypantry.db.entities.Suggestion
 
 @Database(entities = [Item::class, Place::class, Suggestion::class, PlaceSuggestion::class], version = 1)
-abstract class db: RoomDatabase() {
+abstract class Db: RoomDatabase() {
     abstract fun itemDao(): ItemDao
 }

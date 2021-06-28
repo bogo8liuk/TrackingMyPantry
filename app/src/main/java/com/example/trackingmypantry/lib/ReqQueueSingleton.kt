@@ -6,11 +6,12 @@ import com.android.volley.toolbox.Volley
 
 class ReqQueueSingleton(context: Context) {
     companion object {
-        @Volatile
+        @Volatile   // `writes` immediately made visible to other threads
         private var queueInstance: ReqQueueSingleton? = null
+
         fun getInstance(context: Context) =
             // if the instance is not instatiated, then do it, else it already exists a request queue
-            // synchronized() is used to block concurrent accesses to the object
+            // synchronized() is used to execute code, blocking concurrent accesses to the object
             queueInstance ?: synchronized(this) {
                 queueInstance ?: ReqQueueSingleton(context).also {
                     queueInstance = it

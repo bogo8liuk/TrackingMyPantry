@@ -12,7 +12,7 @@ interface ItemDao {
     fun getAllItems(): List<Item>
 
     @Query("select * from item where barcode like :barcode")
-    fun getCurrentItemsByBarcode(barcode: String): List<Item>
+    fun getItemsByBarcode(barcode: String): List<Item>
 
     @Query("select * from Item where id like :id")
     fun getItemById(id: Int): Item
