@@ -11,8 +11,8 @@ class DbSingleton(context: Context) {
         @Volatile
         private var dbInstance: DbSingleton? = null
 
-        fun getInstance(context: Context) {
-            dbInstance ?: synchronized(this) {
+        fun getInstance(context: Context): DbSingleton {
+            return dbInstance ?: synchronized(this) {
                 dbInstance ?: DbSingleton(context).also {
                     dbInstance = it
                 }
