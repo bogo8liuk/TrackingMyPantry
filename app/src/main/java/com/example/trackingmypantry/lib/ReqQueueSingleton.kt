@@ -10,7 +10,7 @@ class ReqQueueSingleton(context: Context) {
         private var queueInstance: ReqQueueSingleton? = null
 
         fun getInstance(context: Context): ReqQueueSingleton {
-            // if the instance is not instatiated, then do it, else it already exists a request queue
+            // if the instance is not instantiated, then do it, else it already exists a request queue
             // synchronized() is used to execute code, blocking concurrent accesses to the object
             return queueInstance ?: synchronized(this) {
                 queueInstance ?: ReqQueueSingleton(context).also {

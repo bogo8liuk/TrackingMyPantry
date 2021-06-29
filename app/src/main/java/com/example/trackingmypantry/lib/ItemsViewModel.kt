@@ -12,7 +12,7 @@ class ItemsViewModel(app: Application): AndroidViewModel(app) {
 
     private val items: MutableLiveData<List<Item>> by lazy {
         MutableLiveData<List<Item>>().also {
-            DbSingleton.getInstance(appContext).getAllItems()   //TODO: turn it into a MutableLiveData
+            it.value = DbSingleton.getInstance(appContext).getAllItems()
         }
     }
 

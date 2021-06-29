@@ -19,6 +19,7 @@ class DbSingleton(context: Context) {
             }
         }
     }
+    // End of boilerplate code
 
     private val db = Room.databaseBuilder(
         context.applicationContext,
