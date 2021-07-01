@@ -16,6 +16,7 @@ import java.io.*
 
 class Utils {
     companion object {
+        val DEFAULT_BARCODE = "000000000000"
         val logFileName = "log.json"
 
         /*

@@ -6,17 +6,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.trackingmypantry.db.entities.Item
 
-class ItemsViewModel(app: Application): AndroidViewModel(app) {
-    /* No memory leaks: there is only one Application instance when app is running. */
+class LocalItemsViewModel(app: Application): AndroidViewModel(app) {
     private val appContext = app.applicationContext
 
-    private val items: MutableLiveData<List<Item>> by lazy {
+    private val localItems: MutableLiveData<List<Item>> by lazy {
         MutableLiveData<List<Item>>().also {
             it.value = DbSingleton.getInstance(appContext).getAllItems()
         }
     }
 
-    fun getItems(): LiveData<List<Item>> {
-        return items
+    fun getLocalItems(): LiveData<List<Item>> {
+        return localItems
     }
 }

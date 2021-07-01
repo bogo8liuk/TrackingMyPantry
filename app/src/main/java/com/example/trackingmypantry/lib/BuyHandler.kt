@@ -1,6 +1,7 @@
 package com.example.trackingmypantry.lib
 
 import android.content.Context
+import android.content.Intent
 
 class BuyHandler() {
     companion object {
@@ -9,17 +10,8 @@ class BuyHandler() {
         }
 
         fun buy(context: Context, barcode: String) {
-            HttpHandler.serviceGetProduct(
-                context,
-                barcode,
-                "00000000", // TODO: get the right access token
-                { res ->
-                    // TODO: implement a ViewModel
-                },
-                { status_code, _ ->
 
-                }
-            )
+
         }
     }
 }

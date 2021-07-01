@@ -1,13 +1,11 @@
 package com.example.trackingmypantry
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
-import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import com.example.trackingmypantry.lib.BuyHandler
 
 class ChooseActionActivity: AppCompatActivity() {
     private val DEFAULT_BARCODE = "00000000"
@@ -31,7 +29,9 @@ class ChooseActionActivity: AppCompatActivity() {
                 .setMessage("Are you sure of the purchase?")
                 .setNegativeButton(R.string.negative, null)
                 .setPositiveButton(R.string.positive, DialogInterface.OnClickListener { dialog, which ->
-                    BuyHandler.buy(this, "00000000" /*TODO: get the barcode from the right view */)
+                    val intent = Intent(this, BuyActivity::class.java)
+                    intent.putExtra("barcode", barcode)
+                    this.startActivity(intent)
                 })
                 .show()
         }
