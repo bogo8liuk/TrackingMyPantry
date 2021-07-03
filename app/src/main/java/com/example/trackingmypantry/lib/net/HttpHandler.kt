@@ -1,12 +1,10 @@
-package com.example.trackingmypantry.lib
+package com.example.trackingmypantry.lib.net
 
 import android.content.Context
-import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import org.json.JSONObject
-import java.util.HashMap
 
 /* This offers the methods to make the requests to the web service. */
 class HttpHandler() {

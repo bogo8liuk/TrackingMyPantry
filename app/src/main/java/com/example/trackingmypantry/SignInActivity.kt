@@ -2,11 +2,9 @@ package com.example.trackingmypantry
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.InputType
 import android.widget.EditText
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import com.example.trackingmypantry.lib.HttpHandler
+import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.Utils
 
 class SignInActivity : AppCompatActivity() {

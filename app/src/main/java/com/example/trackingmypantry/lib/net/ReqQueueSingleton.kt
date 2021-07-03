@@ -1,4 +1,4 @@
-package com.example.trackingmypantry.lib
+package com.example.trackingmypantry.lib.net
 
 import android.content.Context
 import com.android.volley.Request

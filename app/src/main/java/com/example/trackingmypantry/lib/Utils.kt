@@ -1,40 +1,13 @@
 package com.example.trackingmypantry.lib
 
 import android.content.Context
-import android.os.Build
-import android.util.JsonWriter
-import android.util.Log
-import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.AppCompatButton
-import com.example.trackingmypantry.R
-import com.example.trackingmypantry.db.entities.Item
+import com.example.trackingmypantry.lib.data.Product
 import org.json.JSONObject
-import java.io.*
-import java.sql.Date
 
 class Utils {
     companion object {
-        val DEFAULT_BARCODE = "000000000000"
-        val ERR_BARCODE = "err"
-        val SPECIAL_ID = -1L
         val logFileName = "log.json"
-
-        fun special_err_item(statusCode: Int, err: String) = List(1) { _ ->
-            Item(
-                statusCode.toLong(),
-                ERR_BARCODE,
-                "err",
-                err,
-                null,
-                -1,
-                Date(-1),
-                null
-            )
-        }
 
         /*
         * WARNING: Do not call this function several times: since it reads a file, it can decrease
@@ -103,14 +76,6 @@ class Utils {
 
         fun toastShow(context: Context, msg: String) {
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    class ResultCode {
-        companion object {
-            const val NETWORK_ERR = 2
-            const val EXISTENT_USER = 3
-            const val EXPIRED_TOKEN = 4
         }
     }
 }

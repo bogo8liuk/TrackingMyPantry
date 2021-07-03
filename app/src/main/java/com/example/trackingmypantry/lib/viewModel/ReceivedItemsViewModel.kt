@@ -1,19 +1,21 @@
-package com.example.trackingmypantry.lib
+package com.example.trackingmypantry.lib.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.trackingmypantry.db.entities.Item
+import com.example.trackingmypantry.lib.net.HttpHandler
+import com.example.trackingmypantry.lib.data.Product
+import com.example.trackingmypantry.lib.Utils
 import org.json.JSONObject
-import java.sql.Date
 
 class ReceivedItemsViewModel(app: Application, barcode: String, accessToken: String): AndroidViewModel(app) {
     /* No memory leaks: there is only one Application instance when app is running. */
     private val appContext = app.applicationContext
 
-    private val receivedItems: MutableLiveData<List<Item>> by lazy {
-        MutableLiveData<List<Item>>().also {
+    private val receivedItems: MutableLiveData<List<Product>> by lazy {
+        MutableLiveData<List<Product>>().also {
             HttpHandler.serviceGetProduct(
                 appContext,
                 barcode,
@@ -27,28 +29,24 @@ class ReceivedItemsViewModel(app: Application, barcode: String, accessToken: Str
         }
     }
 
-    private fun rawResToItem(res: String): List<Item>? {
+    private fun rawResToItem(res: String): List<Product> {
         val json = JSONObject(res)  // TODO: handle a jsonexception
-        val jsonItems = json.getJSONArray("products")
-        val items = mutableListOf<Item>()
+        val jsonProducts = json.getJSONArray("products")
+        val products = mutableListOf<Product>()
 
-        for (i in 0 until jsonItems.length()) {
-            val item = jsonItems.getJSONObject(i)
-            items.add(
-                Item( // TODO: consider to use another type instead of Item
-                    Utils.SPECIAL_ID,
-                    item.getString("barcode"),
+        for (i in 0 until jsonProducts.length()) {
+            val item = jsonProducts.getJSONObject(i)
+            products.add(
+                Product(
                     item.getString("name"),
                     item.getString("description"),
-                    item.getString("img"),  // TODO : verify
-                    1,
-                    Date(-1),
-                    null
+                    item.getString("barcode"),
+                    item.getString("img")  // TODO : verify
                 )
             )
         }
 
-        return items
+        return products
     }
 
     fun getReceivedItems(): LiveData<List<Item>> {

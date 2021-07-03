@@ -2,7 +2,7 @@ package com.example.trackingmypantry
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.trackingmypantry.lib.HttpHandler
+import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.Utils
 
 class BuyActivity : AppCompatActivity() {
