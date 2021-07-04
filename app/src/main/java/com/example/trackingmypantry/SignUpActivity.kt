@@ -6,6 +6,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.Utils
+import com.example.trackingmypantry.lib.net.ResultCode
 
 class SignUpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,9 +42,9 @@ class SignUpActivity : AppCompatActivity() {
                     { statusCode, _ ->
                         val intent = Intent()
                         if (statusCode == 500) {
-                            this.setResult(Utils.ResultCode.EXISTENT_USER, intent)
+                            this.setResult(ResultCode.EXISTENT_USER, intent)
                         } else {
-                            this.setResult(Utils.ResultCode.NETWORK_ERR, intent)
+                            this.setResult(ResultCode.NETWORK_ERR, intent)
                         }
                         this.finish()
                     })

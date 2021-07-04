@@ -3,7 +3,7 @@ package com.example.trackingmypantry
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.trackingmypantry.lib.net.HttpHandler
-import com.example.trackingmypantry.lib.Utils
+import com.example.trackingmypantry.lib.data.*
 
 class BuyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,7 +12,7 @@ class BuyActivity : AppCompatActivity() {
 
         HttpHandler.serviceGetProduct(
             this,
-            this.intent.extras!!.getString("barcode", Utils.DEFAULT_BARCODE),
+            this.intent.extras!!.getString("barcode", DEFAULT_BARCODE),
             "00000000", // TODO: get the right access token
             { res ->
 

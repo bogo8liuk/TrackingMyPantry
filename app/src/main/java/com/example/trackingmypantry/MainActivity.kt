@@ -3,16 +3,13 @@ package com.example.trackingmypantry
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
 import com.example.trackingmypantry.lib.Utils
+import com.example.trackingmypantry.lib.net.ResultCode
 import java.io.File
-import java.io.FileOutputStream
-import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
     private var loginStatus = "no"
@@ -89,11 +86,11 @@ class MainActivity : AppCompatActivity() {
                         Utils.toastShow(this, "You are now registered to the service!")
                     }
 
-                    Utils.ResultCode.NETWORK_ERR -> {
+                    ResultCode.NETWORK_ERR -> {
                         Utils.toastShow(this, "Registration failure")
                     }
 
-                    Utils.ResultCode.EXISTENT_USER -> {
+                    ResultCode.EXISTENT_USER -> {
                         Utils.toastShow(this, "Username already in use")
                     }
                 }

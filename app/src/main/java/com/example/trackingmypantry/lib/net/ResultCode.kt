@@ -5,6 +5,7 @@ package com.example.trackingmypantry.lib.net
 * 1 is RESULT_OK */
 class ResultCode {
     companion object {
+        //        RESULT_OK
         const val NETWORK_ERR = 2
         const val EXISTENT_USER = 3
         const val EXPIRED_TOKEN = 4

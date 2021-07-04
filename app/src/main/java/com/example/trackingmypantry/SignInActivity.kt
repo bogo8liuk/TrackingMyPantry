@@ -6,6 +6,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.Utils
+import com.example.trackingmypantry.lib.net.ResultCode
 
 class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,9 +40,9 @@ class SignInActivity : AppCompatActivity() {
                     { statusCode, _ ->
                         val intent = Intent()
                         if (statusCode == 401) {
-                            this.setResult(Utils.ResultCode.EXPIRED_TOKEN, intent)
+                            this.setResult(ResultCode.EXPIRED_TOKEN, intent)
                         } else {
-                            this.setResult(Utils.ResultCode.NETWORK_ERR, intent)
+                            this.setResult(ResultCode.NETWORK_ERR, intent)
                         }
                         this.finish()
                     }
