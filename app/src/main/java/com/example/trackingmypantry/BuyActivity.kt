@@ -2,24 +2,19 @@ package com.example.trackingmypantry
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.trackingmypantry.lib.net.HttpHandler
-import com.example.trackingmypantry.lib.data.*
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
+import com.example.trackingmypantry.lib.data.Product
+import com.example.trackingmypantry.lib.viewModel.ReceivedItemsViewModel
 
 class BuyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_buy)
+        this.setContentView(R.layout.activity_buy)
 
-        HttpHandler.serviceGetProduct(
-            this,
-            this.intent.extras!!.getString("barcode", DEFAULT_BARCODE),
-            "00000000", // TODO: get the right access token
-            { res ->
-
-            },
-            { status_code, _ ->
-
-            }
-        )
+        val model: ReceivedItemsViewModel by viewModels()
+        model.getReceivedItems().observe(this, Observer<List<Product>> {
+            // update UI
+        })
     }
 }

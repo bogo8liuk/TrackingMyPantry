@@ -8,6 +8,7 @@ import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.data.Product
 import com.example.trackingmypantry.lib.Utils
+import com.example.trackingmypantry.lib.data.special_err_product
 import org.json.JSONObject
 
 class ReceivedItemsViewModel(app: Application, barcode: String, accessToken: String): AndroidViewModel(app) {
@@ -24,7 +25,7 @@ class ReceivedItemsViewModel(app: Application, barcode: String, accessToken: Str
                     it.value = rawResToItem(res)
                 },
                 { statusCode, err ->
-                    it.value = Utils.special_err_item(statusCode, err)
+                    it.value = mutableListOf(special_err_product(statusCode, err))
                 })
         }
     }
@@ -49,7 +50,7 @@ class ReceivedItemsViewModel(app: Application, barcode: String, accessToken: Str
         return products
     }
 
-    fun getReceivedItems(): LiveData<List<Item>> {
+    fun getReceivedItems(): LiveData<List<Product>> {
         return receivedItems
     }
 }

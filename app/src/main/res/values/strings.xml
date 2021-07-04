@@ -11,6 +11,7 @@
     <string name="local">See local grocery</string>
     <string name="negative">No</string>
     <string name="positive">Yes</string>
+    <string name="choose">Choose the product you wish to buy</string>
     <!--Buttons texts-->
 
     <!--Hints-->
