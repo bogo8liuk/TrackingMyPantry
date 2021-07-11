@@ -8,7 +8,18 @@
         android:id="@+id/receivedItemNameButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"/>
+        android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+        android:gravity="center"
+        android:textSize="25sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/receivedItemNameExpandedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_up_24"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/receivedItemDescription"
@@ -21,7 +32,7 @@
         android:id="@+id/receivedItemChooseButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/choose"
+        android:text="@string/choose1"
         android:textSize="15sp"
         android:visibility="gone"/>
 
