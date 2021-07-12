@@ -17,6 +17,8 @@ class HttpHandler() {
 
         private const val TESTING_MODE = true
 
+        const val ACCESS_TOKEN_FIELD = "accessToken"
+
         fun serviceAuthenticate(
             context: Context,
             email: String,
