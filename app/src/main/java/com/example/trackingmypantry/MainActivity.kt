@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
@@ -25,6 +26,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraButton: AppCompatImageButton
     private lateinit var searchButton: AppCompatButton
     private lateinit var barcodeText: EditText
+
+    private val content = this.registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        //TODO: callback implementation
+    }
 
     private fun getLogInfo() {
         accessToken = TokenHandler.getToken(this, TokenType.ACCESS)
