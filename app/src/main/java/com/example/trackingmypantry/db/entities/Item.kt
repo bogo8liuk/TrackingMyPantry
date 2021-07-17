@@ -2,7 +2,7 @@ package com.example.trackingmypantry.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.sql.Date
+import java.util.*
 
 @Entity
 data class Item(
