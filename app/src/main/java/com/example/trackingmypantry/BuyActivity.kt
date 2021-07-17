@@ -2,6 +2,7 @@ package com.example.trackingmypantry
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -12,6 +13,7 @@ import com.example.trackingmypantry.lib.data.ERR_FIELD
 import com.example.trackingmypantry.lib.data.Product
 import com.example.trackingmypantry.lib.data.special_err_product
 import com.example.trackingmypantry.lib.viewModel.ReceivedItemsViewModel
+import com.example.trackingmypantry.lib.viewModel.ReceivedItemsViewModelFactory
 
 class BuyActivity : AppCompatActivity() {
     private lateinit var descriptionTextView: TextView
@@ -25,7 +27,7 @@ class BuyActivity : AppCompatActivity() {
         this.sadnessImageView = this.findViewById(R.id.sadnessImage)
         this.recyclerView = this.findViewById(R.id.receivedItemsRecView)
 
-        val model: ReceivedItemsViewModel by viewModels()
+        val model: ReceivedItemsViewModel by viewModels //TODO: pass a factory
         model.getReceivedItems().observe(this, Observer<List<Product>> {
             if (it.any { product -> product.barcode == ERR_FIELD }) {
                 this.descriptionTextView.text = "Sorry, you have came across a network failure"
