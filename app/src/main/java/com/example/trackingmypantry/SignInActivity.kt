@@ -15,6 +15,12 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_sign)
 
+        val extras = this.intent.extras
+        if (extras != null && extras.getBoolean("retry", false)) {
+            Utils.toastShow(this, "A network error occurred," +
+                " try to sign in again")
+        }
+
         var usernameEditText = this.findViewById<EditText>(R.id.usernameEditText)
         var emailEditText = this.findViewById<EditText>(R.id.emailEditText)
         var passwordEditText = this.findViewById<EditText>(R.id.passwordEditText)

@@ -53,6 +53,24 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+    private val buyLauncher = this.registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result ->
+        when (result.resultCode) {
+            RESULT_OK -> {
+                // do nothing
+            }
+
+            ResultCode.NETWORK_ERR -> {
+                Utils.toastShow(this, "Network failure")
+            }
+
+            ResultCode.EXPIRED_TOKEN -> {
+                val intent = Intent()
+                intent.putExtra("retry", true)
+                this.signinLauncher.launch(intent)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +100,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         searchButton.setOnClickListener {
-            var intent = Intent(this, ChooseActionActivity::class.java)
+            var intent = Intent(this, BuyActivity::class.java)
             this.startActivity(intent)
         }
     }
