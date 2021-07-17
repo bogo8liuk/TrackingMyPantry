@@ -51,10 +51,6 @@ class MainActivity : AppCompatActivity() {
             ResultCode.NETWORK_ERR -> {
                 Utils.toastShow(this, "Access failure")
             }
-
-            ResultCode.EXPIRED_TOKEN -> {
-                // TODO
-            }
         }
     }
 

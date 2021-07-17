@@ -40,13 +40,9 @@ class SignInActivity : AppCompatActivity() {
                         this.setResult(RESULT_OK, intent)
                         this.finish()
                     },
-                    { statusCode, _ ->
+                    { _, _ ->
                         val intent = Intent()
-                        if (statusCode == 401) {
-                            this.setResult(ResultCode.EXPIRED_TOKEN, intent)
-                        } else {
-                            this.setResult(ResultCode.NETWORK_ERR, intent)
-                        }
+                        this.setResult(ResultCode.NETWORK_ERR, intent)
                         this.finish()
                     }
                 )
