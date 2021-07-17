@@ -7,7 +7,7 @@ data class Product(
     val image: String
 )
 
-const val DEFAULT_BARCODE = "000000000000"
+const val DEFAULT_BARCODE = "0000000000000"
 const val ERR_FIELD = "err"
 
 fun special_err_product(statusCode: Int, err: String) =
@@ -17,3 +17,5 @@ fun special_err_product(statusCode: Int, err: String) =
         ERR_FIELD,
         ERR_FIELD
     )
+
+fun is_err_product(product: Product) = product.barcode == ERR_FIELD

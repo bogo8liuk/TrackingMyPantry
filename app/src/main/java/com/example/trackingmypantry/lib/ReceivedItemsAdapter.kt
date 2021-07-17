@@ -1,13 +1,17 @@
 package com.example.trackingmypantry.lib
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
+import com.example.trackingmypantry.ChooseActionActivity
 import com.example.trackingmypantry.R
 import com.example.trackingmypantry.lib.data.Product
+import com.example.trackingmypantry.lib.net.HttpHandler
 
 class ReceivedItemsAdapter(private val products: Array<Product>):
     RecyclerView.Adapter<ReceivedItemsAdapter.ViewHolder>() {
@@ -31,6 +35,12 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                 nameButton.visibility = android.view.View.VISIBLE
                 descriptionTextView.visibility = android.view.View.GONE
                 chooseButton.visibility = android.view.View.GONE
+            }
+
+            chooseButton.setOnClickListener {
+                // TODO: create a new activity to describe a product and then call serviceVoteProduct()
+                val intent = Intent(it.context, ChooseActionActivity::class.java)
+                it.context.startActivity(intent)
             }
         }
     }
