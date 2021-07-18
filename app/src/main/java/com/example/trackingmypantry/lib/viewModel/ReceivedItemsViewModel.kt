@@ -14,12 +14,19 @@ import org.json.JSONObject
 class ReceivedItemsViewModel(app: Application, barcode: String, accessToken: String): AndroidViewModel(app) {
     /* No memory leaks: there is only one Application instance when app is running. */
     private val appContext = app.applicationContext
-    private val barcode = barcode
-    private val token = accessToken
 
     private val receivedItems: MutableLiveData<List<Product>> by lazy {
         MutableLiveData<List<Product>>().also {
-            it.value =
+            HttpHandler.serviceGetProduct(
+                appContext,
+                barcode,
+                accessToken,
+                { res ->
+                    it.value = rawResToItem(res)
+                },
+                { statusCode, err ->
+                    it.value = mutableListOf(special_err_product(statusCode, err))
+                })
         }
     }
 
@@ -45,16 +52,7 @@ class ReceivedItemsViewModel(app: Application, barcode: String, accessToken: Str
 
     fun loadReceivedItems(): List<Product> {
         lateinit var list: List<Product>
-        HttpHandler.serviceGetProduct(
-            appContext,
-            barcode,
-            token,
-            { res ->
-                list = rawResToItem(res)
-            },
-            { statusCode, err ->
-                list = mutableListOf(special_err_product(statusCode, err))
-            })
+
         return list
     }
 

@@ -9,16 +9,21 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.lib.ReceivedItemsAdapter
+import com.example.trackingmypantry.lib.TokenHandler
+import com.example.trackingmypantry.lib.TokenType
 import com.example.trackingmypantry.lib.data.ERR_FIELD
 import com.example.trackingmypantry.lib.data.Product
 import com.example.trackingmypantry.lib.data.special_err_product
 import com.example.trackingmypantry.lib.viewModel.ReceivedItemsViewModel
 import com.example.trackingmypantry.lib.viewModel.ReceivedItemsViewModelFactory
 
-class BuyActivity : AppCompatActivity() {
+class BuyActivity() : AppCompatActivity() {
     private lateinit var descriptionTextView: TextView
     private lateinit var sadnessImageView: ImageView
     private lateinit var recyclerView: RecyclerView
+
+    private lateinit var barcode: String
+    private lateinit var accessToken: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +32,12 @@ class BuyActivity : AppCompatActivity() {
         this.sadnessImageView = this.findViewById(R.id.sadnessImage)
         this.recyclerView = this.findViewById(R.id.receivedItemsRecView)
 
-        val model: ReceivedItemsViewModel by viewModels //TODO: pass a factory
+        this.barcode = this.intent.extras?.get("barcode") as String
+        this.accessToken = TokenHandler.getToken(this, TokenType.ACCESS)
+
+        val model: ReceivedItemsViewModel by viewModels {
+            ReceivedItemsViewModelFactory(this.application, this.barcode, this.accessToken)
+        }
         model.getReceivedItems().observe(this, Observer<List<Product>> {
             if (it.any { product -> product.barcode == ERR_FIELD }) {
                 this.descriptionTextView.text = "Sorry, you have came across a network failure"

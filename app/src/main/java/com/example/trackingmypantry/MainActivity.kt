@@ -100,8 +100,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         searchButton.setOnClickListener {
-            var intent = Intent(this, BuyActivity::class.java)
-            this.startActivity(intent)
+            if (barcodeText.text.equals("")) {
+                barcodeText.requestFocus()
+            } else {
+                var intent = Intent(this, BuyActivity::class.java)
+                intent.putExtra("barcode", barcodeText.text.toString())
+                this.startActivity(intent)
+            }
         }
     }
 

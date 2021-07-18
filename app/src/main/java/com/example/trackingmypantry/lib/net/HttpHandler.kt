@@ -78,7 +78,7 @@ class HttpHandler() {
             ){
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = super.getHeaders()
-                    headers.put("Authorization", "Bearer $accessToken")
+                    headers["Authorization"] = "Bearer $accessToken"
                     return headers
                 }
             }
