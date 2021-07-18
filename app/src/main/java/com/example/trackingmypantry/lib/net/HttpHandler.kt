@@ -1,6 +1,7 @@
 package com.example.trackingmypantry.lib.net
 
 import android.content.Context
+import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
@@ -71,13 +72,16 @@ class HttpHandler() {
                 Request.Method.GET,
                 "$DOMAIN$PRODUCT_PATH?barcode=$barcode",
                 { res -> successCallback(res) },
-                { err -> errorCallback(
-                    err.networkResponse.statusCode,
-                    JSONObject(String(err.networkResponse.data)).optString("message")
+                { err ->
+                    if (err == null) Log.e("pippo", "1")
+                    else if (err.networkResponse == null) Log.e("pippo", "2")
+                    errorCallback(
+                    err.networkResponse.statusCode, //TODO: error here
+                    JSONObject(String(err.networkResponse.data)).optString("message", "No message")
                 )}
             ){
                 override fun getHeaders(): MutableMap<String, String> {
-                    val headers = super.getHeaders()
+                    val headers = HashMap<String, String>(super.getHeaders())
                     headers["Authorization"] = "Bearer $accessToken"
                     return headers
                 }
