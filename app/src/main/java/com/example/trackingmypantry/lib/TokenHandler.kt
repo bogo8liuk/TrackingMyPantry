@@ -2,16 +2,17 @@ package com.example.trackingmypantry.lib
 
 import android.app.Activity
 import android.content.Context
+import com.example.trackingmypantry.R
 
 /* Class that offers methods to handle shared preferences for tokens */
 class TokenHandler() {
     companion object {
         private const val ACCESS = "accessToken"
         private const val SESSION = "sessionToken"
-        const val INEXISTENT_TOKEN = ""
+        const val INEXISTENT_TOKEN = "__IT"
 
         fun setToken(from: Activity, type: TokenType, token: String) {
-            val pref = from.getPreferences(Context.MODE_PRIVATE)
+            val pref = from.getSharedPreferences(from.resources.getString(R.string.accessToken), Context.MODE_PRIVATE)
             val editor = pref.edit()
             if (type == TokenType.ACCESS)
                 editor.putString(ACCESS, token)
@@ -21,7 +22,7 @@ class TokenHandler() {
         }
 
         fun removeToken(from: Activity, type: TokenType) {
-            val pref = from.getPreferences(Context.MODE_PRIVATE)
+            val pref = from.getSharedPreferences(from.resources.getString(R.string.accessToken), Context.MODE_PRIVATE)
             val editor = pref.edit()
             if (type == TokenType.ACCESS)
                 editor.putString(ACCESS, INEXISTENT_TOKEN)
@@ -31,7 +32,7 @@ class TokenHandler() {
         }
 
         fun getToken(from: Activity, type: TokenType): String {
-            val pref = from.getPreferences(Context.MODE_PRIVATE)
+            val pref = from.getSharedPreferences(from.resources.getString(R.string.accessToken), Context.MODE_PRIVATE)
             return if (type == TokenType.ACCESS)
                 pref.getString(ACCESS, INEXISTENT_TOKEN) ?: INEXISTENT_TOKEN
             else

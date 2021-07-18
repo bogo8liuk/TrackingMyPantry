@@ -21,4 +21,8 @@
     <string name="passwordHint">Password</string>
     <string name="barcodeHint">Insert the barcode</string>
     <!--Hints-->
+
+    <!--Shared prefs-->
+    <string name="accessToken">Access</string>
+    <!--Shared prefs-->
 </resources>

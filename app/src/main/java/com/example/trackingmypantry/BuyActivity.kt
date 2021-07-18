@@ -14,6 +14,7 @@ import com.example.trackingmypantry.lib.TokenType
 import com.example.trackingmypantry.lib.data.ERR_FIELD
 import com.example.trackingmypantry.lib.data.Product
 import com.example.trackingmypantry.lib.data.special_err_product
+import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.viewModel.ReceivedItemsViewModel
 import com.example.trackingmypantry.lib.viewModel.ReceivedItemsViewModelFactory
 

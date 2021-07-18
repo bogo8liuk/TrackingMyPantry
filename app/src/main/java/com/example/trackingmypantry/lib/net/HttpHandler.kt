@@ -73,10 +73,8 @@ class HttpHandler() {
                 "$DOMAIN$PRODUCT_PATH?barcode=$barcode",
                 { res -> successCallback(res) },
                 { err ->
-                    if (err == null) Log.e("pippo", "1")
-                    else if (err.networkResponse == null) Log.e("pippo", "2")
                     errorCallback(
-                    err.networkResponse.statusCode, //TODO: error here
+                    err.networkResponse.statusCode,
                     JSONObject(String(err.networkResponse.data)).optString("message", "No message")
                 )}
             ){
