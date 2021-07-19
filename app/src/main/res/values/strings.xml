@@ -13,6 +13,12 @@
     <string name="positive">Yes</string>
     <string name="choose">Choose the product you wish to buy</string>
     <string name="choose1">Choose</string>
+    <string name="describe">Set a rate and a description for</string>
+    <string name="describe1">Description</string>
+    <string name="rate">Rate</string>
+    <string name="send">Send</string>
+    <string name="barcode">Barcode</string>
+    <string name="name">Name</string>
     <!--Buttons texts-->
 
     <!--Hints-->
