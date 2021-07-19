@@ -3,10 +3,12 @@ package com.example.trackingmypantry
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Adapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.lib.ReceivedItemsAdapter
 import com.example.trackingmypantry.lib.TokenHandler
@@ -32,6 +34,8 @@ class BuyActivity() : AppCompatActivity() {
         this.descriptionTextView = this.findViewById(R.id.buyDescription)
         this.sadnessImageView = this.findViewById(R.id.sadnessImage)
         this.recyclerView = this.findViewById(R.id.receivedItemsRecView)
+        this.recyclerView.adapter = ReceivedItemsAdapter(arrayOf<Product>())    // To avoid layout skipping
+        this.recyclerView.layoutManager = LinearLayoutManager(this)
 
         this.barcode = this.intent.extras?.get("barcode") as String
         this.accessToken = TokenHandler.getToken(this, TokenType.ACCESS)
@@ -50,7 +54,7 @@ class BuyActivity() : AppCompatActivity() {
                 this.descriptionTextView.text = "Choose the product you wish to buy or notify the" +
                     " server about a new one"
                 val adapter = ReceivedItemsAdapter(it.toTypedArray())
-                recyclerView.adapter = adapter
+                this.recyclerView.adapter = adapter
             }
         })
     }
