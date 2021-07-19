@@ -15,7 +15,6 @@ class RateActivity : AppCompatActivity() {
     private lateinit var barcodeText: TextView
     private lateinit var nameText: TextView
     private lateinit var ratePicker: NumberPicker
-    private lateinit var inputText: TextView
 
     private val MIN_RATE = 1
     private val MAX_RATE = 5
@@ -33,7 +32,6 @@ class RateActivity : AppCompatActivity() {
         this.barcodeText = this.findViewById(R.id.barcodeDescText)
         this.nameText = this.findViewById(R.id.nameDescText)
         this.ratePicker = this.findViewById(R.id.ratePicker)
-        this.inputText = this.findViewById(R.id.inputTextMultiLine)
 
         val extras = this.intent.extras
         this.barcodeText.text = this.getString(R.string.barcode) + ": " + extras!!["barcode"]
@@ -53,7 +51,7 @@ class RateActivity : AppCompatActivity() {
                     })
             } else {
 
-            }*/
+            } TODO: copy that in AddDescActivity*/
             HttpHandler.serviceVoteProduct(
                 this,
                 "TODO", //TODO: session token

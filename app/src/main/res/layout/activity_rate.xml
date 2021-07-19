@@ -23,10 +23,10 @@
             app:layout_constraintGuide_percent="0.1" />
 
         <TextView
-            android:id="@+id/setDescText"
+            android:id="@+id/setRateText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/describe"
+            android:text="@string/rate1"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/guideline17"
@@ -45,35 +45,12 @@
             app:layout_constraintEnd_toStartOf="@+id/ratePicker"
             app:layout_constraintTop_toTopOf="@+id/guideline20" />
 
-        <TextView
-            android:id="@+id/descText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/describe1"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            android:textStyle="bold|italic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline18" />
-
-        <EditText
-            android:id="@+id/inputTextMultiLine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="start|top"
-            android:inputType="textMultiLine"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descText" />
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline18"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.6" />
+            app:layout_constraintGuide_percent="0.7" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline19"

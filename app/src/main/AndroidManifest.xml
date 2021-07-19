@@ -16,15 +16,14 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChooseActionActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".SignInActivity" />
         <activity android:name=".BuyActivity" />
         <activity android:name=".RateActivity" />
+        <activity android:name=".AddDescriptionActivity" />
     </application>
 
 </manifest>

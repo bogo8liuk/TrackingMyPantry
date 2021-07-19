@@ -1,6 +1,5 @@
 package com.example.trackingmypantry.lib
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +7,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
-import com.example.trackingmypantry.ChooseActionActivity
 import com.example.trackingmypantry.R
+import com.example.trackingmypantry.RateActivity
 import com.example.trackingmypantry.lib.data.Product
-import com.example.trackingmypantry.lib.net.HttpHandler
 
 class ReceivedItemsAdapter(private val products: Array<Product>):
     RecyclerView.Adapter<ReceivedItemsAdapter.ViewHolder>() {
@@ -38,8 +36,10 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
             }
 
             chooseButton.setOnClickListener {
-                // TODO: create a new activity to describe a product and then call serviceVoteProduct()
-                val intent = Intent(it.context, ChooseActionActivity::class.java)
+                val intent = Intent(it.context, RateActivity::class.java)
+                intent.putExtra("name", ) //TODO
+                intent.putExtra("barcode", ) //TODO
+                intent.putExtra("productId")   // TODO: fetch the prodId
                 it.context.startActivity(intent)
             }
         }

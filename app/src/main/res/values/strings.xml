@@ -11,11 +11,13 @@
     <string name="local">See local grocery</string>
     <string name="negative">No</string>
     <string name="positive">Yes</string>
-    <string name="choose">Choose the product you wish to buy</string>
-    <string name="choose1">Choose</string>
-    <string name="describe">Set a rate and a description for</string>
-    <string name="describe1">Description</string>
+    <string name="choose">Choose</string>
+    <string name="choose1">Choose the product you wish to buy</string>
+    <string name="describe">Description</string>
+    <string name="describe1">Set a name and a description for</string>
+    <string name="describe2">Add a description</string>
     <string name="rate">Rate</string>
+    <string name="rate1">Set a rate for</string>
     <string name="send">Send</string>
     <string name="barcode">Barcode</string>
     <string name="name">Name</string>
