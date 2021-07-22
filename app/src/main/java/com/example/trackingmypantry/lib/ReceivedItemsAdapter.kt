@@ -14,32 +14,32 @@ import com.example.trackingmypantry.lib.data.Product
 class ReceivedItemsAdapter(private val products: Array<Product>):
     RecyclerView.Adapter<ReceivedItemsAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val nameButton = view.findViewById<AppCompatButton>(R.id.receivedItemNameButton)
         val nameExpandedButton = view.findViewById<AppCompatButton>(R.id.receivedItemNameExpandedButton)
         val descriptionTextView = view.findViewById<TextView>(R.id.receivedItemDescription)
         val chooseButton = view.findViewById<AppCompatButton>(R.id.receivedItemChooseButton)
 
         init {
-            nameButton.setOnClickListener {
+            this.nameButton.setOnClickListener {
                 it.visibility = android.view.View.GONE
                 nameExpandedButton.visibility = android.view.View.VISIBLE
                 descriptionTextView.visibility = android.view.View.VISIBLE
                 chooseButton.visibility = android.view.View.VISIBLE
             }
 
-            nameExpandedButton.setOnClickListener {
+            this.nameExpandedButton.setOnClickListener {
                 it.visibility = android.view.View.GONE
                 nameButton.visibility = android.view.View.VISIBLE
                 descriptionTextView.visibility = android.view.View.GONE
                 chooseButton.visibility = android.view.View.GONE
             }
 
-            chooseButton.setOnClickListener {
+            this.chooseButton.setOnClickListener {
                 val intent = Intent(it.context, RateActivity::class.java)
-                intent.putExtra("name", ) //TODO
-                intent.putExtra("barcode", ) //TODO
-                intent.putExtra("productId")   // TODO: fetch the prodId
+                intent.putExtra("name", products[this.adapterPosition].name)
+                intent.putExtra("barcode", products[this.adapterPosition].barcode)
+                intent.putExtra("productId", products[this.adapterPosition].id)
                 it.context.startActivity(intent)
             }
         }
