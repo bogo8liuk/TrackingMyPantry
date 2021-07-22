@@ -4,11 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.lib.net.HttpHandler
-import com.example.trackingmypantry.lib.data.Product
-import com.example.trackingmypantry.lib.Utils
-import com.example.trackingmypantry.lib.data.special_err_product
+import com.example.trackingmypantry.lib.data.*
 import org.json.JSONObject
 
 class ReceivedItemsViewModel(app: Application, barcode: String, accessToken: String): AndroidViewModel(app) {
@@ -25,7 +22,7 @@ class ReceivedItemsViewModel(app: Application, barcode: String, accessToken: Str
                     it.value = rawResToItem(res)
                 },
                 { statusCode, err ->
-                    it.value = mutableListOf(special_err_product(statusCode, err))
+                    it.value = mutableListOf(specialErrProduct(statusCode, err))
                 })
         }
     }
@@ -42,18 +39,13 @@ class ReceivedItemsViewModel(app: Application, barcode: String, accessToken: Str
                     item.getString("name"),
                     item.getString("description"),
                     item.getString("barcode"),
-                    item.getString("img")  // TODO : verify
+                    item.getString("img"),  // TODO : verify
+                    item.getString("id")
                 )
             )
         }
 
         return products
-    }
-
-    fun loadReceivedItems(): List<Product> {
-        lateinit var list: List<Product>
-
-        return list
     }
 
     fun getReceivedItems(): LiveData<List<Product>> {

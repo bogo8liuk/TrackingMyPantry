@@ -6,6 +6,6 @@ import android.os.Bundle
 class AddDescriptionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_description)
+        this.setContentView(R.layout.activity_add_description)
     }
 }
