@@ -22,7 +22,6 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".SignInActivity" />
         <activity android:name=".BuyActivity" />
-        <activity android:name=".RateActivity" />
         <activity android:name=".AddDescriptionActivity" />
     </application>
 

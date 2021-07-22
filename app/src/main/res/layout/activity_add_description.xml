@@ -7,7 +7,7 @@
     tools:context=".AddDescriptionActivity">
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/sendButton2"
+        android:id="@+id/sendButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/green_medium_corner_button"
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/inputTextMultiLine"
+        android:id="@+id/descEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -37,7 +37,7 @@
         android:textColor="@color/black"
         android:textSize="32sp"
         android:textStyle="bold|italic"
-        app:layout_constraintBottom_toTopOf="@+id/inputTextMultiLine"
+        app:layout_constraintBottom_toTopOf="@+id/descEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -80,7 +80,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/editTextName"
+        android:id="@+id/nameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -98,7 +98,7 @@
         android:textColor="@color/black"
         android:textSize="32sp"
         android:textStyle="bold|italic"
-        app:layout_constraintBottom_toTopOf="@+id/editTextName"
+        app:layout_constraintBottom_toTopOf="@+id/nameEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

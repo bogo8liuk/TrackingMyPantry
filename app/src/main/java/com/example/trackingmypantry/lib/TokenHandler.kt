@@ -11,8 +11,8 @@ class TokenHandler() {
         private const val SESSION = "sessionToken"
         const val INEXISTENT_TOKEN = "__IT"
 
-        fun setToken(from: Activity, type: TokenType, token: String) {
-            val pref = from.getSharedPreferences(from.resources.getString(R.string.accessToken), Context.MODE_PRIVATE)
+        fun setToken(context: Context, type: TokenType, token: String) {
+            val pref = context.getSharedPreferences(context.resources.getString(R.string.accessToken), Context.MODE_PRIVATE)
             val editor = pref.edit()
             if (type == TokenType.ACCESS)
                 editor.putString(ACCESS, token)
@@ -21,8 +21,8 @@ class TokenHandler() {
             editor.apply()
         }
 
-        fun removeToken(from: Activity, type: TokenType) {
-            val pref = from.getSharedPreferences(from.resources.getString(R.string.accessToken), Context.MODE_PRIVATE)
+        fun removeToken(context: Context, type: TokenType) {
+            val pref = context.getSharedPreferences(context.resources.getString(R.string.accessToken), Context.MODE_PRIVATE)
             val editor = pref.edit()
             if (type == TokenType.ACCESS)
                 editor.putString(ACCESS, INEXISTENT_TOKEN)
@@ -31,8 +31,8 @@ class TokenHandler() {
             editor.apply()
         }
 
-        fun getToken(from: Activity, type: TokenType): String {
-            val pref = from.getSharedPreferences(from.resources.getString(R.string.accessToken), Context.MODE_PRIVATE)
+        fun getToken(context: Context, type: TokenType): String {
+            val pref = context.getSharedPreferences(context.resources.getString(R.string.accessToken), Context.MODE_PRIVATE)
             return if (type == TokenType.ACCESS)
                 pref.getString(ACCESS, INEXISTENT_TOKEN) ?: INEXISTENT_TOKEN
             else

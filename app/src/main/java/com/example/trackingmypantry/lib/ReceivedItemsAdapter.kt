@@ -1,15 +1,17 @@
 package com.example.trackingmypantry.lib
 
-import android.content.Intent
+import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.NumberPicker
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R
-import com.example.trackingmypantry.RateActivity
 import com.example.trackingmypantry.lib.data.Product
+import com.example.trackingmypantry.lib.net.HttpHandler
 
 class ReceivedItemsAdapter(private val products: Array<Product>):
     RecyclerView.Adapter<ReceivedItemsAdapter.ViewHolder>() {
@@ -19,6 +21,9 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
         val nameExpandedButton = view.findViewById<AppCompatButton>(R.id.receivedItemNameExpandedButton)
         val descriptionTextView = view.findViewById<TextView>(R.id.receivedItemDescription)
         val chooseButton = view.findViewById<AppCompatButton>(R.id.receivedItemChooseButton)
+
+        private val MIN_RATE = 1
+        private val MAX_RATE = 5
 
         init {
             this.nameButton.setOnClickListener {
@@ -36,11 +41,29 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
             }
 
             this.chooseButton.setOnClickListener {
-                val intent = Intent(it.context, RateActivity::class.java)
-                intent.putExtra("name", products[this.adapterPosition].name)
-                intent.putExtra("barcode", products[this.adapterPosition].barcode)
-                intent.putExtra("productId", products[this.adapterPosition].id)
-                it.context.startActivity(intent)
+                var ratePicker = NumberPicker(view.context)
+                ratePicker.minValue = MIN_RATE
+                ratePicker.maxValue = MAX_RATE
+                AlertDialog.Builder(view.context)
+                    .setTitle("Rate")
+                    .setMessage("Select a rating for the product you chose")
+                    .setView(ratePicker)
+                    .setNegativeButton(R.string.negative1, null)
+                    .setPositiveButton(R.string.send, DialogInterface.OnClickListener { _, _ ->
+                        HttpHandler.serviceVoteProduct(
+                            view.context,
+                            TokenHandler.getToken(view.context, TokenType.SESSION),
+                            ratePicker.value,
+                            products[this.adapterPosition].id,
+                            { res ->
+
+                            },
+                            { statusCode, err ->
+
+                            }
+                        )
+                    })
+                    .show()
             }
         }
     }
