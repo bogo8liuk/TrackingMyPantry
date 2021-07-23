@@ -10,6 +10,5 @@ data class Suggestion(
     val name: String,
     val description: String,
     val image: String?, // TODO: see product table
-    val rating: Int,
     val user: String    // The username that suggested the product
 )

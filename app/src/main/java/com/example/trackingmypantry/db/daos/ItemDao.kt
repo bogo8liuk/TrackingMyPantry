@@ -1,9 +1,6 @@
 package com.example.trackingmypantry.db.daos
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.trackingmypantry.db.entities.Item
 
 @Dao
@@ -17,7 +14,7 @@ interface ItemDao {
     @Query("select * from Item where id like :id")
     fun getItemById(id: Int): Item
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertItems(vararg items: Item)
 
     @Delete

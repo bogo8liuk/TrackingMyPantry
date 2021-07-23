@@ -2,17 +2,24 @@ package com.example.trackingmypantry
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
+import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.lib.TokenHandler
 import com.example.trackingmypantry.lib.TokenType
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.net.ResultCode
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class AddDescriptionActivity : AppCompatActivity() {
     private lateinit var descText: TextView
@@ -22,6 +29,7 @@ class AddDescriptionActivity : AppCompatActivity() {
 
     /* Implementing here because there are two points where this function is called:
     * avoiding boiler-plate code. */
+    @RequiresApi(Build.VERSION_CODES.O)
     private val send = { barcode: String ->
         HttpHandler.serviceDescribeProduct(
             this,
@@ -31,6 +39,15 @@ class AddDescriptionActivity : AppCompatActivity() {
             barcode,
             { res ->
                 // TODO: add the product to db
+                val item = Item(
+                    0,
+                    res.getString("barcode"),
+                    res.getString("name"),
+                    res.getString("description"),
+                    null, // TODO: image
+                    res.getString("createdAt").subSequence(0, 10),  // TODO: string to date
+                    null    // TODO: expiration
+                )
                 this.setResult(RESULT_OK, Intent())
                 this.finish()
             },
