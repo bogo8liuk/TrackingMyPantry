@@ -1,10 +1,13 @@
 package com.example.trackingmypantry
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,18 +22,33 @@ class BuyActivity() : AppCompatActivity() {
     private lateinit var descriptionTextView: TextView
     private lateinit var sadnessImageView: ImageView
     private lateinit var recyclerView: RecyclerView
+    private lateinit var newProdButton: AppCompatButton
 
     private lateinit var barcode: String
     private lateinit var accessToken: String
 
+    private val AddDescLauncher = this.registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result ->
+            val intent = Intent()
+            this.setResult(result.resultCode, intent)
+            this.finish()
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_buy)
+
         this.descriptionTextView = this.findViewById(R.id.buyDescription)
         this.sadnessImageView = this.findViewById(R.id.sadnessImage)
+        this.newProdButton = this.findViewById(R.id.newProdButton)
         this.recyclerView = this.findViewById(R.id.receivedItemsRecView)
+
         this.recyclerView.adapter = ReceivedItemsAdapter(arrayOf<Product>())    // To avoid layout skipping
         this.recyclerView.layoutManager = LinearLayoutManager(this)
+
+        this.newProdButton.setOnClickListener {
+
+        }
 
         this.barcode = this.intent.extras?.get("barcode") as String
         this.accessToken = TokenHandler.getToken(this, TokenType.ACCESS)

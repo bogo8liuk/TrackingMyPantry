@@ -1,6 +1,7 @@
 package com.example.trackingmypantry
 
 import android.content.DialogInterface
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
@@ -11,6 +12,7 @@ import com.example.trackingmypantry.lib.TokenHandler
 import com.example.trackingmypantry.lib.TokenType
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.net.HttpHandler
+import com.example.trackingmypantry.lib.net.ResultCode
 
 class AddDescriptionActivity : AppCompatActivity() {
     private lateinit var descText: TextView
@@ -28,10 +30,18 @@ class AddDescriptionActivity : AppCompatActivity() {
             this.descEditText.text.toString(),
             barcode,
             { res ->
-                // TODO
+                // TODO: add the product to db
+                this.setResult(RESULT_OK, Intent())
+                this.finish()
             },
-            { statusCode, err ->
-                // TODO
+            { statusCode, _ ->
+                if (statusCode == 401) {
+                    this.setResult(ResultCode.EXPIRED_TOKEN, Intent())
+                    this.finish()
+                } else {
+                    this.setResult(ResultCode.NETWORK_ERR, Intent())
+                    this.finish()
+                }
             }
         )
     }

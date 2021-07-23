@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             ResultCode.EXPIRED_TOKEN -> {
-                val intent = Intent()
+                val intent = Intent(this, SignInActivity::class.java)
                 intent.putExtra("retry", true)
                 this.signinLauncher.launch(intent)
             }
