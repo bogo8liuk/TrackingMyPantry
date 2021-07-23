@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     // UI elements
     private lateinit var signupButton: AppCompatButton
     private lateinit var signinButton: AppCompatButton
+    private lateinit var logoutButton: AppCompatButton
     private lateinit var localButton: AppCompatButton
     private lateinit var cameraButton: AppCompatImageButton
     private lateinit var searchButton: AppCompatButton
@@ -78,6 +79,7 @@ class MainActivity : AppCompatActivity() {
         this.setContentView(R.layout.activity_main)
         this.signupButton = this.findViewById(R.id.signupButton)
         this.signinButton = this.findViewById(R.id.signinButton)
+        this.logoutButton = this.findViewById(R.id.logoutButton)
         this.localButton = this.findViewById(R.id.localButton)
         this.cameraButton = this.findViewById(R.id.cameraButton)
         this.searchButton = this.findViewById(R.id.searchButton)
@@ -87,19 +89,20 @@ class MainActivity : AppCompatActivity() {
             this.searchButton.visibility = android.view.View.GONE
             this.cameraButton.visibility = android.view.View.GONE
             this.barcodeText.visibility = android.view.View.GONE
+            this.logoutButton.visibility = android.view.View.GONE
         }
 
-        signupButton.setOnClickListener {
+        this.signupButton.setOnClickListener {
             var intent = Intent(this, SignUpActivity::class.java)
             this.signupLauncher.launch(intent)
         }
 
-        signinButton.setOnClickListener {
+        this.signinButton.setOnClickListener {
             var intent = Intent(this, SignInActivity::class.java)
             this.signinLauncher.launch(intent)
         }
 
-        searchButton.setOnClickListener {
+        this.searchButton.setOnClickListener {
             if (barcodeText.text.equals("")) {
                 barcodeText.requestFocus()
             } else {
@@ -107,6 +110,15 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra("barcode", barcodeText.text.toString())
                 this.startActivity(intent)
             }
+        }
+
+        this.logoutButton.setOnClickListener {
+            TokenHandler.removeToken(this, TokenType.ACCESS)
+
+            this.searchButton.visibility = android.view.View.GONE
+            this.cameraButton.visibility = android.view.View.GONE
+            this.barcodeText.visibility = android.view.View.GONE
+            this.logoutButton.visibility = android.view.View.GONE
         }
     }
 
