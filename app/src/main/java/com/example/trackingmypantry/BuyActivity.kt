@@ -27,7 +27,7 @@ class BuyActivity() : AppCompatActivity() {
     private lateinit var barcode: String
     private lateinit var accessToken: String
 
-    private val AddDescLauncher = this.registerForActivityResult(
+    private val addDescLauncher = this.registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result ->
             val intent = Intent()
             this.setResult(result.resultCode, intent)
@@ -47,7 +47,7 @@ class BuyActivity() : AppCompatActivity() {
         this.recyclerView.layoutManager = LinearLayoutManager(this)
 
         this.newProdButton.setOnClickListener {
-
+            this.addDescLauncher.launch(Intent(this, AddDescriptionActivity::class.java))
         }
 
         this.barcode = this.intent.extras?.get("barcode") as String
