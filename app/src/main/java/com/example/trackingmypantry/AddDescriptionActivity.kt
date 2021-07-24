@@ -11,11 +11,13 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import com.example.trackingmypantry.db.entities.Item
+import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.TokenHandler
 import com.example.trackingmypantry.lib.TokenType
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.net.ResultCode
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -29,7 +31,6 @@ class AddDescriptionActivity : AppCompatActivity() {
 
     /* Implementing here because there are two points where this function is called:
     * avoiding boiler-plate code. */
-    @RequiresApi(Build.VERSION_CODES.O)
     private val send = { barcode: String ->
         HttpHandler.serviceDescribeProduct(
             this,
@@ -38,16 +39,18 @@ class AddDescriptionActivity : AppCompatActivity() {
             this.descEditText.text.toString(),
             barcode,
             { res ->
-                // TODO: add the product to db
+                val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                 val item = Item(
                     0,
                     res.getString("barcode"),
                     res.getString("name"),
                     res.getString("description"),
                     null, // TODO: image
-                    res.getString("createdAt").subSequence(0, 10),  // TODO: string to date
+                    format.parse(res.getString("createdAt"))!!,
                     null    // TODO: expiration
                 )
+                DbSingleton.getInstance(this).insertItems(item)
+
                 this.setResult(RESULT_OK, Intent())
                 this.finish()
             },
