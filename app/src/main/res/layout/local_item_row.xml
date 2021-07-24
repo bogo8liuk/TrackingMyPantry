@@ -5,15 +5,15 @@
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/receivedItemNameButton"
+        android:id="@+id/localItemNameButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
         android:gravity="center"
-        android:textSize="25sp" />
+        android:textSize="25sp"/>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/receivedItemNameExpandedButton"
+        android:id="@+id/localItemNameExpandedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_up_24"
@@ -22,19 +22,24 @@
         android:visibility="gone"/>
 
     <TextView
-        android:id="@+id/receivedItemDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:visibility="gone"/>
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/receivedItemChooseButton"
+        android:id="@+id/deleteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/lightblue_medium_corner_button"
-        android:text="@string/choose"
-        android:textSize="15sp"
-        android:visibility="gone"/>
-
+        android:text="@string/delete"
+        android:background="@drawable/orange_medium_corner_button"/>
 </LinearLayout>

@@ -112,6 +112,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        this.localButton.setOnClickListener {
+            this.startActivity(Intent(this, LocalGroceryActivity::class.java))
+        }
+
         this.logoutButton.setOnClickListener {
             TokenHandler.removeToken(this, TokenType.ACCESS)
 
@@ -120,9 +124,5 @@ class MainActivity : AppCompatActivity() {
             this.barcodeText.visibility = android.view.View.GONE
             this.logoutButton.visibility = android.view.View.GONE
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 }

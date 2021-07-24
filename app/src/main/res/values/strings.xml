@@ -24,6 +24,7 @@
     <string name="name">Name</string>
     <string name="logout">Logout</string>
     <string name="product">New product</string>
+    <string name="delete">Delete</string>
     <!--Buttons texts-->
 
     <!--Hints-->

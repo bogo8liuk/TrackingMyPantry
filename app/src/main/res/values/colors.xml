@@ -8,9 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!--App colors, TMP stands for TrackingMyPantry-->
-    <color name="TMP_green">@android:color/holo_green_dark</color>
-    <color name="TMP_lightblue">@android:color/holo_blue_light</color>
-    <color name="TMP_red">#D30048</color>
-    <color name="TMP_orange">@android:color/holo_orange_dark</color>
+    <!--App colors-->
+    <color name="green">@android:color/holo_green_dark</color>
+    <color name="lightblue">@android:color/holo_blue_light</color>
+    <color name="red">#D30048</color>
+    <color name="orange">@android:color/holo_orange_dark</color>
 </resources>
