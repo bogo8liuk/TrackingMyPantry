@@ -24,22 +24,29 @@
     <TextView
         android:id="@+id/descLocalItemText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/purchaseLocalItemText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/expirationLocalItemText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:visibility="gone"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/deleteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/delete"
-        android:background="@drawable/orange_medium_corner_button"/>
+        android:background="@drawable/orange_medium_corner_button"
+        android:visibility="gone"/>
 </LinearLayout>

@@ -56,10 +56,10 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                             ratePicker.value,
                             products[this.adapterPosition].id,
                             { res ->
-
+                                // TODO
                             },
                             { statusCode, err ->
-
+                                // TODO
                             }
                         )
                     })

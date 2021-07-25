@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.db.entities.Item
+import com.example.trackingmypantry.lib.LocalItemsAdapter
 import com.example.trackingmypantry.lib.ReceivedItemsAdapter
 import com.example.trackingmypantry.lib.data.Product
 import com.example.trackingmypantry.lib.viewModel.LocalItemsViewModel
