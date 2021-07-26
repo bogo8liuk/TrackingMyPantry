@@ -20,6 +20,7 @@ class LocalItemsAdapter(private val items: Array<Item>):
         val nameButton = view.findViewById<AppCompatButton>(R.id.localItemNameButton)
         val nameExpandedButton = view.findViewById<AppCompatButton>(R.id.localItemNameExpandedButton)
         val deleteButton = view.findViewById<AppCompatButton>(R.id.deleteButton)
+        val barcodeText = view.findViewById<TextView>(R.id.barcodeDescText)
         val descText = view.findViewById<TextView>(R.id.localDescText)
         val purchaseText = view.findViewById<TextView>(R.id.purchaseLocalItemText)
         val expirationText = view.findViewById<TextView>(R.id.expirationLocalItemText)
@@ -37,6 +38,7 @@ class LocalItemsAdapter(private val items: Array<Item>):
                 this.nameButton.visibility = android.view.View.GONE
                 this.nameExpandedButton.visibility = android.view.View.VISIBLE
                 this.deleteButton.visibility = android.view.View.VISIBLE
+                this.barcodeText.visibility = android.view.View.VISIBLE
                 this.descText.visibility = android.view.View.VISIBLE
                 this.purchaseText.visibility = android.view.View.VISIBLE
                 this.expirationText.visibility = android.view.View.VISIBLE
@@ -46,6 +48,7 @@ class LocalItemsAdapter(private val items: Array<Item>):
                 this.nameButton.visibility = android.view.View.VISIBLE
                 this.nameExpandedButton.visibility = android.view.View.GONE
                 this.deleteButton.visibility = android.view.View.GONE
+                this.barcodeText.visibility = android.view.View.GONE
                 this.descText.visibility = android.view.View.GONE
                 this.purchaseText.visibility = android.view.View.GONE
                 this.expirationText.visibility = android.view.View.GONE
@@ -80,7 +83,7 @@ class LocalItemsAdapter(private val items: Array<Item>):
         holder.descText.text = items[position].description
         holder.purchaseText.text = "Purchase date: " + items[position].purchase_date // TODO: safe?
         holder.expirationText.text = "Expiration date: " + items[position].expiration_date
-        // TODO: add a barcode text view in the linear layout
+        holder.barcodeText.text = "Barcode: " + items[position].barcode
     }
 
     override fun getItemCount(): Int {
