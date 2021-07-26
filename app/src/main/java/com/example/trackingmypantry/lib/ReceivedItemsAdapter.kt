@@ -1,6 +1,9 @@
 package com.example.trackingmypantry.lib
 
+import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.DialogInterface
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R
 import com.example.trackingmypantry.lib.data.Product
 import com.example.trackingmypantry.lib.net.HttpHandler
+import com.example.trackingmypantry.lib.net.ResultCode
 
 class ReceivedItemsAdapter(private val products: Array<Product>):
     RecyclerView.Adapter<ReceivedItemsAdapter.ViewHolder>() {
@@ -56,10 +60,19 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                             ratePicker.value,
                             products[this.adapterPosition].id,
                             { res ->
-                                // TODO
+                                val currentActivity = view.context as Activity
+                                currentActivity.setResult(RESULT_OK, Intent())
+                                currentActivity.finish()
                             },
                             { statusCode, err ->
-                                // TODO
+                                val currentActivity = view.context as Activity
+                                if (statusCode == 401) {
+                                    currentActivity.setResult(ResultCode.EXPIRED_TOKEN, Intent())
+                                    currentActivity.finish()
+                                } else {
+                                    currentActivity.setResult(ResultCode.NETWORK_ERR, Intent())
+                                    currentActivity.finish()
+                                }
                             }
                         )
                     })

@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         this.localButton.setOnClickListener {
-            this.startActivity(Intent(this, LocalGroceryActivity::class.java))
+            this.startActivity(Intent(this, LocalItemsActivity::class.java))
         }
 
         this.logoutButton.setOnClickListener {
