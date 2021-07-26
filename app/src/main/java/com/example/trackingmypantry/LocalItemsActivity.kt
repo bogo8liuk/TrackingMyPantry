@@ -25,7 +25,6 @@ class LocalItemsActivity : AppCompatActivity() {
         this.descriptionTextView = this.findViewById(R.id.localDescText)
         this.recyclerView = this.findViewById(R.id.localItemsRecView)
 
-        // TODO: create an adapter
         this.recyclerView.adapter = LocalItemsAdapter(arrayOf<Item>())    // To avoid layout skipping
         this.recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -34,7 +33,9 @@ class LocalItemsActivity : AppCompatActivity() {
         }
 
         model.getLocalItems().observe(this, Observer<List<Item>> {
-
+            this.descriptionTextView.text = "Here are the products of your pantry"
+            val adapter = LocalItemsAdapter(it.toTypedArray())
+            this.recyclerView.adapter = adapter
         })
     }
 }

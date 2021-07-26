@@ -2,17 +2,18 @@ package com.example.trackingmypantry.db.daos
 
 import androidx.room.*
 import com.example.trackingmypantry.db.entities.Item
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ItemDao {
     @Query("select * from item")
-    fun getAllItems(): List<Item>
+    fun getAllItems(): Flow<List<Item>>
 
     @Query("select * from item where barcode like :barcode")
-    fun getItemsByBarcode(barcode: String): List<Item>
+    fun getItemsByBarcode(barcode: String): Flow<List<Item>>
 
     @Query("select * from Item where id like :id")
-    fun getItemById(id: Int): Item
+    fun getItemById(id: Int): Flow<Item>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertItems(vararg items: Item)

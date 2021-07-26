@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 var intent = Intent(this, BuyActivity::class.java)
                 intent.putExtra("barcode", barcodeText.text.toString())
-                this.startActivity(intent)
+                this.buyLauncher.launch(intent)
             }
         }
 

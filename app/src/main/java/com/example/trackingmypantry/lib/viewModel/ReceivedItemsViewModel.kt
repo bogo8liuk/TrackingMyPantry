@@ -39,8 +39,6 @@ class ReceivedItemsViewModel(app: Application, barcode: String, accessToken: Str
 
     private fun rawResToItem(res: JSONObject): List<Product> {
         val jsonProducts = res.getJSONArray("products")
-        Log.e("pippo", jsonProducts.toString())
-        Log.e("pippo", jsonProducts.length().toString())
         val products = mutableListOf<Product>()
 
         for (i in 0 until jsonProducts.length()) {

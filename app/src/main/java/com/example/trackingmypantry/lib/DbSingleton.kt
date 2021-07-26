@@ -1,9 +1,12 @@
 package com.example.trackingmypantry.lib
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.room.Room
 import com.example.trackingmypantry.db.Db
 import com.example.trackingmypantry.db.entities.Item
+import kotlinx.coroutines.flow.Flow
 
 class DbSingleton(context: Context) {
     // Boilerplate code equal to ReqQueueSingleton
@@ -29,16 +32,16 @@ class DbSingleton(context: Context) {
     private val itemDao = db.itemDao()
 
     /* From here, wrapper functions */
-    fun getAllItems(): List<Item> {
-        return itemDao.getAllItems()
+    fun getAllItems(): LiveData<List<Item>> {
+        return itemDao.getAllItems().asLiveData()
     }
 
-    fun getItemsByBarcode(barcode: String): List<Item> {
-        return itemDao.getItemsByBarcode(barcode)
+    fun getItemsByBarcode(barcode: String): LiveData<List<Item>> {
+        return itemDao.getItemsByBarcode(barcode).asLiveData()
     }
 
-    fun getItemById(id: Int): Item {
-        return itemDao.getItemById(id)
+    fun getItemById(id: Int): LiveData<Item> {
+        return itemDao.getItemById(id).asLiveData()
     }
 
     fun insertItems(vararg items: Item) {
