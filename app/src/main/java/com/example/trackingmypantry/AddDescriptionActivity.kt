@@ -2,12 +2,10 @@ package com.example.trackingmypantry
 
 import android.content.DialogInterface
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import com.example.trackingmypantry.db.entities.Item
@@ -17,10 +15,6 @@ import com.example.trackingmypantry.lib.TokenType
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.net.ResultCode
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class AddDescriptionActivity : AppCompatActivity() {
@@ -39,14 +33,13 @@ class AddDescriptionActivity : AppCompatActivity() {
             this.descEditText.text.toString(),
             barcode,
             { res ->
-                val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                 val item = Item(
                     0,
                     res.getString("barcode"),
                     res.getString("name"),
                     res.getString("description"),
                     null, // TODO: image
-                    format.parse(res.getString("createdAt"))!!,
+                    Date(),
                     null    // TODO: expiration
                 )
                 DbSingleton.getInstance(this).insertItems(item)

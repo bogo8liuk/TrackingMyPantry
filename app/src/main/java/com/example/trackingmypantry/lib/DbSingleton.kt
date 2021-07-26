@@ -6,7 +6,10 @@ import androidx.lifecycle.asLiveData
 import androidx.room.Room
 import com.example.trackingmypantry.db.Db
 import com.example.trackingmypantry.db.entities.Item
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class DbSingleton(context: Context) {
     // Boilerplate code equal to ReqQueueSingleton
@@ -45,10 +48,18 @@ class DbSingleton(context: Context) {
     }
 
     fun insertItems(vararg items: Item) {
-        itemDao.insertItems(*items)
+        runBlocking {
+            launch {
+                itemDao.insertItems(*items)
+            }
+        }
     }
 
     fun deleteItems(vararg items: Item) {
-        itemDao.deleteItems(*items)
+        runBlocking {
+            launch {
+                itemDao.deleteItems(*items)
+            }
+        }
     }
 }

@@ -13,9 +13,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R
+import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.lib.data.Product
 import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.net.ResultCode
+import java.util.*
 
 class ReceivedItemsAdapter(private val products: Array<Product>):
     RecyclerView.Adapter<ReceivedItemsAdapter.ViewHolder>() {
@@ -77,6 +79,16 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                         )
                     })
                     .show()
+                DbSingleton.getInstance(view.context).insertItems(Item(
+                    0,
+                    products[this.adapterPosition].barcode,
+                    products[this.adapterPosition].name,
+                    products[this.adapterPosition].description,
+                    null, //TODO: image
+                    Date(),
+                    null    //TODO: expiration date
+                )
+                )
             }
         }
     }
