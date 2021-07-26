@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.DialogInterface
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,6 +63,16 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                             ratePicker.value,
                             products[this.adapterPosition].id,
                             { res ->
+                                DbSingleton.getInstance(view.context).insertItems(Item(
+                                    0,
+                                    products[this.adapterPosition].barcode,
+                                    products[this.adapterPosition].name,
+                                    products[this.adapterPosition].description,
+                                    null, //TODO: image
+                                    Date(),
+                                    null    //TODO: expiration date
+                                )
+                                )
                                 val currentActivity = view.context as Activity
                                 currentActivity.setResult(RESULT_OK, Intent())
                                 currentActivity.finish()
@@ -69,6 +80,7 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                             { statusCode, err ->
                                 val currentActivity = view.context as Activity
                                 if (statusCode == 401) {
+                                    Log.e("pippo", err)
                                     currentActivity.setResult(ResultCode.EXPIRED_TOKEN, Intent())
                                     currentActivity.finish()
                                 } else {
@@ -79,16 +91,6 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                         )
                     })
                     .show()
-                DbSingleton.getInstance(view.context).insertItems(Item(
-                    0,
-                    products[this.adapterPosition].barcode,
-                    products[this.adapterPosition].name,
-                    products[this.adapterPosition].description,
-                    null, //TODO: image
-                    Date(),
-                    null    //TODO: expiration date
-                )
-                )
             }
         }
     }

@@ -48,18 +48,10 @@ class DbSingleton(context: Context) {
     }
 
     fun insertItems(vararg items: Item) {
-        runBlocking {
-            launch {
-                itemDao.insertItems(*items)
-            }
-        }
+        itemDao.insertItems(*items)
     }
 
     fun deleteItems(vararg items: Item) {
-        runBlocking {
-            launch {
-                itemDao.deleteItems(*items)
-            }
-        }
+        itemDao.deleteItems(*items)
     }
 }
