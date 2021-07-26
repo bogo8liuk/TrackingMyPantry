@@ -20,6 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/circleButtonHeight"
         android:hint="Insert a barcode"
+        android:inputType="number"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toStartOf="@+id/cameraButton"
         app:layout_constraintStart_toStartOf="@+id/guideline12" />
