@@ -89,6 +89,7 @@ class HttpHandler() {
 
         fun serviceDescribeProduct(
             context: Context,
+            accessToken: String,
             sessionToken: String,
             name: String,
             description: String,
@@ -96,7 +97,7 @@ class HttpHandler() {
             successCallback: (JSONObject) -> Unit,
             errorCallback: (Int, String) -> Unit
         ) {
-            val req = JsonObjectRequest(
+            val req = object: JsonObjectRequest(
                 Request.Method.POST,
                 "$DOMAIN$PRODUCT_PATH",
                 JSONObject(
@@ -111,7 +112,13 @@ class HttpHandler() {
                     err.networkResponse.statusCode,
                     JSONObject(String(err.networkResponse.data)).optString("message")
                 )}
-            )
+            ) {
+                override fun getHeaders(): MutableMap<String, String> {
+                    val headers = HashMap<String, String>(super.getHeaders())
+                    headers["Authorization"] = "Bearer $accessToken"
+                    return headers
+                }
+            }
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
         }
 
@@ -134,13 +141,14 @@ class HttpHandler() {
 
         fun serviceVoteProduct(
             context: Context,
+            accessToken: String,
             sessionToken: String,
             rating: Int,
             id: String,
             successCallback: (JSONObject) -> Unit,
             errorCallback: (Int, String) -> Unit
         ) {
-            val req = JsonObjectRequest(
+            val req = object: JsonObjectRequest(
                 Request.Method.POST,
                 "$DOMAIN$VOTE_PATH",
                 JSONObject("{ \"token\": \"$sessionToken\", \"rating\": \"$rating\", \"productId\": \"$id\"}"),
@@ -149,7 +157,13 @@ class HttpHandler() {
                     err.networkResponse.statusCode,
                     JSONObject(String(err.networkResponse.data)).optString("message")
                 )}
-            )
+            ) {
+                override fun getHeaders(): MutableMap<String, String> {
+                    val headers = HashMap<String, String>(super.getHeaders())
+                    headers["Authorization"] = "Bearer $accessToken"
+                    return headers
+                }
+            }
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
         }
     }

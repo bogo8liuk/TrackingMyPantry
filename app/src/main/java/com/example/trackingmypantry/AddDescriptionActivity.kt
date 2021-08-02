@@ -28,6 +28,7 @@ class AddDescriptionActivity : AppCompatActivity() {
     private val send = { barcode: String ->
         HttpHandler.serviceDescribeProduct(
             this,
+            TokenHandler.getToken(this, TokenType.ACCESS),
             TokenHandler.getToken(this, TokenType.SESSION),
             this.nameEditText.text.toString(),
             this.descEditText.text.toString(),

@@ -59,6 +59,7 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                     .setPositiveButton(R.string.send, DialogInterface.OnClickListener { _, _ ->
                         HttpHandler.serviceVoteProduct(
                             view.context,
+                            TokenHandler.getToken(view.context, TokenType.ACCESS),
                             TokenHandler.getToken(view.context, TokenType.SESSION),
                             ratePicker.value,
                             products[this.adapterPosition].id,
@@ -80,7 +81,7 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                             { statusCode, err ->
                                 val currentActivity = view.context as Activity
                                 if (statusCode == 401) {
-                                    Log.e("pippo", err)
+                                    Log.e("pippo", err) //TODO
                                     currentActivity.setResult(ResultCode.EXPIRED_TOKEN, Intent())
                                     currentActivity.finish()
                                 } else {
