@@ -1,7 +1,6 @@
 package com.example.trackingmypantry.lib.net
 
 import android.content.Context
-import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
@@ -151,7 +150,7 @@ class HttpHandler() {
             val req = object: JsonObjectRequest(
                 Request.Method.POST,
                 "$DOMAIN$VOTE_PATH",
-                JSONObject("{ \"token\": \"$sessionToken\", \"rating\": \"$rating\", \"productId\": \"$id\"}"),
+                JSONObject("{ \"token\": \"$sessionToken\", \"rating\": $rating, \"productId\": \"$id\" }"),
                 { res -> successCallback(res) },
                 { err -> errorCallback(
                     err.networkResponse.statusCode,
