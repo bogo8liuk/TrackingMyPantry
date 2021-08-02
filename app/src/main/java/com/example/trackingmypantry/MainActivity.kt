@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                 // do nothing
             }
 
-            ResultCode.NETWORK_ERR -> {
+            ResultCode.NETWORK_ERR, ResultCode.INVALID_SESSION_TOKEN -> {
                 Utils.toastShow(this, "Network failure")
             }
 

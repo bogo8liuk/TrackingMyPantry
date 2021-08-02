@@ -9,5 +9,6 @@ class ResultCode {
         const val NETWORK_ERR = 2
         const val EXISTENT_USER = 3
         const val EXPIRED_TOKEN = 4
+        const val INVALID_SESSION_TOKEN = 5
     }
 }

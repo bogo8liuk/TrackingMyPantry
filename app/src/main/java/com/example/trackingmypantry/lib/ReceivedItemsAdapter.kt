@@ -81,8 +81,10 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                             { statusCode, err ->
                                 val currentActivity = view.context as Activity
                                 if (statusCode == 401) {
-                                    Log.e("pippo", err) //TODO
                                     currentActivity.setResult(ResultCode.EXPIRED_TOKEN, Intent())
+                                    currentActivity.finish()
+                                } else if (statusCode == 403) {
+                                    currentActivity.setResult(ResultCode.INVALID_SESSION_TOKEN, Intent())
                                     currentActivity.finish()
                                 } else {
                                     currentActivity.setResult(ResultCode.NETWORK_ERR, Intent())

@@ -52,6 +52,9 @@ class AddDescriptionActivity : AppCompatActivity() {
                 if (statusCode == 401) {
                     this.setResult(ResultCode.EXPIRED_TOKEN, Intent())
                     this.finish()
+                } else if (statusCode == 403) {
+                    this.setResult(ResultCode.INVALID_SESSION_TOKEN, Intent())
+                    this.finish()
                 } else {
                     this.setResult(ResultCode.NETWORK_ERR, Intent())
                     this.finish()
