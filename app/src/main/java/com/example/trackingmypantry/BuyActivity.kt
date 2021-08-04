@@ -46,12 +46,14 @@ class BuyActivity() : AppCompatActivity() {
         this.recyclerView.adapter = ReceivedItemsAdapter(arrayOf<Product>())    // To avoid layout skipping
         this.recyclerView.layoutManager = LinearLayoutManager(this)
 
-        this.newProdButton.setOnClickListener {
-            this.addDescLauncher.launch(Intent(this, AddDescriptionActivity::class.java))
-        }
-
         this.barcode = this.intent.extras?.get("barcode") as String
         this.accessToken = TokenHandler.getToken(this, TokenType.ACCESS)
+
+        this.newProdButton.setOnClickListener {
+            val intent = Intent(this, AddDescriptionActivity::class.java)
+            intent.putExtra("barcode", this.barcode)
+            this.addDescLauncher.launch(intent)
+        }
 
         val model: ReceivedItemsViewModel by viewModels {
             ReceivedItemsViewModelFactory(this.application, this.barcode, this.accessToken)
