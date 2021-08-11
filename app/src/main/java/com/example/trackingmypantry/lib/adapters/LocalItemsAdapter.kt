@@ -1,4 +1,4 @@
-package com.example.trackingmypantry.lib
+package com.example.trackingmypantry.lib.adapters
 
 import android.content.DialogInterface
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R
 import com.example.trackingmypantry.db.entities.Item
+import com.example.trackingmypantry.lib.DbSingleton
 import java.util.*
 
 class LocalItemsAdapter(private val items: Array<Item>):
@@ -77,7 +78,7 @@ class LocalItemsAdapter(private val items: Array<Item>):
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: LocalItemsAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.nameButton.text = items[position].name
         holder.nameExpandedButton.text = items[position].name
         holder.descText.text = items[position].description

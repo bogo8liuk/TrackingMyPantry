@@ -1,10 +1,9 @@
-package com.example.trackingmypantry.lib
+package com.example.trackingmypantry.lib.adapters
 
 import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.DialogInterface
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,9 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R
 import com.example.trackingmypantry.db.entities.Item
+import com.example.trackingmypantry.lib.DbSingleton
+import com.example.trackingmypantry.lib.TokenHandler
+import com.example.trackingmypantry.lib.TokenType
 import com.example.trackingmypantry.lib.data.Product
 import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.net.ResultCode
