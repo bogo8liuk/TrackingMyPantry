@@ -29,10 +29,10 @@ class BarcodeScannerActivity : CameraActivity() {
                     .build()
                     .also {
                         it.setAnalyzer(cameraExecutor, BarcodeAnalyzer({ barcode ->
-
+                            //TODO
                         },
                         {
-
+                            //TODO
                         }))
                     }
                 cameraProvider.bindToLifecycle(this, cameraSelector, preview)

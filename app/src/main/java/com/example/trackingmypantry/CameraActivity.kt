@@ -18,7 +18,8 @@ abstract class CameraActivity() : AppCompatActivity() {
 
         this.takePhotoButton = this.findViewById(R.id.takePhotoButton)
 
-        if (!imageCapturing) {  //TODO: pass an extra in an intent
+        val extras = this.intent.extras
+        if (!(extras!!["imageCapturing"] as Boolean)) {
             this.takePhotoButton.visibility = android.view.View.GONE
         }
         this.takePhotoButton.setOnClickListener {

@@ -116,6 +116,12 @@ class MainActivity : AppCompatActivity() {
             this.startActivity(Intent(this, LocalItemsActivity::class.java))
         }
 
+        this.cameraButton.setOnClickListener {
+            var intent = Intent(this, BarcodeScannerActivity::class.java)
+            intent.putExtra("imageCapturing", false)
+            this.startActivity(intent)
+        }
+
         this.logoutButton.setOnClickListener {
             TokenHandler.removeToken(this, TokenType.ACCESS)
 
