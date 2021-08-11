@@ -4,7 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-feature android:name="android.hardware.camera.any" />
+
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -14,8 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrackingMyPantry">
-        <activity android:name=".CameraActivity"></activity>
-        <!-- TMP activities -->
+         <!-- TMP activities -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,6 +29,9 @@
         <activity android:name=".BuyActivity" />
         <activity android:name=".AddDescriptionActivity" />
         <activity android:name=".LocalItemsActivity" />
+        <activity android:name=".BarcodeScannerActivity"></activity>
+        <activity android:name=".CameraActivity" />
+
     </application>
 
 </manifest>

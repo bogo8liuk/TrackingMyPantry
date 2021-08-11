@@ -8,7 +8,7 @@ import androidx.appcompat.widget.AppCompatButton
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class CameraActivity(private val imageCapturing: Boolean) : AppCompatActivity() {
+abstract class CameraActivity() : AppCompatActivity() {
     protected lateinit var takePhotoButton: AppCompatButton
     protected lateinit var cameraExecutor: ExecutorService
 
@@ -18,7 +18,7 @@ class CameraActivity(private val imageCapturing: Boolean) : AppCompatActivity() 
 
         this.takePhotoButton = this.findViewById(R.id.takePhotoButton)
 
-        if (!imageCapturing) {
+        if (!imageCapturing) {  //TODO: pass an extra in an intent
             this.takePhotoButton.visibility = android.view.View.GONE
         }
         this.takePhotoButton.setOnClickListener {
@@ -31,6 +31,8 @@ class CameraActivity(private val imageCapturing: Boolean) : AppCompatActivity() 
     protected fun cameraPermissionGranted(): Boolean {
         return this.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
     }
+
+    abstract fun startCamera()
 
     override fun onDestroy() {
         super.onDestroy()
