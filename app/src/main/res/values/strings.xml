@@ -21,6 +21,7 @@
     <string name="rate1">Set a rate for</string>
     <string name="send">Send</string>
     <string name="barcode">Barcode</string>
+    <string name="barcode1">Scanned barcodes:</string>
     <string name="name">Name</string>
     <string name="logout">Logout</string>
     <string name="product">New product</string>
