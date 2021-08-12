@@ -37,7 +37,7 @@ abstract class CameraActivity() : AppCompatActivity() {
         return this.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
     }
 
-    abstract fun startCamera()
+    protected abstract fun startCamera()
 
     override fun onDestroy() {
         super.onDestroy()

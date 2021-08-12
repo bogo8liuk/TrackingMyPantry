@@ -1,7 +1,9 @@
 package com.example.trackingmypantry
 
+import android.content.Intent
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -10,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.lib.BarcodeAnalyzer
+import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.ScannedBarcodesAdapter
 import com.google.mlkit.vision.barcode.Barcode
 import kotlinx.android.synthetic.main.activity_camera.*
@@ -19,6 +22,7 @@ class BarcodeScannerActivity : CameraActivity() {
     private lateinit var barcodesText: TextView
     private lateinit var selectButton: AppCompatButton
     private lateinit var retryButton: AppCompatButton
+    private lateinit var homeButton: AppCompatImageButton
 
     private fun setContentBarcodes(barcodes: List<Barcode>?) {
         this.setContentView(R.layout.select_barcode)
@@ -26,6 +30,7 @@ class BarcodeScannerActivity : CameraActivity() {
         this.recyclerView = this.findViewById(R.id.scannedBarcodesRecView)
         this.selectButton = this.findViewById(R.id.selectBarcodeButton)
         this.retryButton = this.findViewById(R.id.retryScanButton)
+        this.homeButton = this.findViewById(R.id.homeButton)
 
         this.recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -48,6 +53,26 @@ class BarcodeScannerActivity : CameraActivity() {
         } else {
             this.barcodesText.text = "No scanned barcodes, please retry"
             this.recyclerView.adapter = ScannedBarcodesAdapter(arrayOf<String>())
+        }
+
+        this.selectButton.setOnClickListener {
+            var checkedBarcode = (this.recyclerView.adapter as ScannedBarcodesAdapter).getCheckedBarcode()
+
+            if (checkedBarcode != null) {
+                var intent = Intent()
+                intent.putExtra("barcode", checkedBarcode)
+            } else {
+                Utils.toastShow(this, "No barcode selected")
+            }
+        }
+
+        this.retryButton.setOnClickListener {
+            this.setContentCamera()
+        }
+
+        this.homeButton.setOnClickListener {
+            this.setResult(RESULT_CANCELED, Intent())
+            this.finish()
         }
     }
 
