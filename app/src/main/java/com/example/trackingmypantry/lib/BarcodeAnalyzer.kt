@@ -3,10 +3,11 @@ package com.example.trackingmypantry.lib
 import android.annotation.SuppressLint
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
+import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 
-class BarcodeAnalyzer(private val successListener: (barcode: String) -> Unit, private val errListener: () -> Unit): ImageAnalysis.Analyzer {
+class BarcodeAnalyzer(private val successListener: (barcodes: List<Barcode>?) -> Unit, private val errListener: () -> Unit): ImageAnalysis.Analyzer {
     private val scanner = BarcodeScanning.getClient()
 
     @SuppressLint("UnsafeOptInUsageError")
@@ -18,9 +19,7 @@ class BarcodeAnalyzer(private val successListener: (barcode: String) -> Unit, pr
 
             scanner.process(image)
                 .addOnSuccessListener { barcodes ->
-                    for (barcode in barcodes) {
-                        this.successListener(barcode.rawValue ?: "")
-                    }
+                    this.successListener(barcodes)
                 }
                 .addOnFailureListener {
                     this.errListener()

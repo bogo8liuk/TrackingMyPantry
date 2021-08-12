@@ -34,7 +34,7 @@
         app:layout_constraintGuide_percent="0.85" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/scannedBarcodesRecyclerView"
+        android:id="@+id/scannedBarcodesRecView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline25"
@@ -43,7 +43,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline24" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/scannedBarcodesDescText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/barcode1"

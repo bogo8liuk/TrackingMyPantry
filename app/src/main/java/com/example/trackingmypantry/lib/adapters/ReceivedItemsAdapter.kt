@@ -104,7 +104,8 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
         val view = LayoutInflater.from(parent.context).inflate(
             R.layout.received_item_row,
             parent,
-            false)
+            false
+        )
 
         return ViewHolder(view)
     }
