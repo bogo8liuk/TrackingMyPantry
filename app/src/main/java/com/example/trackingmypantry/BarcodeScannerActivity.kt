@@ -11,6 +11,11 @@ import com.example.trackingmypantry.lib.BarcodeAnalyzer
 import kotlinx.android.synthetic.main.activity_camera.*
 
 class BarcodeScannerActivity : CameraActivity() {
+    private fun setContentBarcodes() {
+        this.setContentView(R.layout.select_barcode)
+        //TODO: finish populating
+    }
+
     override fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 

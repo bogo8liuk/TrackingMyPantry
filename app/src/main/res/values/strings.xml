@@ -26,6 +26,8 @@
     <string name="logout">Logout</string>
     <string name="product">New product</string>
     <string name="delete">Delete</string>
+    <string name="retry">Retry</string>
+    <string name="select">Select</string>
     <!--Buttons texts-->
 
     <!--Hints-->

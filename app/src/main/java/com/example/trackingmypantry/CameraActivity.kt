@@ -12,8 +12,7 @@ abstract class CameraActivity() : AppCompatActivity() {
     protected lateinit var takePhotoButton: AppCompatButton
     protected lateinit var cameraExecutor: ExecutorService
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    protected fun setContentCamera() {
         this.setContentView(R.layout.activity_camera)
 
         this.takePhotoButton = this.findViewById(R.id.takePhotoButton)
@@ -27,6 +26,11 @@ abstract class CameraActivity() : AppCompatActivity() {
         }
 
         this.cameraExecutor = Executors.newSingleThreadExecutor()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        this.setContentCamera()
     }
 
     protected fun cameraPermissionGranted(): Boolean {
