@@ -72,6 +72,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+    private val barcodeScanLauncher = this.registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result ->
+        when (result.resultCode) {
+            RESULT_OK -> {
+                //TODO
+            }
+
+            RESULT_CANCELED -> {
+                //TODO
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
