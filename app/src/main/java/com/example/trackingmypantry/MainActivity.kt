@@ -76,11 +76,13 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()) { result ->
         when (result.resultCode) {
             RESULT_OK -> {
-                //TODO
+                var intent = Intent()
+                intent.putExtra("barcode", result.data!!.extras!!["barcode"] as String)
+                this.buyLauncher.launch(intent)
             }
 
             RESULT_CANCELED -> {
-                //TODO
+                // do nothing
             }
         }
     }
@@ -131,7 +133,7 @@ class MainActivity : AppCompatActivity() {
         this.cameraButton.setOnClickListener {
             var intent = Intent(this, BarcodeScannerActivity::class.java)
             intent.putExtra("imageCapturing", false)
-            this.startActivity(intent)
+            this.barcodeScanLauncher.launch(intent)
         }
 
         this.logoutButton.setOnClickListener {
