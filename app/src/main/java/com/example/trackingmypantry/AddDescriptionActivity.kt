@@ -41,7 +41,8 @@ class AddDescriptionActivity : AppCompatActivity() {
                     res.getString("description"),
                     null, // TODO: image
                     Date(),
-                    null    // TODO: expiration
+                    null,    // TODO: expiration
+                    null
                 )
                 DbSingleton.getInstance(this).insertItems(item)
 
