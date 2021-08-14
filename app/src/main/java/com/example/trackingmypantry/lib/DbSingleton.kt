@@ -1,6 +1,7 @@
 package com.example.trackingmypantry.lib
 
 import android.content.Context
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.room.Room
@@ -30,8 +31,9 @@ class DbSingleton(context: Context) {
     private val db = Room.databaseBuilder(
         context.applicationContext,
         Db::class.java,
-        "pantry database"
-    ).build()
+        "pantry-database"
+    ).fallbackToDestructiveMigration()
+    .build()
     private val itemDao = db.itemDao()
 
     /* From here, wrapper functions */
@@ -48,10 +50,18 @@ class DbSingleton(context: Context) {
     }
 
     fun insertItems(vararg items: Item) {
-        itemDao.insertItems(*items)
+        runBlocking {
+            launch {
+                itemDao.insertItems(*items)
+            }
+        }
     }
 
     fun deleteItems(vararg items: Item) {
-        itemDao.deleteItems(*items)
+        runBlocking {
+            launch {
+                itemDao.deleteItems(*items)
+            }
+        }
     }
 }

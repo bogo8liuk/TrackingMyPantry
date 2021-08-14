@@ -13,11 +13,11 @@ interface ItemDao {
     fun getItemsByBarcode(barcode: String): Flow<List<Item>>
 
     @Query("select * from Item where id like :id")
-    fun getItemById(id: Int): Flow<Item>
+    fun getItemById(id: Int): Flow<Item> //TODO: evaluate to change also normal query functions
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertItems(vararg items: Item)
+    suspend fun insertItems(vararg items: Item)
 
     @Delete
-    fun deleteItems(vararg items: Item)
+    suspend fun deleteItems(vararg items: Item)
 }

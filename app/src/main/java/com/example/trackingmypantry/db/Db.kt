@@ -10,7 +10,7 @@ import com.example.trackingmypantry.db.entities.Place
 import com.example.trackingmypantry.db.entities.PlaceSuggestion
 import com.example.trackingmypantry.db.entities.Suggestion
 
-@Database(entities = [Collection::class, Item::class, Place::class, Suggestion::class, PlaceSuggestion::class], version = 1)
+@Database(entities = [Collection::class, Item::class, Place::class, Suggestion::class, PlaceSuggestion::class], version = 2)
 @TypeConverters(Converter::class)
 abstract class Db: RoomDatabase() {
     abstract fun itemDao(): ItemDao
