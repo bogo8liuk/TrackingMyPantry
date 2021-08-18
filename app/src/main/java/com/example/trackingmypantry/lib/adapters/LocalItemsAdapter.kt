@@ -1,6 +1,7 @@
 package com.example.trackingmypantry.lib.adapters
 
 import android.content.DialogInterface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,19 +23,11 @@ class LocalItemsAdapter(private val items: Array<Item>):
         val nameExpandedButton = view.findViewById<AppCompatButton>(R.id.localItemNameExpandedButton)
         val deleteButton = view.findViewById<AppCompatButton>(R.id.deleteButton)
         val barcodeText = view.findViewById<TextView>(R.id.barcodeDescText)
-        val descText = view.findViewById<TextView>(R.id.localDescText)
+        val descText = view.findViewById<TextView>(R.id.descLocalItemText)
         val purchaseText = view.findViewById<TextView>(R.id.purchaseLocalItemText)
         val expirationText = view.findViewById<TextView>(R.id.expirationLocalItemText)
 
         init {
-            /* The check of expiration date is done here because in `onBindViewHolder()`,
-            * I cannot access the context. */
-            val expiration = items[this.adapterPosition].expiration_date
-            if (expiration != null && Date().before(expiration)) {  // Date() returns the allocation date
-                this.nameButton.background = ContextCompat.getDrawable(view.context, R.color.red)
-                this.nameExpandedButton.background = ContextCompat.getDrawable(view.context, R.color.red)
-            }
-
             this.nameButton.setOnClickListener {
                 this.nameButton.visibility = android.view.View.GONE
                 this.nameExpandedButton.visibility = android.view.View.VISIBLE
@@ -79,6 +72,14 @@ class LocalItemsAdapter(private val items: Array<Item>):
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        /* The check of expiration date is done here because in `onBindViewHolder()`,
+            * I cannot access the context. */
+        val expiration = items[position].expiration_date
+        if (expiration != null && Date().before(expiration)) {  // Date() returns the allocation date
+            holder.nameButton.background = ContextCompat.getDrawable(holder.barcodeText.context, R.color.red)
+            holder.nameExpandedButton.background = ContextCompat.getDrawable(holder.barcodeText.context, R.color.red)
+        }
+
         holder.nameButton.text = items[position].name
         holder.nameExpandedButton.text = items[position].name
         holder.descText.text = items[position].description
