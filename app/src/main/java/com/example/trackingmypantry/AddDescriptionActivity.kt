@@ -15,12 +15,14 @@ import com.example.trackingmypantry.lib.TokenType
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.net.ResultCode
+import java.text.SimpleDateFormat
 import java.util.*
 
 class AddDescriptionActivity : AppCompatActivity() {
     private lateinit var descText: TextView
     private lateinit var descEditText: EditText
     private lateinit var nameEditText: EditText
+    private lateinit var expirationEdiText: EditText
     private lateinit var sendButton: AppCompatButton
 
     /* Implementing here because there are two points where this function is called:
@@ -34,17 +36,35 @@ class AddDescriptionActivity : AppCompatActivity() {
             this.descEditText.text.toString(),
             barcode,
             { res ->
-                val item = Item(
-                    0,
-                    res.getString("barcode"),
-                    res.getString("name"),
-                    res.getString("description"),
-                    null, // TODO: image
-                    Date(),
-                    null,    // TODO: expiration
-                    null
-                )
-                DbSingleton.getInstance(this).insertItems(item)
+                val expiration = this.expirationEdiText.text
+
+                if (expiration == null) {
+                    DbSingleton.getInstance(this).insertItems(
+                        Item(
+                            0,
+                            res.getString("barcode"),
+                            res.getString("name"),
+                            res.getString("description"),
+                            null, // TODO: image
+                            Date(),
+                            null,
+                            null
+                        )
+                    )
+                } else {
+                    DbSingleton.getInstance(this).insertItems(
+                        Item(
+                            0,
+                            res.getString("barcode"),
+                            res.getString("name"),
+                            res.getString("description"),
+                            null, // TODO: image
+                            Date(),
+                            SimpleDateFormat("yyyy-MM-dd").parse(this.expirationEdiText.text.toString()),
+                            null
+                        )
+                    )
+                }
 
                 this.setResult(RESULT_OK, Intent())
                 this.finish()
@@ -71,6 +91,7 @@ class AddDescriptionActivity : AppCompatActivity() {
         this.descText = this.findViewById(R.id.descText)
         this.descEditText = this.findViewById(R.id.descEditText)
         this.nameEditText = this.findViewById(R.id.nameEditText)
+        this.expirationEdiText = this.findViewById(R.id.expirationEditText)
         this.sendButton = this.findViewById(R.id.sendButton)
 
         val extras = this.intent.extras
