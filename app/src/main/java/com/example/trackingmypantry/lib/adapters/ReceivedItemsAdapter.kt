@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -54,10 +55,13 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                 var ratePicker = NumberPicker(view.context)
                 ratePicker.minValue = MIN_RATE
                 ratePicker.maxValue = MAX_RATE
+                var datePicker = DatePicker(view.context)
+                datePicker.minDate = Date().time
                 AlertDialog.Builder(view.context)
                     .setTitle("Rate")
                     .setMessage("Select a rating for the product you chose")
                     .setView(ratePicker)
+                    .setView(datePicker)
                     .setNegativeButton(R.string.negative1, null)
                     .setPositiveButton(R.string.send, DialogInterface.OnClickListener { _, _ ->
                         HttpHandler.serviceVoteProduct(
@@ -67,16 +71,19 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                             ratePicker.value,
                             products[this.adapterPosition].id,
                             { res ->
-                                DbSingleton.getInstance(view.context).insertItems(Item(
-                                    0,
-                                    products[this.adapterPosition].barcode,
-                                    products[this.adapterPosition].name,
-                                    products[this.adapterPosition].description,
-                                    null, //TODO: image
-                                    Date(),
-                                    null,    //TODO: expiration date
-                                    null
-                                )
+                                DbSingleton.getInstance(view.context).insertItems(
+                                    Item(
+                                        0,
+                                        products[this.adapterPosition].barcode,
+                                        products[this.adapterPosition].name,
+                                        products[this.adapterPosition].description,
+                                        null, //TODO: image
+                                        Date(),
+                                        Calendar.getInstance().also {
+                                            it.set(datePicker.year, datePicker.month, datePicker.dayOfMonth) }
+                                            .time,
+                                        null
+                                    )
                                 )
                                 val currentActivity = view.context as Activity
                                 currentActivity.setResult(RESULT_OK, Intent())
