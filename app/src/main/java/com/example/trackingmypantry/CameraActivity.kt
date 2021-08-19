@@ -5,12 +5,14 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.app.ActivityCompat
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 abstract class CameraActivity() : AppCompatActivity() {
     protected lateinit var takePhotoButton: AppCompatButton
     protected lateinit var cameraExecutor: ExecutorService
+    protected val PERMISSION_REQUEST_CODE = 1
 
     protected fun setContentCamera() {
         this.setContentView(R.layout.activity_camera)
@@ -31,6 +33,20 @@ abstract class CameraActivity() : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.setContentCamera()
+
+        if (cameraPermissionGranted()) {
+            startCamera()
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), PERMISSION_REQUEST_CODE)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        //TODO: finish it
     }
 
     protected fun cameraPermissionGranted(): Boolean {
