@@ -37,7 +37,7 @@ class BarcodeScannerActivity : CameraActivity() {
         if (barcodes != null && barcodes.isNotEmpty()) {
             lateinit var list: MutableList<String>
             for (barcode in barcodes) {
-                if (barcode != null) {
+                if (barcode.rawValue != null) {
                     list.add(barcode.rawValue)
                 }
             }

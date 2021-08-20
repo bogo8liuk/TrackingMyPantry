@@ -6,7 +6,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.Utils
-import com.example.trackingmypantry.lib.net.ResultCode
+import com.example.trackingmypantry.lib.ResultCode
 
 class SignUpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

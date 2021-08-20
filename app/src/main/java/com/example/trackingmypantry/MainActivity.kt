@@ -10,7 +10,7 @@ import androidx.appcompat.widget.AppCompatImageButton
 import com.example.trackingmypantry.lib.TokenHandler
 import com.example.trackingmypantry.lib.TokenType
 import com.example.trackingmypantry.lib.Utils
-import com.example.trackingmypantry.lib.net.ResultCode
+import com.example.trackingmypantry.lib.ResultCode
 
 class MainActivity : AppCompatActivity() {
     // UI elements
@@ -83,6 +83,10 @@ class MainActivity : AppCompatActivity() {
 
             RESULT_CANCELED -> {
                 // do nothing
+            }
+
+            ResultCode.DENIED_PERMISSIONS -> {
+                Utils.toastShow(this, "Do not have permissions to do this operation")
             }
         }
     }

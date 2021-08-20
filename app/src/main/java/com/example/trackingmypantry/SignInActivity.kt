@@ -8,7 +8,7 @@ import com.example.trackingmypantry.lib.TokenHandler
 import com.example.trackingmypantry.lib.TokenType
 import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.Utils
-import com.example.trackingmypantry.lib.net.ResultCode
+import com.example.trackingmypantry.lib.ResultCode
 
 class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

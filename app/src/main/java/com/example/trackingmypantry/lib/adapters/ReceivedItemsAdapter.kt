@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.DialogInterface
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,7 @@ import com.example.trackingmypantry.lib.TokenHandler
 import com.example.trackingmypantry.lib.TokenType
 import com.example.trackingmypantry.lib.data.Product
 import com.example.trackingmypantry.lib.net.HttpHandler
-import com.example.trackingmypantry.lib.net.ResultCode
+import com.example.trackingmypantry.lib.ResultCode
 import java.util.*
 
 class ReceivedItemsAdapter(private val products: Array<Product>):
