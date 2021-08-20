@@ -25,9 +25,6 @@ abstract class CameraActivity() : AppCompatActivity() {
         if (!(extras!!["imageCapturing"] as Boolean)) {
             this.takePhotoButton.visibility = android.view.View.GONE
         }
-        this.takePhotoButton.setOnClickListener {
-            //TODO: call `takePhoto()`
-        }
 
         this.cameraExecutor = Executors.newSingleThreadExecutor()
     }

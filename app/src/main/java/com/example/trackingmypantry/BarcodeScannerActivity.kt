@@ -100,7 +100,7 @@ class BarcodeScannerActivity : CameraActivity() {
                             this.setContentBarcodes(null)
                         }))
                     }
-                cameraProvider.bindToLifecycle(this, cameraSelector, preview)
+                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis)
             } catch(exception: Exception) {
                 this.setContentBarcodes(null)
             }
