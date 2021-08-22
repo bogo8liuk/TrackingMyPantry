@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
@@ -18,12 +19,14 @@ import com.example.trackingmypantry.lib.ResultCode
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddDescriptionActivity : AppCompatActivity() {
+class AddDescriptionActivity : CameraLauncherActivity() {
     private lateinit var descText: TextView
     private lateinit var descEditText: EditText
     private lateinit var nameEditText: EditText
     private lateinit var expirationEdiText: EditText
     private lateinit var sendButton: AppCompatButton
+    private lateinit var photoButton: AppCompatButton
+    private lateinit var image: ImageView
 
     /* Implementing here because there are two points where this function is called:
     * avoiding boiler-plate code. */
@@ -93,6 +96,8 @@ class AddDescriptionActivity : AppCompatActivity() {
         this.nameEditText = this.findViewById(R.id.nameEditText)
         this.expirationEdiText = this.findViewById(R.id.expirationEditText)
         this.sendButton = this.findViewById(R.id.sendButton)
+        this.photoButton = this.findViewById(R.id.photoButton)
+        this.image = this.findViewById(R.id.productImage)
 
         val extras = this.intent.extras
 
@@ -112,5 +117,7 @@ class AddDescriptionActivity : AppCompatActivity() {
                 this.send(extras!!["barcode"] as String)
             }
         }
+
+        //TODO
     }
 }

@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
 
-class CameraLauncherActivity : AppCompatActivity() {
+open class CameraLauncherActivity : AppCompatActivity() {
     val IMAGE_CAPTURE_REQUEST = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
