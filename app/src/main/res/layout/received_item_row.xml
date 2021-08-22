@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:visibility="gone"
-        android:textColor="@color/black"/>
+        android:textColor="@color/white"/>
 
     <ImageView
         android:id="@+id/receivedItemImage"

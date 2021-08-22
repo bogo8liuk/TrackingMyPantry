@@ -9,8 +9,6 @@ import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
 
 open class CameraLauncherActivity : AppCompatActivity() {
-    val IMAGE_CAPTURE_REQUEST = 1
-
     protected var encodedImage: Bitmap? = null
         private set
 

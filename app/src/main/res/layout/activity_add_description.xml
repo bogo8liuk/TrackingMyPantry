@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddDescriptionActivity">
+    tools:context=".AddDescriptionActivity"
+    android:background="@color/black">
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sendButton"
@@ -34,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/describe"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="32sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/descEditText"
@@ -73,7 +74,7 @@
         android:id="@+id/setDescText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/name"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="32sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/nameEditText"
@@ -118,7 +119,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/date"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="32sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/expirationEditText"

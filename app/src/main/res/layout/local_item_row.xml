@@ -25,28 +25,28 @@
         android:id="@+id/descLocalItemText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:visibility="gone"/>
 
     <TextView
         android:id="@+id/barcodeDescText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:visibility="gone"/>
 
     <TextView
         android:id="@+id/purchaseLocalItemText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:visibility="gone"/>
 
     <TextView
         android:id="@+id/expirationLocalItemText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:visibility="gone"/>
 
     <androidx.appcompat.widget.AppCompatButton
