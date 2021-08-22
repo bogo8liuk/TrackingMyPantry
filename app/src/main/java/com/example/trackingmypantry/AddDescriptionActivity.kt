@@ -118,6 +118,12 @@ class AddDescriptionActivity : CameraLauncherActivity() {
             }
         }
 
-        //TODO
+        this.photoButton.setOnClickListener {
+            this.cameraLaunch({ bitmap ->  
+                image.setImageBitmap(bitmap)
+            }, {
+                Utils.toastShow(this, "Unable to take photos")
+            })
+        }
     }
 }

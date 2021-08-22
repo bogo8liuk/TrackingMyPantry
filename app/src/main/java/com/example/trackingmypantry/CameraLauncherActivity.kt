@@ -10,9 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 open class CameraLauncherActivity : AppCompatActivity() {
     val IMAGE_CAPTURE_REQUEST = 1
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    protected lateinit var encodedImage: Bitmap private set
 
     private val cameraLauncher = { success: (Bitmap) -> Unit, error: () -> Unit ->
         this.registerForActivityResult(
@@ -20,7 +18,9 @@ open class CameraLauncherActivity : AppCompatActivity() {
         ) { result ->
             when (result.resultCode) {
                 RESULT_OK -> {
-                    success(result.data!!.extras!!["data"] as Bitmap)
+                    val bitmap = result.data!!.extras!!["data"] as Bitmap
+                    this.encodedImage = bitmap
+                    success(bitmap)
                 }
 
                 else -> {
@@ -30,7 +30,7 @@ open class CameraLauncherActivity : AppCompatActivity() {
         }
     }
 
-    protected fun launch(success: (Bitmap) -> Unit, error: () -> Unit) {
+    protected fun cameraLaunch(success: (Bitmap) -> Unit, error: () -> Unit) {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         this.cameraLauncher(success, error).launch(intent)
     }
