@@ -48,7 +48,7 @@ class ReceivedItemsViewModel(app: Application, barcode: String, accessToken: Str
                     item.getString("name"),
                     item.getString("description"),
                     item.getString("barcode"),
-                    item.getString("img"),  // TODO : verify
+                    item.getString("img"),
                     item.getString("id")
                 )
             )

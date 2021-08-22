@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
+import android.widget.ImageView
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -15,12 +16,9 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R
 import com.example.trackingmypantry.db.entities.Item
-import com.example.trackingmypantry.lib.DbSingleton
-import com.example.trackingmypantry.lib.TokenHandler
-import com.example.trackingmypantry.lib.TokenType
+import com.example.trackingmypantry.lib.*
 import com.example.trackingmypantry.lib.data.Product
 import com.example.trackingmypantry.lib.net.HttpHandler
-import com.example.trackingmypantry.lib.ResultCode
 import java.util.*
 
 class ReceivedItemsAdapter(private val products: Array<Product>):
@@ -31,6 +29,7 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
         val nameExpandedButton = view.findViewById<AppCompatButton>(R.id.receivedItemNameExpandedButton)
         val descriptionTextView = view.findViewById<TextView>(R.id.receivedItemDescription)
         val chooseButton = view.findViewById<AppCompatButton>(R.id.receivedItemChooseButton)
+        val image = view.findViewById<ImageView>(R.id.receivedItemImage)
 
         private val MIN_RATE = 1
         private val MAX_RATE = 5
@@ -38,16 +37,18 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
         init {
             this.nameButton.setOnClickListener {
                 it.visibility = android.view.View.GONE
-                nameExpandedButton.visibility = android.view.View.VISIBLE
-                descriptionTextView.visibility = android.view.View.VISIBLE
-                chooseButton.visibility = android.view.View.VISIBLE
+                this.nameExpandedButton.visibility = android.view.View.VISIBLE
+                this.descriptionTextView.visibility = android.view.View.VISIBLE
+                this.chooseButton.visibility = android.view.View.VISIBLE
+                this.image.visibility = android.view.View.VISIBLE
             }
 
             this.nameExpandedButton.setOnClickListener {
                 it.visibility = android.view.View.GONE
-                nameButton.visibility = android.view.View.VISIBLE
-                descriptionTextView.visibility = android.view.View.GONE
-                chooseButton.visibility = android.view.View.GONE
+                this.nameButton.visibility = android.view.View.VISIBLE
+                this.descriptionTextView.visibility = android.view.View.GONE
+                this.chooseButton.visibility = android.view.View.GONE
+                this.image.visibility = android.view.View.GONE
             }
 
             this.chooseButton.setOnClickListener {
@@ -122,6 +123,10 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
         holder.nameButton.text = products[position].name
         holder.nameExpandedButton.text = products[position].name
         holder.descriptionTextView.text = products[position].description
+        val bitmap = Utils.base64ToBitmap(products[position].image)
+        if (bitmap != null) {
+            holder.image.setImageBitmap(bitmap)
+        }
     }
 
     override fun getItemCount(): Int {

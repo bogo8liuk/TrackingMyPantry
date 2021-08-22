@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/layout/activity_add_description.xml" value="0.29528985507246375" />
         <entry key="app/src/main/res/layout/activity_local_items.xml" value="0.35572916666666665" />
+        <entry key="app/src/main/res/layout/received_item_row.xml" value="0.35572916666666665" />
       </map>
     </option>
   </component>

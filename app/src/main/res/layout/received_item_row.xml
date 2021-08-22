@@ -29,6 +29,12 @@
         android:visibility="gone"
         android:textColor="@color/black"/>
 
+    <ImageView
+        android:id="@+id/receivedItemImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/receivedItemChooseButton"
         android:layout_width="match_parent"
