@@ -31,7 +31,7 @@
         <activity android:name=".LocalItemsActivity" />
         <activity android:name=".CameraActivity" />
         <activity android:name=".BarcodeScannerActivity" />
-        <activity android:name=".TakePictureActivity"/>
+        <activity android:name=".CameraLauncherActivity"/>
     </application>
 
 </manifest>
