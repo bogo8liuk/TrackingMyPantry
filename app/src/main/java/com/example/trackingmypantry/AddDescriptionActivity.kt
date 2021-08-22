@@ -40,6 +40,7 @@ class AddDescriptionActivity : CameraLauncherActivity() {
             barcode,
             { res ->
                 val expiration = this.expirationEdiText.text
+                val encoded = this.encodedImage?.let { Utils.bitmapToBase64(it) }
 
                 if (expiration == null) {
                     DbSingleton.getInstance(this).insertItems(
@@ -48,7 +49,7 @@ class AddDescriptionActivity : CameraLauncherActivity() {
                             res.getString("barcode"),
                             res.getString("name"),
                             res.getString("description"),
-                            null, // TODO: image
+                            encoded,
                             Date(),
                             null,
                             null
@@ -61,7 +62,7 @@ class AddDescriptionActivity : CameraLauncherActivity() {
                             res.getString("barcode"),
                             res.getString("name"),
                             res.getString("description"),
-                            null, // TODO: image
+                            encoded,
                             Date(),
                             SimpleDateFormat("yyyy-MM-dd").parse(this.expirationEdiText.text.toString()),
                             null

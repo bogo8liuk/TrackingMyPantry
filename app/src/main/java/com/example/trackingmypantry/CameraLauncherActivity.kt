@@ -10,7 +10,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 open class CameraLauncherActivity : AppCompatActivity() {
     val IMAGE_CAPTURE_REQUEST = 1
 
-    protected lateinit var encodedImage: Bitmap private set
+    protected var encodedImage: Bitmap? = null
+        private set
 
     private val cameraLauncher = { success: (Bitmap) -> Unit, error: () -> Unit ->
         this.registerForActivityResult(
