@@ -145,6 +145,7 @@
         android:id="@+id/photoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/lightblue_medium_corner_button"
         android:text="@string/picture"
         android:textColor="@color/white"

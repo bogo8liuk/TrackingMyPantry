@@ -123,7 +123,7 @@ class AddDescriptionActivity : CameraLauncherActivity() {
             this.cameraLaunch({ bitmap ->  
                 image.setImageBitmap(bitmap)
             }, {
-                Utils.toastShow(this, "Unable to take photos")
+                // do nothing
             })
         }
     }
