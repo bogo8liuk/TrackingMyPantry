@@ -33,7 +33,7 @@ class HttpHandler() {
             password: String,
             successCallback: (JSONObject) -> Unit,
             errorCallback: (Int, String) -> Unit) {
-            val req = object: JsonObjectRequest(
+            val req = JsonObjectRequest(
                 Request.Method.POST,
                 "$DOMAIN$AUTH_PATH",
                 JSONObject("{ \"email\": \"$email\", \"password\": \"$password\"}"),
@@ -42,9 +42,7 @@ class HttpHandler() {
                     err.networkResponse.statusCode,
                     JSONObject(String(err.networkResponse.data)).optString("message")
                 )}
-            ) {
-
-            }
+            )
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
         }
 

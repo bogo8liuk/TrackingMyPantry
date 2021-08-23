@@ -15,6 +15,16 @@ class CredentialsHandler {
             editor.putString(EMAIL, email).putString(PASSWORD, password).apply()
         }
 
+        fun getEmail(context: Context): String? {
+            val pref = context.getSharedPreferences(context.resources.getString(R.string.credentials), Context.MODE_PRIVATE)
+            return pref.getString(EMAIL, null)
+        }
+
+        fun getPassword(context: Context): String? {
+            val pref = context.getSharedPreferences(context.resources.getString(R.string.credentials), Context.MODE_PRIVATE)
+            return pref.getString(PASSWORD, null)
+        }
+
         fun clearCredentials(context: Context) {
             val pref = context.getSharedPreferences(context.resources.getString(R.string.credentials), Context.MODE_PRIVATE)
             val editor = pref.edit()

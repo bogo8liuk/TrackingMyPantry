@@ -20,7 +20,6 @@ class ReceivedItemsViewModel(app: Application, barcode: String, accessToken: Str
             HttpHandler.serviceGetProduct(
                 appContext,
                 barcode,
-                accessToken,
                 { res ->
                     try {
                         val jsonRes = JSONObject(res)

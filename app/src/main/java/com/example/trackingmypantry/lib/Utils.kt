@@ -5,8 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.widget.Toast
-import com.example.trackingmypantry.lib.data.Product
-import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
 
