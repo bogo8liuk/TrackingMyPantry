@@ -40,5 +40,6 @@
 
     <!--Shared prefs-->
     <string name="accessToken">Access</string>
+    <string name="credentials">Credentials</string>
     <!--Shared prefs-->
 </resources>
