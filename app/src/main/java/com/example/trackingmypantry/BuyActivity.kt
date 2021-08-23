@@ -12,8 +12,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.lib.adapters.ReceivedItemsAdapter
-import com.example.trackingmypantry.lib.TokenHandler
-import com.example.trackingmypantry.lib.TokenType
+import com.example.trackingmypantry.lib.credentials.TokenHandler
+import com.example.trackingmypantry.lib.credentials.TokenType
 import com.example.trackingmypantry.lib.data.*
 import com.example.trackingmypantry.lib.viewmodels.ReceivedItemsViewModel
 import com.example.trackingmypantry.lib.viewmodels.ReceivedItemsViewModelFactory

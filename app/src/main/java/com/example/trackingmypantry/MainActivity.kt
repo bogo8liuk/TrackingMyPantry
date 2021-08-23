@@ -7,8 +7,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
-import com.example.trackingmypantry.lib.TokenHandler
-import com.example.trackingmypantry.lib.TokenType
+import com.example.trackingmypantry.lib.credentials.TokenHandler
+import com.example.trackingmypantry.lib.credentials.TokenType
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.ResultCode
 

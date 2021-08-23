@@ -1,4 +1,4 @@
-package com.example.trackingmypantry.lib
+package com.example.trackingmypantry.lib.credentials
 
 import android.content.Context
 import com.example.trackingmypantry.R

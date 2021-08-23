@@ -2,7 +2,6 @@ package com.example.trackingmypantry
 
 import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
@@ -11,8 +10,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.lib.DbSingleton
-import com.example.trackingmypantry.lib.TokenHandler
-import com.example.trackingmypantry.lib.TokenType
+import com.example.trackingmypantry.lib.credentials.TokenHandler
+import com.example.trackingmypantry.lib.credentials.TokenType
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.ResultCode
