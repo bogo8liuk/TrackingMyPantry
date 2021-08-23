@@ -23,6 +23,7 @@ import java.util.*
 
 class ReceivedItemsAdapter(private val products: Array<Product>):
     RecyclerView.Adapter<ReceivedItemsAdapter.ViewHolder>() {
+    private var isExpanded = BooleanArray(products.size) { _ -> false }
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val nameButton = view.findViewById<AppCompatButton>(R.id.receivedItemNameButton)
@@ -35,22 +36,6 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
         private val MAX_RATE = 5
 
         init {
-            this.nameButton.setOnClickListener {
-                it.visibility = android.view.View.GONE
-                this.nameExpandedButton.visibility = android.view.View.VISIBLE
-                this.descriptionTextView.visibility = android.view.View.VISIBLE
-                this.chooseButton.visibility = android.view.View.VISIBLE
-                this.image.visibility = android.view.View.VISIBLE
-            }
-
-            this.nameExpandedButton.setOnClickListener {
-                it.visibility = android.view.View.GONE
-                this.nameButton.visibility = android.view.View.VISIBLE
-                this.descriptionTextView.visibility = android.view.View.GONE
-                this.chooseButton.visibility = android.view.View.GONE
-                this.image.visibility = android.view.View.GONE
-            }
-
             this.chooseButton.setOnClickListener {
                 var ratePicker = NumberPicker(view.context)
                 ratePicker.minValue = MIN_RATE
@@ -126,6 +111,29 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
         val bitmap = Utils.base64ToBitmap(products[position].image)
         if (bitmap != null) {
             holder.image.setImageBitmap(bitmap)
+        }
+        if (this.isExpanded[position]) {
+            holder.nameButton.visibility = android.view.View.GONE
+            holder.nameExpandedButton.visibility = android.view.View.VISIBLE
+            holder.descriptionTextView.visibility = android.view.View.VISIBLE
+            holder.chooseButton.visibility = android.view.View.VISIBLE
+            holder.image.visibility = android.view.View.VISIBLE
+        } else {
+            holder.nameExpandedButton.visibility = android.view.View.GONE
+            holder.nameButton.visibility = android.view.View.VISIBLE
+            holder.descriptionTextView.visibility = android.view.View.GONE
+            holder.chooseButton.visibility = android.view.View.GONE
+            holder.image.visibility = android.view.View.GONE
+        }
+
+        holder.nameButton.setOnClickListener {
+            this.isExpanded[position] = true
+            this.notifyItemChanged(position)
+        }
+
+        holder.nameExpandedButton.setOnClickListener {
+            this.isExpanded[position] = false
+            this.notifyItemChanged(position)
         }
     }
 
