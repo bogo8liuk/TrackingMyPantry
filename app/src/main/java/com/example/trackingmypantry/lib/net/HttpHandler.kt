@@ -4,9 +4,17 @@ import android.content.Context
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
+import com.example.trackingmypantry.lib.credentials.TokenHandler
+import com.example.trackingmypantry.lib.credentials.TokenType
 import org.json.JSONObject
 
 /* This offers the methods to make the requests to the web service. */
+/**
+ * The methods having a boolean returning type, have the following semantics:
+ * @return true if the http request is really carried out, false if the request is not
+ * carried out because of an inexistent access token. Call serviceRegister() to renew
+ * the access token.
+ */
 class HttpHandler() {
     companion object {
         private const val DOMAIN = "https://lam21.modron.network"
@@ -63,9 +71,13 @@ class HttpHandler() {
         fun serviceGetProduct(
             context: Context,
             barcode: String,
-            accessToken: String,
             successCallback: (String) -> Unit,
-            errorCallback: (Int, String) -> Unit) {
+            errorCallback: (Int, String) -> Unit): Boolean {
+            val accessToken = TokenHandler.getToken(context, TokenType.ACCESS)
+            if (accessToken == TokenHandler.INEXISTENT_TOKEN) {
+                return false
+            }
+
             /* object expression to override getHeaders() in order to add custom headers. */
             val req = object: StringRequest(
                 Request.Method.GET,
@@ -84,18 +96,23 @@ class HttpHandler() {
                 }
             }
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
+            return true
         }
 
         fun serviceDescribeProduct(
             context: Context,
-            accessToken: String,
-            sessionToken: String,
             name: String,
             description: String,
             barcode: String,
             successCallback: (JSONObject) -> Unit,
             errorCallback: (Int, String) -> Unit
-        ) {
+        ): Boolean {
+            val accessToken = TokenHandler.getToken(context, TokenType.ACCESS)
+            if (accessToken == TokenHandler.INEXISTENT_TOKEN) {
+                return false
+            }
+            val sessionToken = TokenHandler.getToken(context, TokenType.ACCESS)
+
             val req = object: JsonObjectRequest(
                 Request.Method.POST,
                 "$DOMAIN$PRODUCT_PATH",
@@ -119,6 +136,7 @@ class HttpHandler() {
                 }
             }
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
+            return true
         }
 
         fun serviceDeleteProduct(
@@ -140,13 +158,17 @@ class HttpHandler() {
 
         fun serviceVoteProduct(
             context: Context,
-            accessToken: String,
-            sessionToken: String,
             rating: Int,
             id: String,
             successCallback: (JSONObject) -> Unit,
             errorCallback: (Int, String) -> Unit
-        ) {
+        ): Boolean {
+            val accessToken = TokenHandler.getToken(context, TokenType.ACCESS)
+            if (accessToken == TokenHandler.INEXISTENT_TOKEN) {
+                return false
+            }
+            val sessionToken = TokenHandler.getToken(context, TokenType.ACCESS)
+
             val req = object: JsonObjectRequest(
                 Request.Method.POST,
                 "$DOMAIN$VOTE_PATH",
@@ -164,6 +186,7 @@ class HttpHandler() {
                 }
             }
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
+            return true
         }
     }
 }

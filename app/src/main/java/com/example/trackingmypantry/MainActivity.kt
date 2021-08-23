@@ -11,6 +11,7 @@ import com.example.trackingmypantry.lib.credentials.TokenHandler
 import com.example.trackingmypantry.lib.credentials.TokenType
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.ResultCode
+import com.example.trackingmypantry.lib.credentials.CredentialsHandler
 
 class MainActivity : AppCompatActivity() {
     // UI elements
@@ -148,5 +149,10 @@ class MainActivity : AppCompatActivity() {
             this.barcodeText.visibility = android.view.View.GONE
             this.logoutButton.visibility = android.view.View.GONE
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        CredentialsHandler.clearCredentials(this)
     }
 }

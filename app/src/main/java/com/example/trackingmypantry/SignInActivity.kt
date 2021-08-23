@@ -9,6 +9,7 @@ import com.example.trackingmypantry.lib.credentials.TokenType
 import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.ResultCode
+import com.example.trackingmypantry.lib.credentials.CredentialsHandler
 
 class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +43,7 @@ class SignInActivity : AppCompatActivity() {
                 HttpHandler.serviceAuthenticate(this, email, password,
                     { res ->
                         TokenHandler.setToken(this, TokenType.ACCESS, res.getString(HttpHandler.ACCESS_TOKEN_FIELD))
+                        CredentialsHandler.setCredentials(this, email, password)
                         val intent = Intent()
                         this.setResult(RESULT_OK, intent)
                         this.finish()
