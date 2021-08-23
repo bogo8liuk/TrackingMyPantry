@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.lib.adapters.LocalItemsAdapter
-import com.example.trackingmypantry.lib.viewModel.LocalItemsViewModel
-import com.example.trackingmypantry.lib.viewModel.LocalItemsViewModelFactory
+import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModel
+import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModelFactory
 
 class LocalItemsActivity : AppCompatActivity() {
     private lateinit var descriptionTextView: TextView

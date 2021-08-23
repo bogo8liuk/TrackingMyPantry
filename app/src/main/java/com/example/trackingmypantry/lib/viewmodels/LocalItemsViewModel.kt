@@ -1,9 +1,8 @@
-package com.example.trackingmypantry.lib.viewModel
+package com.example.trackingmypantry.lib.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.lib.DbSingleton
 

@@ -1,4 +1,4 @@
-package com.example.trackingmypantry.lib.viewModel
+package com.example.trackingmypantry.lib.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

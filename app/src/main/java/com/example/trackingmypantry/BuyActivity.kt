@@ -15,8 +15,8 @@ import com.example.trackingmypantry.lib.adapters.ReceivedItemsAdapter
 import com.example.trackingmypantry.lib.TokenHandler
 import com.example.trackingmypantry.lib.TokenType
 import com.example.trackingmypantry.lib.data.*
-import com.example.trackingmypantry.lib.viewModel.ReceivedItemsViewModel
-import com.example.trackingmypantry.lib.viewModel.ReceivedItemsViewModelFactory
+import com.example.trackingmypantry.lib.viewmodels.ReceivedItemsViewModel
+import com.example.trackingmypantry.lib.viewmodels.ReceivedItemsViewModelFactory
 
 class BuyActivity() : AppCompatActivity() {
     private lateinit var descriptionTextView: TextView
