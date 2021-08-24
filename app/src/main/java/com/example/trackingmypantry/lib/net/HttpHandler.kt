@@ -1,9 +1,12 @@
 package com.example.trackingmypantry.lib.net
 
 import android.content.Context
+import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
+import com.example.trackingmypantry.lib.Utils
+import com.example.trackingmypantry.lib.credentials.CredentialsHandler
 import com.example.trackingmypantry.lib.credentials.TokenHandler
 import com.example.trackingmypantry.lib.credentials.TokenType
 import org.json.JSONObject
@@ -70,12 +73,7 @@ class HttpHandler() {
             context: Context,
             barcode: String,
             successCallback: (String) -> Unit,
-            errorCallback: (Int, String) -> Unit): Boolean {
-            val accessToken = TokenHandler.getToken(context, TokenType.ACCESS)
-            if (accessToken == TokenHandler.INEXISTENT_TOKEN) {
-                return false
-            }
-
+            errorCallback: (Int, String) -> Unit) {
             /* object expression to override getHeaders() in order to add custom headers. */
             val req = object: StringRequest(
                 Request.Method.GET,
@@ -89,12 +87,12 @@ class HttpHandler() {
             ){
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = HashMap<String, String>(super.getHeaders())
+                    val accessToken = TokenHandler.getToken(context, TokenType.ACCESS, false)
                     headers["Authorization"] = "Bearer $accessToken"
                     return headers
                 }
             }
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
-            return true
         }
 
         fun serviceDescribeProduct(
@@ -105,11 +103,11 @@ class HttpHandler() {
             successCallback: (JSONObject) -> Unit,
             errorCallback: (Int, String) -> Unit
         ): Boolean {
-            val accessToken = TokenHandler.getToken(context, TokenType.ACCESS)
+            val accessToken = TokenHandler.getToken(context, TokenType.ACCESS, true)
             if (accessToken == TokenHandler.INEXISTENT_TOKEN) {
                 return false
             }
-            val sessionToken = TokenHandler.getToken(context, TokenType.ACCESS)
+            val sessionToken = TokenHandler.getToken(context, TokenType.SESSION, false)
 
             val req = object: JsonObjectRequest(
                 Request.Method.POST,
@@ -161,11 +159,11 @@ class HttpHandler() {
             successCallback: (JSONObject) -> Unit,
             errorCallback: (Int, String) -> Unit
         ): Boolean {
-            val accessToken = TokenHandler.getToken(context, TokenType.ACCESS)
+            val accessToken = TokenHandler.getToken(context, TokenType.ACCESS, true)
             if (accessToken == TokenHandler.INEXISTENT_TOKEN) {
                 return false
             }
-            val sessionToken = TokenHandler.getToken(context, TokenType.ACCESS)
+            val sessionToken = TokenHandler.getToken(context, TokenType.SESSION, false)
 
             val req = object: JsonObjectRequest(
                 Request.Method.POST,
@@ -185,6 +183,95 @@ class HttpHandler() {
             }
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
             return true
+        }
+
+        /**
+         * It calls one between serviceVoteProduct() and serviceDescribeProduct() and it handles
+         * the case the call returns false, calling serviceAuthenticate() and trying to recall
+         * the former method.
+         * @param diffParams is a json object that contains the parameters that are different between
+         * the two methods.
+         * @warning A json exception is not handled
+         */
+        fun retryOnFailure(
+            type: PostRequestType,
+            context: Context,
+            success: (JSONObject) -> Unit,
+            error: (Int, String) -> Unit,
+            diffParams: JSONObject) {
+            when (type) {
+                PostRequestType.VOTE -> {
+                    val rating = diffParams.getInt("rating")
+                    val id = diffParams.getString("id")
+                    if (!serviceVoteProduct(context, rating, id, success, error)) {
+                        val email = CredentialsHandler.getEmail(context)
+                        val password = CredentialsHandler.getPassword(context)
+
+                        if (email == null || password == null) {
+                            Log.e("Unexpected", "Credentials email and password should have already been set")
+                            Utils.toastShow(context, "Unable to vote the product")
+                        } else {
+                            serviceAuthenticate(
+                                context,
+                                email,
+                                password,
+                                { _ ->
+                                    if (!serviceVoteProduct(context, rating, id, success, error)) {
+                                        Log.e("Unexpected", "Post request returning false multiple times")
+                                        Utils.toastShow(context, "Unable to vote the product")
+                                    }
+                                },
+                                { _, _ ->
+                                    Log.e(
+                                        "Unexpected",
+                                        "Authentication should not have problems"
+                                    )
+                                    Utils.toastShow(context, "Unable to vote the product")
+                                }
+                            )
+                        }
+                    }
+                }
+
+                PostRequestType.DESCRIBE -> {
+                    val name = diffParams.getString("name")
+                    val description = diffParams.getString("description")
+                    val barcode = diffParams.getString("barcode")
+                    if (!serviceDescribeProduct(context, name, description, barcode, success, error)) {
+                        val email = CredentialsHandler.getEmail(context)
+                        val password = CredentialsHandler.getPassword(context)
+
+                        if (email == null || password == null) {
+                            Log.e("Unexpected", "Credentials email and password should have already been set")
+                            Utils.toastShow(context, "Unable to vote the product")
+                        } else {
+                            serviceAuthenticate(
+                                context,
+                                email,
+                                password,
+                                { _ ->
+                                    if (!serviceDescribeProduct(context, name, description, barcode, success, error)) {
+                                        Log.e("Unexpected", "Post request returning false multiple times")
+                                        Utils.toastShow(context, "Unable to vote the product")
+                                    }
+                                },
+                                { _, _ ->
+                                    Log.e(
+                                        "Unexpected",
+                                        "Authentication should not have problems"
+                                    )
+                                    Utils.toastShow(context, "Unable to vote the product")
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        enum class PostRequestType {
+            VOTE,
+            DESCRIBE
         }
     }
 }

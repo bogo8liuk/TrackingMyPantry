@@ -15,6 +15,7 @@ import com.example.trackingmypantry.lib.credentials.TokenType
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.ResultCode
+import com.example.trackingmypantry.lib.credentials.CredentialsHandler
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,10 +31,8 @@ class AddDescriptionActivity : CameraLauncherActivity() {
     /* Implementing here because there are two points where this function is called:
     * avoiding boiler-plate code. */
     private val send = { barcode: String ->
-        HttpHandler.serviceDescribeProduct(
+        if (!HttpHandler.serviceDescribeProduct(
             this,
-            TokenHandler.getToken(this, TokenType.ACCESS),
-            TokenHandler.getToken(this, TokenType.SESSION),
             this.nameEditText.text.toString(),
             this.descEditText.text.toString(),
             barcode,
@@ -85,6 +84,13 @@ class AddDescriptionActivity : CameraLauncherActivity() {
                 }
             }
         )
+        ) {
+            HttpHandler.serviceAuthenticate(
+                this,
+                CredentialsHandler.getEmail(this),
+
+            )
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

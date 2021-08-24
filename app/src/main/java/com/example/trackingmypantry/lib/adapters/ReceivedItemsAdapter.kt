@@ -23,6 +23,7 @@ import com.example.trackingmypantry.lib.credentials.TokenHandler
 import com.example.trackingmypantry.lib.credentials.TokenType
 import com.example.trackingmypantry.lib.data.Product
 import com.example.trackingmypantry.lib.net.HttpHandler
+import org.json.JSONObject
 import java.util.*
 
 class ReceivedItemsAdapter(private val products: Array<Product>):
@@ -39,49 +40,6 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
         private val MIN_RATE = 1
         private val MAX_RATE = 5
 
-        /**
-         * Function used just to reduce code, since a call to serviceVoteProduct() is long.
-         */
-        private fun vote(view: View, rating: Int, datePicker: DatePicker): Boolean {
-            return HttpHandler.serviceVoteProduct(
-                view.context,
-                rating,
-                products[this.adapterPosition].id,
-                { res ->
-                    DbSingleton.getInstance(view.context).insertItems(
-                        Item(
-                            0,
-                            products[this.adapterPosition].barcode,
-                            products[this.adapterPosition].name,
-                            products[this.adapterPosition].description,
-                            null, //TODO: image
-                            Date(),
-                            Calendar.getInstance().also {
-                                it.set(datePicker.year, datePicker.month, datePicker.dayOfMonth) }
-                                .time,
-                            null
-                        )
-                    )
-                    val currentActivity = view.context as Activity
-                    currentActivity.setResult(RESULT_OK, Intent())
-                    currentActivity.finish()
-                },
-                { statusCode, err ->
-                    val currentActivity = view.context as Activity
-                    if (statusCode == 401) {
-                        currentActivity.setResult(ResultCode.EXPIRED_TOKEN, Intent())
-                        currentActivity.finish()
-                    } else if (statusCode == 403) {
-                        currentActivity.setResult(ResultCode.INVALID_SESSION_TOKEN, Intent())
-                        currentActivity.finish()
-                    } else {
-                        currentActivity.setResult(ResultCode.NETWORK_ERR, Intent())
-                        currentActivity.finish()
-                    }
-                }
-            )
-        }
-
         init {
             this.chooseButton.setOnClickListener {
                 var ratePicker = NumberPicker(view.context)
@@ -96,28 +54,43 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                     .setView(datePicker)
                     .setNegativeButton(R.string.negative1, null)
                     .setPositiveButton(R.string.send, DialogInterface.OnClickListener { _, _ ->
-                        if (!this.vote(view, ratePicker.value, datePicker)) {
-                            val email = CredentialsHandler.getEmail(view.context)
-                            val password = CredentialsHandler.getPassword(view.context)
-
-                            if (email == null || password == null) {
-                                Log.e("Unexpected", "Credentials email and password should have already been set")
-                                Utils.toastShow(view.context, "Unable to vote the product")
-                            }
-
-                            HttpHandler.serviceAuthenticate(
-                                view.context,
-                                email!!,
-                                password!!,
-                                { res ->
-                                    this.vote(view, ratePicker.value, datePicker)
-                                },
-                                { statusCode, err ->
-                                    Log.e("Unexpected", "Authentication should not have problems")
-                                    Utils.toastShow(view.context, "Unable to vote the product")
+                        HttpHandler.retryOnFailure(
+                            HttpHandler.Companion.PostRequestType.VOTE,
+                            view.context,
+                            { res ->
+                                DbSingleton.getInstance(view.context).insertItems(
+                                    Item(
+                                        0,
+                                        products[this.adapterPosition].barcode,
+                                        products[this.adapterPosition].name,
+                                        products[this.adapterPosition].description,
+                                        null, //TODO: image
+                                        Date(),
+                                        Calendar.getInstance().also {
+                                            it.set(datePicker.year, datePicker.month, datePicker.dayOfMonth) }
+                                            .time,
+                                        null
+                                    )
+                                )
+                                val currentActivity = view.context as Activity
+                                currentActivity.setResult(RESULT_OK, Intent())
+                                currentActivity.finish()
+                            },
+                            { statusCode, err ->
+                                val currentActivity = view.context as Activity
+                                if (statusCode == 401) {
+                                    currentActivity.setResult(ResultCode.EXPIRED_TOKEN, Intent())
+                                    currentActivity.finish()
+                                } else if (statusCode == 403) {
+                                    currentActivity.setResult(ResultCode.INVALID_SESSION_TOKEN, Intent())
+                                    currentActivity.finish()
+                                } else {
+                                    currentActivity.setResult(ResultCode.NETWORK_ERR, Intent())
+                                    currentActivity.finish()
                                 }
-                            )
-                        }
+                            },
+                            JSONObject("{ \"rating\": ${ratePicker.value}, \"id\": \"${products[this.adapterPosition].id}\"}")
+                        )
                     })
                     .show()
             }
