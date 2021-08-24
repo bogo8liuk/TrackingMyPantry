@@ -268,10 +268,10 @@ class HttpHandler() {
                 }
             }
         }
+    }
 
-        enum class PostRequestType {
-            VOTE,
-            DESCRIBE
-        }
+    enum class PostRequestType {
+        VOTE,
+        DESCRIBE
     }
 }

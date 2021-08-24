@@ -16,6 +16,7 @@ import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.ResultCode
 import com.example.trackingmypantry.lib.credentials.CredentialsHandler
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -31,11 +32,9 @@ class AddDescriptionActivity : CameraLauncherActivity() {
     /* Implementing here because there are two points where this function is called:
     * avoiding boiler-plate code. */
     private val send = { barcode: String ->
-        if (!HttpHandler.serviceDescribeProduct(
+        HttpHandler.retryOnFailure(
+            HttpHandler.PostRequestType.DESCRIBE,
             this,
-            this.nameEditText.text.toString(),
-            this.descEditText.text.toString(),
-            barcode,
             { res ->
                 val expiration = this.expirationEdiText.text
                 val encoded = this.encodedImage?.let { Utils.bitmapToBase64(it) }
@@ -82,15 +81,11 @@ class AddDescriptionActivity : CameraLauncherActivity() {
                     this.setResult(ResultCode.NETWORK_ERR, Intent())
                     this.finish()
                 }
-            }
+            },
+            JSONObject("{ \"name\": \"${this.nameEditText.text.toString()}\", " +
+                    "\"description\": \"${this.descEditText.text.toString()}\", " +
+                    "\"barcode\": \"$barcode\" }")
         )
-        ) {
-            HttpHandler.serviceAuthenticate(
-                this,
-                CredentialsHandler.getEmail(this),
-
-            )
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

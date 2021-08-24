@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         this.searchButton = this.findViewById(R.id.searchButton)
         this.barcodeText = this.findViewById(R.id.barcodeText)
 
-        if (TokenHandler.getToken(this, TokenType.ACCESS) == TokenHandler.INEXISTENT_TOKEN) {
+        if (TokenHandler.getToken(this, TokenType.ACCESS, false) == TokenHandler.INEXISTENT_TOKEN) {
             this.searchButton.visibility = android.view.View.GONE
             this.cameraButton.visibility = android.view.View.GONE
             this.barcodeText.visibility = android.view.View.GONE
@@ -149,10 +149,5 @@ class MainActivity : AppCompatActivity() {
             this.barcodeText.visibility = android.view.View.GONE
             this.logoutButton.visibility = android.view.View.GONE
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        CredentialsHandler.clearCredentials(this)
     }
 }
