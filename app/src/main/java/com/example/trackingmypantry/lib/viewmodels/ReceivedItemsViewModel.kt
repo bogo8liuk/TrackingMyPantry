@@ -11,7 +11,7 @@ import com.example.trackingmypantry.lib.data.*
 import org.json.JSONException
 import org.json.JSONObject
 
-class ReceivedItemsViewModel(app: Application, barcode: String, accessToken: String): AndroidViewModel(app) {
+class ReceivedItemsViewModel(app: Application, barcode: String): AndroidViewModel(app) {
     /* No memory leaks: there is only one Application instance when app is running. */
     private val appContext = app.applicationContext
 

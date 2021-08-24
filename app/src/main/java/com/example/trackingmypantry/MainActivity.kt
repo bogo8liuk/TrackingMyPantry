@@ -150,4 +150,12 @@ class MainActivity : AppCompatActivity() {
             this.logoutButton.visibility = android.view.View.GONE
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        CredentialsHandler.clearCredentials(this)
+        TokenHandler.removeToken(this, TokenType.ACCESS)
+        TokenHandler.removeToken(this, TokenType.SESSION)
+    }
 }

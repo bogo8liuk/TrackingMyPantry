@@ -25,7 +25,6 @@ class BuyActivity() : AppCompatActivity() {
     private lateinit var newProdButton: AppCompatButton
 
     private lateinit var barcode: String
-    private lateinit var accessToken: String
 
     private val addDescLauncher = this.registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result ->
@@ -47,7 +46,6 @@ class BuyActivity() : AppCompatActivity() {
         this.recyclerView.layoutManager = LinearLayoutManager(this)
 
         this.barcode = this.intent.extras?.get("barcode") as String
-        this.accessToken = TokenHandler.getToken(this, TokenType.ACCESS)
 
         this.newProdButton.setOnClickListener {
             val intent = Intent(this, AddDescriptionActivity::class.java)
@@ -56,7 +54,7 @@ class BuyActivity() : AppCompatActivity() {
         }
 
         val model: ReceivedItemsViewModel by viewModels {
-            ReceivedItemsViewModelFactory(this.application, this.barcode, this.accessToken)
+            ReceivedItemsViewModelFactory(this.application, this.barcode)
         }
         model.getReceivedItems().observe(this, Observer<List<Product>> {
             if (it.any { product -> product.barcode == ERR_FIELD }) {
