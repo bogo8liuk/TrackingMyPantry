@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()) { result ->
         when (result.resultCode) {
             RESULT_OK -> {
+                this.logoutButton.visibility = android.view.View.VISIBLE
                 this.searchButton.visibility = android.view.View.VISIBLE
                 this.cameraButton.visibility = android.view.View.VISIBLE
                 this.barcodeText.visibility = android.view.View.VISIBLE
