@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/green_circle_button.xml" value="0.371875" />
         <entry key="app/src/main/res/layout/activity_add_description.xml" value="0.29528985507246375" />
         <entry key="app/src/main/res/layout/activity_buy.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/activity_local_items.xml" value="0.35572916666666665" />
@@ -10,6 +11,7 @@
         <entry key="app/src/main/res/layout/activity_sign.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/received_item_row.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/select_barcode.xml" value="0.35572916666666665" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.371875" />
       </map>
     </option>
   </component>

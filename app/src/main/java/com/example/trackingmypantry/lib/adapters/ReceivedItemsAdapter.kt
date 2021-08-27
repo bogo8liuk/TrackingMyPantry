@@ -35,23 +35,23 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
         val nameExpandedButton = view.findViewById<AppCompatButton>(R.id.receivedItemNameExpandedButton)
         val descriptionTextView = view.findViewById<TextView>(R.id.receivedItemDescription)
         val chooseButton = view.findViewById<AppCompatButton>(R.id.receivedItemChooseButton)
+        val setExpButton = view.findViewById<AppCompatButton>(R.id.receivedItemSetExpButton)
         val image = view.findViewById<ImageView>(R.id.receivedItemImage)
 
         private val MIN_RATE = 1
         private val MAX_RATE = 5
+
+        private var expDate: Date? = null
 
         init {
             this.chooseButton.setOnClickListener {
                 var ratePicker = NumberPicker(view.context)
                 ratePicker.minValue = MIN_RATE
                 ratePicker.maxValue = MAX_RATE
-                var datePicker = DatePicker(view.context)
-                datePicker.minDate = Date().time
                 AlertDialog.Builder(view.context)
                     .setTitle("Rate")
                     .setMessage("Select a rating for the product you chose")
                     .setView(ratePicker)
-                    .setView(datePicker)
                     .setNegativeButton(R.string.negative1, null)
                     .setPositiveButton(R.string.send, DialogInterface.OnClickListener { _, _ ->
                         HttpHandler.retryOnFailure(
@@ -66,9 +66,7 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                                         products[this.adapterPosition].description,
                                         null, //TODO: image
                                         Date(),
-                                        Calendar.getInstance().also {
-                                            it.set(datePicker.year, datePicker.month, datePicker.dayOfMonth) }
-                                            .time,
+                                        this.expDate,
                                         null
                                     )
                                 )
@@ -91,6 +89,23 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                             },
                             JSONObject("{ \"rating\": ${ratePicker.value}, \"id\": \"${products[this.adapterPosition].id}\"}")
                         )
+                    })
+                    .show()
+            }
+
+            this.setExpButton.setOnClickListener {
+                var datePicker = DatePicker(view.context)
+                datePicker.minDate = Date().time    // A product cannot be already expired
+                AlertDialog.Builder(view.context)
+                    .setTitle("Expiration date")
+                    .setMessage("Set an expiration date for the product")
+                    .setView(datePicker)
+                    .setNegativeButton(R.string.negative1, null)
+                    .setPositiveButton(R.string.set, DialogInterface.OnClickListener { _, _ ->
+                        this.expDate = Calendar.getInstance().also {
+                            it.set(datePicker.year, datePicker.month, datePicker.dayOfMonth) }
+                            .time
+                        this.chooseButton.callOnClick()
                     })
                     .show()
             }
@@ -120,12 +135,14 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
             holder.nameExpandedButton.visibility = android.view.View.VISIBLE
             holder.descriptionTextView.visibility = android.view.View.VISIBLE
             holder.chooseButton.visibility = android.view.View.VISIBLE
+            holder.setExpButton.visibility = android.view.View.VISIBLE
             holder.image.visibility = android.view.View.VISIBLE
         } else {
             holder.nameExpandedButton.visibility = android.view.View.GONE
             holder.nameButton.visibility = android.view.View.VISIBLE
             holder.descriptionTextView.visibility = android.view.View.GONE
             holder.chooseButton.visibility = android.view.View.GONE
+            holder.setExpButton.visibility = android.view.View.GONE
             holder.image.visibility = android.view.View.GONE
         }
 

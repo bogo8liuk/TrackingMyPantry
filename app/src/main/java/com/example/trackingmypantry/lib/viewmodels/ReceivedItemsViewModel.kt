@@ -17,12 +17,12 @@ class ReceivedItemsViewModel(app: Application, barcode: String): AndroidViewMode
 
     private val receivedItems: MutableLiveData<List<Product>> by lazy {
         MutableLiveData<List<Product>>().also {
-            HttpHandler.serviceGetProduct(
+            HttpHandler.retryOnFailure(
+                HttpHandler.PostRequestType.GET,
                 appContext,
-                barcode,
                 { res ->
                     try {
-                        val jsonRes = JSONObject(res)
+                        val jsonRes = JSONObject(res as String)
                         TokenHandler.setToken(this.appContext, TokenType.SESSION, jsonRes.getString("token"))
                         it.value = rawResToItem(jsonRes)
                     } catch (exception: JSONException) {
@@ -31,7 +31,9 @@ class ReceivedItemsViewModel(app: Application, barcode: String): AndroidViewMode
                 },
                 { statusCode, err ->
                     it.value = mutableListOf(specialErrProduct(statusCode, err))
-                })
+                },
+                JSONObject("{ \"barcode\": \"${barcode}\" }")
+            )
         }
     }
 

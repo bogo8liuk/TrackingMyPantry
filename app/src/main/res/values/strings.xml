@@ -28,7 +28,9 @@
     <string name="retry">Retry</string>
     <string name="select">Select</string>
     <string name="date">Expiration date</string>
+    <string name="date1">Set an expiration date and choose</string>
     <string name="picture">Take a photo</string>
+    <string name="set">Set</string>
     <!--Buttons texts-->
 
     <!--Hints-->

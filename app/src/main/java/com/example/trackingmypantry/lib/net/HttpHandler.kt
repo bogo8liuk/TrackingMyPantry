@@ -40,7 +40,10 @@ class HttpHandler() {
                 Request.Method.POST,
                 "$DOMAIN$AUTH_PATH",
                 JSONObject("{ \"email\": \"$email\", \"password\": \"$password\"}"),
-                { res -> successCallback(res) },
+                { res ->
+                    TokenHandler.setToken(context, TokenType.ACCESS, res.getString(ACCESS_TOKEN_FIELD))
+                    CredentialsHandler.setCredentials(context, email, password)
+                    successCallback(res) },
                 { err -> errorCallback(
                     err.networkResponse.statusCode,
                     JSONObject(String(err.networkResponse.data)).optString("message")
@@ -73,7 +76,12 @@ class HttpHandler() {
             context: Context,
             barcode: String,
             successCallback: (String) -> Unit,
-            errorCallback: (Int, String) -> Unit) {
+            errorCallback: (Int, String) -> Unit): Boolean {
+            val accessToken = TokenHandler.getToken(context, TokenType.ACCESS, false)
+            if (accessToken == TokenHandler.INEXISTENT_TOKEN) {
+                return false
+            }
+
             /* object expression to override getHeaders() in order to add custom headers. */
             val req = object: StringRequest(
                 Request.Method.GET,
@@ -87,12 +95,12 @@ class HttpHandler() {
             ){
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = HashMap<String, String>(super.getHeaders())
-                    val accessToken = TokenHandler.getToken(context, TokenType.ACCESS, false)
                     headers["Authorization"] = "Bearer $accessToken"
                     return headers
                 }
             }
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
+            return true
         }
 
         fun serviceDescribeProduct(
@@ -196,10 +204,42 @@ class HttpHandler() {
         fun retryOnFailure(
             type: PostRequestType,
             context: Context,
-            success: (JSONObject) -> Unit,
+            success: (Any) -> Unit,
             error: (Int, String) -> Unit,
             diffParams: JSONObject) {
             when (type) {
+                PostRequestType.GET -> {
+                    val barcode = diffParams.getString("barcode")
+                    if (!serviceGetProduct(context, barcode, success, error)) {
+                        val email = CredentialsHandler.getEmail(context)
+                        val password = CredentialsHandler.getPassword(context)
+
+                        if (email == null || password == null) {
+                            Log.e("Unexpected", "Credentials email and password should have already been set")
+                            Utils.toastShow(context, "Unable to get products")
+                        } else {
+                            serviceAuthenticate(
+                                context,
+                                email,
+                                password,
+                                { _ ->
+                                    if (!serviceGetProduct(context, barcode, success, error)) {
+                                        Log.e("Unexpected", "Get request returning false multiple times")
+                                        Utils.toastShow(context, "Unable to get products")
+                                    }
+                                },
+                                { _, _ ->
+                                    Log.e(
+                                        "Unexpected",
+                                        "Authentication should not have problems"
+                                    )
+                                    Utils.toastShow(context, "Unable to get products")
+                                }
+                            )
+                        }
+                    }
+                }
+
                 PostRequestType.VOTE -> {
                     val rating = diffParams.getInt("rating")
                     val id = diffParams.getString("id")
@@ -243,7 +283,7 @@ class HttpHandler() {
 
                         if (email == null || password == null) {
                             Log.e("Unexpected", "Credentials email and password should have already been set")
-                            Utils.toastShow(context, "Unable to vote the product")
+                            Utils.toastShow(context, "Unable to send the description")
                         } else {
                             serviceAuthenticate(
                                 context,
@@ -252,7 +292,7 @@ class HttpHandler() {
                                 { _ ->
                                     if (!serviceDescribeProduct(context, name, description, barcode, success, error)) {
                                         Log.e("Unexpected", "Post request returning false multiple times")
-                                        Utils.toastShow(context, "Unable to vote the product")
+                                        Utils.toastShow(context, "Unable to send the description")
                                     }
                                 },
                                 { _, _ ->
@@ -260,7 +300,7 @@ class HttpHandler() {
                                         "Unexpected",
                                         "Authentication should not have problems"
                                     )
-                                    Utils.toastShow(context, "Unable to vote the product")
+                                    Utils.toastShow(context, "Unable to send the description")
                                 }
                             )
                         }
@@ -271,6 +311,7 @@ class HttpHandler() {
     }
 
     enum class PostRequestType {
+        GET,
         VOTE,
         DESCRIBE
     }

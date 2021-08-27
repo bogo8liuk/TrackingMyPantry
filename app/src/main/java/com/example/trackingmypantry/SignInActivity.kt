@@ -42,8 +42,6 @@ class SignInActivity : AppCompatActivity() {
                 val password = passwordEditText.text.toString()
                 HttpHandler.serviceAuthenticate(this, email, password,
                     { res ->
-                        TokenHandler.setToken(this, TokenType.ACCESS, res.getString(HttpHandler.ACCESS_TOKEN_FIELD))
-                        CredentialsHandler.setCredentials(this, email, password)
                         val intent = Intent()
                         this.setResult(RESULT_OK, intent)
                         this.finish()

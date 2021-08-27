@@ -39,6 +39,7 @@ class AddDescriptionActivity : CameraLauncherActivity() {
                 val expiration = this.expirationEdiText.text
                 val encoded = this.encodedImage?.let { Utils.bitmapToBase64(it) }
 
+                res as JSONObject
                 if (expiration == null) {
                     DbSingleton.getInstance(this).insertItems(
                         Item(

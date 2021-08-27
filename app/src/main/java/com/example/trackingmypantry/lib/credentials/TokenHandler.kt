@@ -34,14 +34,17 @@ class TokenHandler() {
         }
 
         /**
-         * @warning: A call to this function with @param `type` as ACCESS remove the token
+         * @warning: A call to this function with @param `type` as ACCESS remove the token, if @param
+         * `remove` is true.
          */
         fun getToken(context: Context, type: TokenType, remove: Boolean): String {
             val pref = context.getSharedPreferences(context.resources.getString(R.string.accessToken), Context.MODE_PRIVATE)
             return if (type == TokenType.ACCESS) {
                 val token = pref.getString(ACCESS, INEXISTENT_TOKEN) ?: INEXISTENT_TOKEN
                 if (remove) {
-                    pref.edit().putString(ACCESS, INEXISTENT_TOKEN)
+                    val editor = pref.edit()
+                    editor.putString(ACCESS, INEXISTENT_TOKEN)
+                    editor.apply()
                 }
                 token
             } else
