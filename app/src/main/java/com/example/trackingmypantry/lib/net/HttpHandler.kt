@@ -194,21 +194,21 @@ class HttpHandler() {
         }
 
         /**
-         * It calls one between serviceVoteProduct() and serviceDescribeProduct() and it handles
-         * the case the call returns false, calling serviceAuthenticate() and trying to recall
-         * the former method.
+         * It calls one between serviceGetProducts(), serviceVoteProduct() and serviceDescribeProduct()
+         * and it handles the case the call returns false, calling serviceAuthenticate() and trying
+         * to recall the former method.
          * @param diffParams is a json object that contains the parameters that are different between
          * the two methods.
          * @warning A json exception is not handled
          */
         fun retryOnFailure(
-            type: PostRequestType,
+            type: RequestType,
             context: Context,
             success: (Any) -> Unit,
             error: (Int, String) -> Unit,
             diffParams: JSONObject) {
             when (type) {
-                PostRequestType.GET -> {
+                RequestType.GET -> {
                     val barcode = diffParams.getString("barcode")
                     if (!serviceGetProduct(context, barcode, success, error)) {
                         val email = CredentialsHandler.getEmail(context)
@@ -240,7 +240,7 @@ class HttpHandler() {
                     }
                 }
 
-                PostRequestType.VOTE -> {
+                RequestType.VOTE -> {
                     val rating = diffParams.getInt("rating")
                     val id = diffParams.getString("id")
                     if (!serviceVoteProduct(context, rating, id, success, error)) {
@@ -273,7 +273,7 @@ class HttpHandler() {
                     }
                 }
 
-                PostRequestType.DESCRIBE -> {
+                RequestType.DESCRIBE -> {
                     val name = diffParams.getString("name")
                     val description = diffParams.getString("description")
                     val barcode = diffParams.getString("barcode")
@@ -310,7 +310,7 @@ class HttpHandler() {
         }
     }
 
-    enum class PostRequestType {
+    enum class RequestType {
         GET,
         VOTE,
         DESCRIBE

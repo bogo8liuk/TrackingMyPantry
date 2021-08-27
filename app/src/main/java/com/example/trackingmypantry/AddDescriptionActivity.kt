@@ -33,7 +33,7 @@ class AddDescriptionActivity : CameraLauncherActivity() {
     * avoiding boiler-plate code. */
     private val send = { barcode: String ->
         HttpHandler.retryOnFailure(
-            HttpHandler.PostRequestType.DESCRIBE,
+            HttpHandler.RequestType.DESCRIBE,
             this,
             { res ->
                 val expiration = this.expirationEdiText.text

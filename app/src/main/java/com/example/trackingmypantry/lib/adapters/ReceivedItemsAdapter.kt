@@ -55,7 +55,7 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                     .setNegativeButton(R.string.negative1, null)
                     .setPositiveButton(R.string.send, DialogInterface.OnClickListener { _, _ ->
                         HttpHandler.retryOnFailure(
-                            HttpHandler.PostRequestType.VOTE,
+                            HttpHandler.RequestType.VOTE,
                             view.context,
                             { res ->
                                 DbSingleton.getInstance(view.context).insertItems(

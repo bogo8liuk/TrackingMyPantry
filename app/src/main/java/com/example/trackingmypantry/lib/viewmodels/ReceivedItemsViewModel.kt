@@ -18,7 +18,7 @@ class ReceivedItemsViewModel(app: Application, barcode: String): AndroidViewMode
     private val receivedItems: MutableLiveData<List<Product>> by lazy {
         MutableLiveData<List<Product>>().also {
             HttpHandler.retryOnFailure(
-                HttpHandler.PostRequestType.GET,
+                HttpHandler.RequestType.GET,
                 appContext,
                 { res ->
                     try {
