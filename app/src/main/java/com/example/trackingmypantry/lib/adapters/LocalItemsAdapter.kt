@@ -35,8 +35,7 @@ class LocalItemsAdapter(private val items: Array<Item>):
                     .setMessage("Are you sure you want to delete this item from your grocery?")
                     .setNegativeButton(R.string.negative, null)
                     .setPositiveButton(R.string.positive, DialogInterface.OnClickListener { _, _ ->
-                        // TODO: test if the buttons got deleted
-                        DbSingleton.getInstance(view.context).deleteItems(items[this.adapterPosition])
+                        // TODO: delete delete button
                     })
                     .show()
             }

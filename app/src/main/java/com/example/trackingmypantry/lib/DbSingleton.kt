@@ -56,12 +56,4 @@ class DbSingleton(context: Context) {
             }
         }
     }
-
-    fun deleteItems(vararg items: Item) {
-        runBlocking {
-            launch {
-                itemDao.deleteItems(*items)
-            }
-        }
-    }
 }
