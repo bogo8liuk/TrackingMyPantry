@@ -11,8 +11,8 @@ import com.example.trackingmypantry.lib.credentials.TokenHandler
 import com.example.trackingmypantry.lib.credentials.TokenType
 import org.json.JSONObject
 
-/* This offers the methods to make the requests to the web service. */
 /**
+ * This offers the methods to make the requests to the web service.
  * The methods having a boolean returning type, have the following semantics:
  * @return true if the http request is really carried out, false if the request is not
  * carried out because of an inexistent access token. Call serviceRegister() to renew
@@ -26,7 +26,7 @@ class HttpHandler() {
         private const val PRODUCT_PATH = "/products"
         private const val VOTE_PATH = "/votes"
 
-        private const val TESTING_MODE = true
+        private const val TESTING_MODE = false
 
         const val ACCESS_TOKEN_FIELD = "accessToken"
 
@@ -111,7 +111,7 @@ class HttpHandler() {
             successCallback: (JSONObject) -> Unit,
             errorCallback: (Int, String) -> Unit
         ): Boolean {
-            val accessToken = TokenHandler.getToken(context, TokenType.ACCESS, true)
+            val accessToken = TokenHandler.getToken(context, TokenType.ACCESS, false)
             if (accessToken == TokenHandler.INEXISTENT_TOKEN) {
                 return false
             }
@@ -125,13 +125,15 @@ class HttpHandler() {
                             "\"name\": \"$name\"," +
                             "\"description\": \"$description\"," +
                             "\"barcode\": \"$barcode\"," +
-                            "\"test\": \"$TESTING_MODE\" }"
+                            "\"test\": $TESTING_MODE }"
                 ),
                 { res -> successCallback(res) },
-                { err -> errorCallback(
-                    err.networkResponse.statusCode,
-                    JSONObject(String(err.networkResponse.data)).optString("message")
-                )}
+                { err ->
+                    errorCallback(
+                        err.networkResponse.statusCode,
+                        JSONObject(String(err.networkResponse.data)).optString("message")
+                    )
+                }
             ) {
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = HashMap<String, String>(super.getHeaders())
@@ -208,6 +210,8 @@ class HttpHandler() {
             success: (Any) -> Unit,
             error: (Int, String) -> Unit,
             diffParams: JSONObject) {
+            //TODO
+            Log.e("pippo", "here")
             when (type) {
                 RequestType.GET -> {
                     val barcode = diffParams.getString("barcode")
