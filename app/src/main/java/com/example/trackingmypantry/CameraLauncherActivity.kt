@@ -1,12 +1,15 @@
 package com.example.trackingmypantry
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.trackingmypantry.lib.PermissionEvaluer
 
 open class CameraLauncherActivity : AppCompatActivity() {
     protected var encodedImage: Bitmap? = null
@@ -32,9 +35,30 @@ open class CameraLauncherActivity : AppCompatActivity() {
         }
 
     protected fun cameraLaunch(success: (Bitmap) -> Unit, error: () -> Unit) {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         this.successCallback = success
         this.errorCallback = error
-        this.cameraLauncher.launch(intent)
+
+        if (PermissionEvaluer.got(this, Manifest.permission.CAMERA)) {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            this.cameraLauncher.launch(intent)
+        } else {
+            PermissionEvaluer.request(this, Manifest.permission.CAMERA)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            /* At this point, the two callbacks are already been set, because the request for camera
+             * permissions is carried out only in cameraLaunch() method that set the two callbacks.
+             */
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            this.cameraLauncher.launch(intent)
+        }
     }
 }

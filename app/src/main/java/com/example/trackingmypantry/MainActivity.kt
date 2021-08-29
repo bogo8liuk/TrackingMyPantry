@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             ResultCode.NETWORK_ERR, ResultCode.INVALID_SESSION_TOKEN -> {
-                Utils.toastShow(this, "Network failure")
+                Utils.toastShow(this, "It's not possible to carry out this action")
             }
 
             ResultCode.EXPIRED_TOKEN -> {

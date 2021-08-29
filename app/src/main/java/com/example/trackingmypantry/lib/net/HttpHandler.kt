@@ -196,7 +196,8 @@ class HttpHandler() {
         /**
          * It calls one between serviceGetProducts(), serviceVoteProduct() and serviceDescribeProduct()
          * and it handles the case the call returns false, calling serviceAuthenticate() and trying
-         * to recall the former method.
+         * to recall the former method. Thus, it provides a more robust way than boolean-returning
+         * methods to deal with the web service.
          * @param diffParams is a json object that contains the parameters that are different between
          * the two methods.
          * @warning A json exception is not handled

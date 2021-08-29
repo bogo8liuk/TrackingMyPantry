@@ -1,6 +1,7 @@
 package com.example.trackingmypantry
 
 import android.content.Intent
+import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
@@ -16,6 +17,8 @@ import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.ScannedBarcodesAdapter
 import com.google.mlkit.vision.barcode.Barcode
 import kotlinx.android.synthetic.main.activity_camera.*
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class BarcodeScannerActivity : CameraActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -23,6 +26,12 @@ class BarcodeScannerActivity : CameraActivity() {
     private lateinit var selectButton: AppCompatButton
     private lateinit var retryButton: AppCompatButton
     private lateinit var homeButton: AppCompatImageButton
+    private lateinit var cameraExecutor: ExecutorService
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        this.setContentCamera()
+    }
 
     private fun setContentBarcodes(barcodes: List<Barcode>?) {
         this.setContentView(R.layout.select_barcode)
@@ -76,6 +85,12 @@ class BarcodeScannerActivity : CameraActivity() {
         }
     }
 
+    private fun setContentCamera() {
+        this.setContentView(R.layout.activity_camera)
+
+        this.cameraExecutor = Executors.newSingleThreadExecutor()
+    }
+
     override fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
@@ -105,5 +120,10 @@ class BarcodeScannerActivity : CameraActivity() {
                 this.setContentBarcodes(null)
             }
         }, ContextCompat.getMainExecutor(this))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        this.cameraExecutor.shutdown()
     }
 }
