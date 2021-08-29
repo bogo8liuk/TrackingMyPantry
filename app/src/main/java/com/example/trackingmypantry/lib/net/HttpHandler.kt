@@ -27,7 +27,7 @@ class HttpHandler() {
         private const val PRODUCT_PATH = "/products"
         private const val VOTE_PATH = "/votes"
 
-        private const val TESTING_MODE = false
+        private const val TESTING_MODE = true
 
         const val ACCESS_TOKEN_FIELD = "accessToken"
 
@@ -109,6 +109,7 @@ class HttpHandler() {
             name: String,
             description: String,
             barcode: String,
+            base64: String?,
             successCallback: (JSONObject) -> Unit,
             errorCallback: (Int, String) -> Unit
         ): Boolean {
@@ -121,13 +122,23 @@ class HttpHandler() {
             val req = object: JsonObjectRequest(
                 Request.Method.POST,
                 "$DOMAIN$PRODUCT_PATH",
-                JSONObject(
+                if (base64 != null)
+                    JSONObject(
                     "{ \"token\": \"$sessionToken\", " +
-                            "\"name\": \"$name\"," +
-                            "\"description\": \"$description\"," +
-                            "\"barcode\": \"$barcode\"," +
+                            "\"name\": \"$name\", " +
+                            "\"description\": \"$description\", " +
+                            "\"barcode\": \"$barcode\", " +
+                            "\"img\": \"$base64\", " +
                             "\"test\": $TESTING_MODE }"
-                ),
+                    )
+                else
+                    JSONObject(
+                        "{ \"token\": \"$sessionToken\", " +
+                            "\"name\": \"$name\", " +
+                            "\"description\": \"$description\", " +
+                            "\"barcode\": \"$barcode\", " +
+                            "\"test\": $TESTING_MODE }"
+                    ),
                 { res -> successCallback(res) },
                 { err ->
                     errorCallback(
@@ -213,7 +224,7 @@ class HttpHandler() {
             id: String? = null,
             name: String? = null,
             description: String? = null,
-            image: Bitmap? = null) {
+            image: String? = null) {
             when (type) {
                 RequestType.GET -> {
                     if (!serviceGetProduct(context, barcode!!, success, error)) {
@@ -278,7 +289,7 @@ class HttpHandler() {
                 }
 
                 RequestType.DESCRIBE -> {
-                    if (!serviceDescribeProduct(context, name!!, description!!, barcode!!, success, error)) {
+                    if (!serviceDescribeProduct(context, name!!, description!!, barcode!!, image, success, error)) {
                         val email = CredentialsHandler.getEmail(context)
                         val password = CredentialsHandler.getPassword(context)
 
@@ -291,7 +302,7 @@ class HttpHandler() {
                                 email,
                                 password,
                                 { _ ->
-                                    if (!serviceDescribeProduct(context, name, description, barcode, success, error)) {
+                                    if (!serviceDescribeProduct(context, name, description, barcode, image, success, error)) {
                                         Log.e("Unexpected", "Post request returning false multiple times")
                                         Utils.toastShow(context, "Unable to send the description")
                                     }

@@ -32,12 +32,12 @@ class AddDescriptionActivity : CameraLauncherActivity() {
     /* Implementing here because there are two points where this function is called:
     * avoiding boiler-plate code. */
     private val send = { barcode: String ->
+        val encoded = this.encodedImage?.let { Utils.bitmapToBase64(it) }
         HttpHandler.retryOnFailure(
             HttpHandler.RequestType.DESCRIBE,
             this,
             { res ->
                 val expiration = this.expirationEdiText.text
-                val encoded = this.encodedImage?.let { Utils.bitmapToBase64(it) }
 
                 res as JSONObject
                 if (expiration == null) {
@@ -85,7 +85,8 @@ class AddDescriptionActivity : CameraLauncherActivity() {
             },
             name = this.nameEditText.text.toString(),
             description = this.descEditText.text.toString(),
-            barcode = barcode
+            barcode = barcode,
+            image = encoded
         )
     }
 
