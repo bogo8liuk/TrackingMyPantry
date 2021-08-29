@@ -32,7 +32,7 @@ class ReceivedItemsViewModel(app: Application, barcode: String): AndroidViewMode
                 { statusCode, err ->
                     it.value = mutableListOf(specialErrProduct(statusCode, err))
                 },
-                JSONObject("{ \"barcode\": \"${barcode}\" }")
+                barcode = barcode
             )
         }
     }

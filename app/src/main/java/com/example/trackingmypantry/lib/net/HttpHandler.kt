@@ -1,6 +1,7 @@
 package com.example.trackingmypantry.lib.net
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
@@ -200,22 +201,22 @@ class HttpHandler() {
          * and it handles the case the call returns false, calling serviceAuthenticate() and trying
          * to recall the former method. Thus, it provides a more robust way than boolean-returning
          * methods to deal with the web service.
-         * @param diffParams is a json object that contains the parameters that are different between
-         * the two methods.
-         * @warning A json exception is not handled
+         * @warning A null pointer exception is not handled.
          */
         fun retryOnFailure(
             type: RequestType,
             context: Context,
             success: (Any) -> Unit,
             error: (Int, String) -> Unit,
-            diffParams: JSONObject) {
-            //TODO
-            Log.e("pippo", "here")
+            barcode: String? = null,
+            rating: Int? = null,
+            id: String? = null,
+            name: String? = null,
+            description: String? = null,
+            image: Bitmap? = null) {
             when (type) {
                 RequestType.GET -> {
-                    val barcode = diffParams.getString("barcode")
-                    if (!serviceGetProduct(context, barcode, success, error)) {
+                    if (!serviceGetProduct(context, barcode!!, success, error)) {
                         val email = CredentialsHandler.getEmail(context)
                         val password = CredentialsHandler.getPassword(context)
 
@@ -246,9 +247,7 @@ class HttpHandler() {
                 }
 
                 RequestType.VOTE -> {
-                    val rating = diffParams.getInt("rating")
-                    val id = diffParams.getString("id")
-                    if (!serviceVoteProduct(context, rating, id, success, error)) {
+                    if (!serviceVoteProduct(context, rating!!, id!!, success, error)) {
                         val email = CredentialsHandler.getEmail(context)
                         val password = CredentialsHandler.getPassword(context)
 
@@ -279,10 +278,7 @@ class HttpHandler() {
                 }
 
                 RequestType.DESCRIBE -> {
-                    val name = diffParams.getString("name")
-                    val description = diffParams.getString("description")
-                    val barcode = diffParams.getString("barcode")
-                    if (!serviceDescribeProduct(context, name, description, barcode, success, error)) {
+                    if (!serviceDescribeProduct(context, name!!, description!!, barcode!!, success, error)) {
                         val email = CredentialsHandler.getEmail(context)
                         val password = CredentialsHandler.getPassword(context)
 

@@ -83,9 +83,9 @@ class AddDescriptionActivity : CameraLauncherActivity() {
                     this.finish()
                 }
             },
-            JSONObject("{ \"name\": \"${this.nameEditText.text.toString()}\", " +
-                    "\"description\": \"${this.descEditText.text.toString()}\", " +
-                    "\"barcode\": \"$barcode\" }")
+            name = this.nameEditText.text.toString(),
+            description = this.descEditText.text.toString(),
+            barcode = barcode
         )
     }
 

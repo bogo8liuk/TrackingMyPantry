@@ -87,7 +87,8 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                                     currentActivity.finish()
                                 }
                             },
-                            JSONObject("{ \"rating\": ${ratePicker.value}, \"id\": \"${products[this.adapterPosition].id}\"}")
+                            rating = ratePicker.value,
+                            id = products[this.adapterPosition].id
                         )
                     })
                     .show()
