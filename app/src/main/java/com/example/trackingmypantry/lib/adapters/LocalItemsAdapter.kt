@@ -17,6 +17,7 @@ import java.util.*
 
 class LocalItemsAdapter(private val items: Array<Item>):
     RecyclerView.Adapter<LocalItemsAdapter.ViewHolder>() {
+    private var isExpanded = BooleanArray(items.size) { _ -> false }
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val nameButton = view.findViewById<AppCompatButton>(R.id.localItemNameButton)
@@ -28,26 +29,6 @@ class LocalItemsAdapter(private val items: Array<Item>):
         val expirationText = view.findViewById<TextView>(R.id.expirationLocalItemText)
 
         init {
-            this.nameButton.setOnClickListener {
-                this.nameButton.visibility = android.view.View.GONE
-                this.nameExpandedButton.visibility = android.view.View.VISIBLE
-                this.deleteButton.visibility = android.view.View.VISIBLE
-                this.barcodeText.visibility = android.view.View.VISIBLE
-                this.descText.visibility = android.view.View.VISIBLE
-                this.purchaseText.visibility = android.view.View.VISIBLE
-                this.expirationText.visibility = android.view.View.VISIBLE
-            }
-
-            this.nameExpandedButton.setOnClickListener {
-                this.nameButton.visibility = android.view.View.VISIBLE
-                this.nameExpandedButton.visibility = android.view.View.GONE
-                this.deleteButton.visibility = android.view.View.GONE
-                this.barcodeText.visibility = android.view.View.GONE
-                this.descText.visibility = android.view.View.GONE
-                this.purchaseText.visibility = android.view.View.GONE
-                this.expirationText.visibility = android.view.View.GONE
-            }
-
             this.deleteButton.setOnClickListener {
                 AlertDialog.Builder(view.context)
                     .setTitle("Delete")
@@ -79,13 +60,40 @@ class LocalItemsAdapter(private val items: Array<Item>):
             holder.nameButton.background = ContextCompat.getDrawable(holder.barcodeText.context, R.color.red)
             holder.nameExpandedButton.background = ContextCompat.getDrawable(holder.barcodeText.context, R.color.red)
         }
-
         holder.nameButton.text = items[position].name
         holder.nameExpandedButton.text = items[position].name
         holder.descText.text = items[position].description
         holder.purchaseText.text = "Purchase date: " + items[position].purchase_date // TODO: safe?
         holder.expirationText.text = "Expiration date: " + items[position].expiration_date
         holder.barcodeText.text = "Barcode: " + items[position].barcode
+
+        if (this.isExpanded[position]) {
+            holder.nameButton.visibility = android.view.View.VISIBLE
+            holder.nameExpandedButton.visibility = android.view.View.GONE
+            holder.deleteButton.visibility = android.view.View.GONE
+            holder.barcodeText.visibility = android.view.View.GONE
+            holder.descText.visibility = android.view.View.GONE
+            holder.purchaseText.visibility = android.view.View.GONE
+            holder.expirationText.visibility = android.view.View.GONE
+        } else {
+            holder.nameButton.visibility = android.view.View.GONE
+            holder.nameExpandedButton.visibility = android.view.View.VISIBLE
+            holder.deleteButton.visibility = android.view.View.VISIBLE
+            holder.barcodeText.visibility = android.view.View.VISIBLE
+            holder.descText.visibility = android.view.View.VISIBLE
+            holder.purchaseText.visibility = android.view.View.VISIBLE
+            holder.expirationText.visibility = android.view.View.VISIBLE
+        }
+
+        holder.nameButton.setOnClickListener {
+            this.isExpanded[position] = true
+            this.notifyItemChanged(position)
+        }
+
+        holder.nameExpandedButton.setOnClickListener {
+            this.isExpanded[position] = false
+            this.notifyItemChanged(position)
+        }
     }
 
     override fun getItemCount(): Int {
