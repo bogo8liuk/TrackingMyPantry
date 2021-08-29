@@ -56,7 +56,7 @@ class LocalItemsAdapter(private val items: Array<Item>):
         /* The check of expiration date is done here because in `onBindViewHolder()`,
             * I cannot access the context. */
         val expiration = items[position].expiration_date
-        if (expiration != null && Date().before(expiration)) {  // Date() returns the allocation date
+        if (expiration != null && Date().after(expiration)) {  // Date() returns the allocation date
             holder.nameButton.background = ContextCompat.getDrawable(holder.barcodeText.context, R.color.red)
             holder.nameExpandedButton.background = ContextCompat.getDrawable(holder.barcodeText.context, R.color.red)
         }
