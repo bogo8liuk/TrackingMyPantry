@@ -207,6 +207,22 @@ class HttpHandler() {
             return true
         }
 
+        data class GetParams(
+            val barcode: String
+        )
+
+        data class VoteParams(
+            val rating: Int,
+            val id: String
+        )
+
+        data class DescribeParams(
+            val name: String,
+            val description: String,
+            val barcode: String,
+            val image: String?
+        )
+
         /**
          * It calls one between serviceGetProducts(), serviceVoteProduct() and serviceDescribeProduct()
          * and it handles the case the call returns false, calling serviceAuthenticate() and trying
@@ -219,6 +235,9 @@ class HttpHandler() {
             context: Context,
             success: (Any) -> Unit,
             error: (Int, String) -> Unit,
+            getParams: GetParams?,
+            voteParams: VoteParams?,
+            describeParams: DescribeParams?,    //TODO: finish to change the api
             barcode: String? = null,
             rating: Int? = null,
             id: String? = null,
