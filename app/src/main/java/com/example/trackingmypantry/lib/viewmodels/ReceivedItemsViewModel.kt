@@ -32,7 +32,7 @@ class ReceivedItemsViewModel(app: Application, barcode: String): AndroidViewMode
                 { statusCode, err ->
                     it.value = mutableListOf(specialErrProduct(statusCode, err))
                 },
-                barcode = barcode
+                getParams = HttpHandler.Companion.GetParams(barcode)
             )
         }
     }

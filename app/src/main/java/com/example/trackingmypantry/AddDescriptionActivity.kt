@@ -83,10 +83,12 @@ class AddDescriptionActivity : CameraLauncherActivity() {
                     this.finish()
                 }
             },
-            name = this.nameEditText.text.toString(),
-            description = this.descEditText.text.toString(),
-            barcode = barcode,
-            image = encoded
+            describeParams = HttpHandler.Companion.DescribeParams(
+                this.nameEditText.text.toString(),
+                this.descEditText.text.toString(),
+                barcode,
+                encoded
+            )
         )
     }
 

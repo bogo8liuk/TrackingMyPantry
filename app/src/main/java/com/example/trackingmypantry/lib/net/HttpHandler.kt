@@ -235,18 +235,15 @@ class HttpHandler() {
             context: Context,
             success: (Any) -> Unit,
             error: (Int, String) -> Unit,
-            getParams: GetParams?,
-            voteParams: VoteParams?,
-            describeParams: DescribeParams?,    //TODO: finish to change the api
-            barcode: String? = null,
-            rating: Int? = null,
-            id: String? = null,
-            name: String? = null,
-            description: String? = null,
-            image: String? = null) {
+            getParams: GetParams? = null,
+            voteParams: VoteParams? = null,
+            describeParams: DescribeParams? = null    //TODO: finish to change the api
+        ) {
             when (type) {
                 RequestType.GET -> {
-                    if (!serviceGetProduct(context, barcode!!, success, error)) {
+                    val barcode = getParams!!.barcode
+
+                    if (!serviceGetProduct(context, barcode, success, error)) {
                         val email = CredentialsHandler.getEmail(context)
                         val password = CredentialsHandler.getPassword(context)
 
@@ -277,7 +274,10 @@ class HttpHandler() {
                 }
 
                 RequestType.VOTE -> {
-                    if (!serviceVoteProduct(context, rating!!, id!!, success, error)) {
+                    val rating = voteParams!!.rating
+                    val id = voteParams.id
+
+                    if (!serviceVoteProduct(context, rating, id, success, error)) {
                         val email = CredentialsHandler.getEmail(context)
                         val password = CredentialsHandler.getPassword(context)
 
@@ -308,7 +308,12 @@ class HttpHandler() {
                 }
 
                 RequestType.DESCRIBE -> {
-                    if (!serviceDescribeProduct(context, name!!, description!!, barcode!!, image, success, error)) {
+                    val name = describeParams!!.name
+                    val description = describeParams.description
+                    val barcode = describeParams.barcode
+                    val image = describeParams.image
+
+                    if (!serviceDescribeProduct(context, name, description, barcode, image, success, error)) {
                         val email = CredentialsHandler.getEmail(context)
                         val password = CredentialsHandler.getPassword(context)
 

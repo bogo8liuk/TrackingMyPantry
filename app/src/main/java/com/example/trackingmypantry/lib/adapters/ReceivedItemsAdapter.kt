@@ -87,8 +87,10 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                                     currentActivity.finish()
                                 }
                             },
-                            rating = ratePicker.value,
-                            id = products[this.adapterPosition].id
+                            voteParams = HttpHandler.Companion.VoteParams(
+                                ratePicker.value,
+                                products[this.adapterPosition].id
+                            )
                         )
                     })
                     .show()
