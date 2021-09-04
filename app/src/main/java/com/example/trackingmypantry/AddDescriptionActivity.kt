@@ -3,6 +3,7 @@ package com.example.trackingmypantry
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -24,10 +25,12 @@ class AddDescriptionActivity : CameraLauncherActivity() {
     private lateinit var descText: TextView
     private lateinit var descEditText: EditText
     private lateinit var nameEditText: EditText
-    private lateinit var expirationEdiText: EditText
+    private lateinit var expirationButton: AppCompatButton
     private lateinit var sendButton: AppCompatButton
     private lateinit var photoButton: AppCompatButton
     private lateinit var image: ImageView
+
+    private var expirationDate: Date? = null
 
     /* Implementing here because there are two points where this function is called:
     * avoiding boiler-plate code. */
@@ -37,36 +40,19 @@ class AddDescriptionActivity : CameraLauncherActivity() {
             HttpHandler.RequestType.DESCRIBE,
             this,
             { res ->
-                val expiration = this.expirationEdiText.text
-
                 res as JSONObject
-                if (expiration == null) {
-                    DbSingleton.getInstance(this).insertItems(
-                        Item(
-                            0,
-                            res.getString("barcode"),
-                            res.getString("name"),
-                            res.getString("description"),
-                            encoded,
-                            Date(),
-                            null,
-                            null
-                        )
+                DbSingleton.getInstance(this).insertItems(
+                    Item(
+                        0,
+                        res.getString("barcode"),
+                        res.getString("name"),
+                        res.getString("description"),
+                        encoded,
+                        Date(),
+                        this.expirationDate,
+                        null
                     )
-                } else {
-                    DbSingleton.getInstance(this).insertItems(
-                        Item(
-                            0,
-                            res.getString("barcode"),
-                            res.getString("name"),
-                            res.getString("description"),
-                            encoded,
-                            Date(),
-                            SimpleDateFormat("yyyy-MM-dd").parse(this.expirationEdiText.text.toString()),
-                            null
-                        )
-                    )
-                }
+                )
 
                 this.setResult(RESULT_OK, Intent())
                 this.finish()
@@ -99,7 +85,7 @@ class AddDescriptionActivity : CameraLauncherActivity() {
         this.descText = this.findViewById(R.id.descText)
         this.descEditText = this.findViewById(R.id.descEditText)
         this.nameEditText = this.findViewById(R.id.nameEditText)
-        this.expirationEdiText = this.findViewById(R.id.expirationEditText)
+        this.expirationButton = this.findViewById(R.id.expirationDateButton)
         this.sendButton = this.findViewById(R.id.sendButton)
         this.photoButton = this.findViewById(R.id.photoButton)
         this.image = this.findViewById(R.id.productImage)
@@ -129,6 +115,22 @@ class AddDescriptionActivity : CameraLauncherActivity() {
             }, {
                 // do nothing
             })
+        }
+
+        this.expirationButton.setOnClickListener {
+            val datePicker = DatePicker(this)
+            datePicker.minDate = Date().time
+            AlertDialog.Builder(this)
+                .setTitle("Expiration date")
+                .setMessage("Set an expiration date, it will be saved")
+                .setView(datePicker)
+                .setNegativeButton(R.string.negative1, null)
+                .setPositiveButton(R.string.set, DialogInterface.OnClickListener { _, _ ->
+                    this.expirationDate = Calendar.getInstance().also {
+                        it.set(datePicker.year, datePicker.month, datePicker.dayOfMonth) }
+                        .time
+                })
+                .show()
         }
     }
 }
