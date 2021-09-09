@@ -16,6 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrackingMyPantry">
+        <activity
+            android:name=".CollectionsActivity"
+            android:exported="true" />
         <!-- TMP activities -->
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -31,7 +34,7 @@
         <activity android:name=".LocalItemsActivity" />
         <activity android:name=".CameraActivity" />
         <activity android:name=".BarcodeScannerActivity" />
-        <activity android:name=".CameraLauncherActivity"/>
+        <activity android:name=".CameraLauncherActivity" />
     </application>
 
 </manifest>
