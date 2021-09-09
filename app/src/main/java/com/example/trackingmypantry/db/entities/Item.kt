@@ -20,5 +20,6 @@ data class Item(
     val image: String?,
     val purchase_date: Date,
     val expiration_date: Date?,
-    val collection: Long?
+    val collection: Long?,
+    val quantity: Int
 )

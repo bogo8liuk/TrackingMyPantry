@@ -17,4 +17,8 @@ interface ItemDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertItems(vararg items: Item)
+
+    // Update
+    @Query("update Item set quantity=quantity+:adding where id like :id")
+    suspend fun changeQuantity(id: Long, adding: Int)
 }
