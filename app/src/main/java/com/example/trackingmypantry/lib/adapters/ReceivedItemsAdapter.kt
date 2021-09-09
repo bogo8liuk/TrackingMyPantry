@@ -67,7 +67,8 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                                         null, //TODO: image
                                         Date(),
                                         this.expDate,
-                                        null
+                                        null,
+                                        1
                                     )
                                 )
                                 val currentActivity = view.context as Activity

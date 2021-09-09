@@ -26,8 +26,13 @@ class LocalItemsActivity : AppCompatActivity() {
         this.recyclerView.adapter = LocalItemsAdapter(arrayOf<Item>())    // To avoid layout skipping
         this.recyclerView.layoutManager = LinearLayoutManager(this)
 
+        val collection: Long = this.intent.extras!!.getLong("collection")
+
         val model: LocalItemsViewModel by viewModels {
-            LocalItemsViewModelFactory(this.application)
+            if (collection < 0)
+                LocalItemsViewModelFactory(this.application, null)
+            else
+                LocalItemsViewModelFactory(this.application, collection)
         }
 
         model.getLocalItems().observe(this, Observer<List<Item>> {

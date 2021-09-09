@@ -1,9 +1,10 @@
 package com.example.trackingmypantry.db.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import java.util.*
+import java.util.Date
 
 @Entity(
     foreignKeys = [ForeignKey(
@@ -21,5 +22,5 @@ data class Item(
     val purchase_date: Date,
     val expiration_date: Date?,
     val collection: Long?,
-    val quantity: Int
+    @ColumnInfo(defaultValue = "1") val quantity: Int
 )

@@ -10,19 +10,13 @@ class LocalItemsViewModel(app: Application, collection: Long?): AndroidViewModel
     private val appContext = app.applicationContext
 
     private val localItems = DbSingleton.getInstance(appContext).getAllItems()
-    private val collectionLocalItems: LiveData<List<Item>> by lazy {
-        fetchLocalCollectionItems(collection)
-    }
-
-    private fun fetchLocalCollectionItems(collection: Long?): LiveData<List<Item>> {
-        return DbSingleton.getInstance(appContext).getItemsFromCollection(collection!!)
-    }
+    private val localCollectionItems = DbSingleton.getInstance(appContext).getItemsFromCollection(collection!!)
 
     fun getLocalItems(): LiveData<List<Item>> {
         return localItems
     }
 
     fun getLocalCollectionItems(): LiveData<List<Item>> {
-        return collectionLocalItems
+        return localCollectionItems
     }
 }

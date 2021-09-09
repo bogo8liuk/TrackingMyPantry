@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.trackingmypantry.db.daos.*
 import com.example.trackingmypantry.db.entities.*
+import com.example.trackingmypantry.db.entities.Collection
 
 @Database(entities = [Collection::class, Item::class, Place::class, Suggestion::class, PlaceSuggestion::class], version = 2)
 @TypeConverters(Converter::class)

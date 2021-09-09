@@ -50,7 +50,8 @@ class AddDescriptionActivity : CameraLauncherActivity() {
                         encoded,
                         Date(),
                         this.expirationDate,
-                        null
+                        null,
+                        1
                     )
                 )
 
