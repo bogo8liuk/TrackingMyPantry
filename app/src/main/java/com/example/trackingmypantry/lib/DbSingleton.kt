@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.room.Room
 import com.example.trackingmypantry.db.Db
+import com.example.trackingmypantry.db.entities.Collection
 import com.example.trackingmypantry.db.entities.Item
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -35,6 +36,7 @@ class DbSingleton(context: Context) {
     ).fallbackToDestructiveMigration()
     .build()
     private val itemDao = db.itemDao()
+    private val collectionDao = db.collectionDao()
 
     /* From here, wrapper functions */
     fun getAllItems(): LiveData<List<Item>> {
@@ -67,5 +69,9 @@ class DbSingleton(context: Context) {
                 itemDao.changeQuantity(id, adding)
             }
         }
+    }
+
+    fun getAllCollections(): LiveData<List<Collection>> {
+        return collectionDao.getAllCollections().asLiveData()
     }
 }

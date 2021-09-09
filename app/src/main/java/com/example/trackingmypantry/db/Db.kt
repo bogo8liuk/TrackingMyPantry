@@ -11,4 +11,5 @@ import com.example.trackingmypantry.db.entities.Collection
 @TypeConverters(Converter::class)
 abstract class Db: RoomDatabase() {
     abstract fun itemDao(): ItemDao
+    abstract fun collectionDao(): CollectionDao
 }
