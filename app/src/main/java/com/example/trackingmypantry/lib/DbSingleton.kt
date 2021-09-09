@@ -49,10 +49,22 @@ class DbSingleton(context: Context) {
         return itemDao.getItemById(id).asLiveData()
     }
 
+    fun getItemsFromCollection(collection: Long): LiveData<List<Item>> {
+        return itemDao.getItemFromCollection(collection).asLiveData()
+    }
+
     fun insertItems(vararg items: Item) {
         runBlocking {
             launch {
                 itemDao.insertItems(*items)
+            }
+        }
+    }
+
+    fun changeQuantity(id: Long, adding: Int) {
+        runBlocking {
+            launch {
+                itemDao.changeQuantity(id, adding)
             }
         }
     }
