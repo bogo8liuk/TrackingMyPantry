@@ -12,6 +12,7 @@ import com.example.trackingmypantry.lib.viewmodels.CollectionsViewModelFactory
 
 class CollectionsActivity : AppCompatActivity() {
     private lateinit var gridView: GridView
+    //TODO: buttons and listener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

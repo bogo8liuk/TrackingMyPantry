@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         this.localButton.setOnClickListener {
-            this.startActivity(Intent(this, LocalItemsActivity::class.java))
+            this.startActivity(Intent(this, CollectionsActivity::class.java))
         }
 
         this.cameraButton.setOnClickListener {
