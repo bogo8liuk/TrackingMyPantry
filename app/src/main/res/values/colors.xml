@@ -13,4 +13,6 @@
     <color name="lightblue">@android:color/holo_blue_light</color>
     <color name="red">#D30048</color>
     <color name="orange">@android:color/holo_orange_dark</color>
+    <color name="grey">#505050</color>
+    <color name="blue">#0000FF</color>
 </resources>
