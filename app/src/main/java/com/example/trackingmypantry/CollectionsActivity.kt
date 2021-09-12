@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.GridView
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import com.example.trackingmypantry.db.entities.Collection
 import com.example.trackingmypantry.lib.adapters.CollectionsAdapter
 import com.example.trackingmypantry.lib.viewmodels.CollectionsViewModel
@@ -22,5 +23,9 @@ class CollectionsActivity : AppCompatActivity() {
         val model: CollectionsViewModel by viewModels {
             CollectionsViewModelFactory(this.application)
         }
+
+        model.getCollections().observe(this, Observer<List<Collection>> {
+            this.gridView.adapter = CollectionsAdapter(this, it.toTypedArray())
+        })
     }
 }
