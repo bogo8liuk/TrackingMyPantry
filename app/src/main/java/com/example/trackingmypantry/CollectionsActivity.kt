@@ -10,5 +10,7 @@ class CollectionsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collections)
+
+        this.gridView = findViewById(R.id.collectionsGridView)
     }
 }
