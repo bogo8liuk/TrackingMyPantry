@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 class CollectionsViewModelFactory(val app: Application): ViewModelProvider.Factory {
     override fun <T: ViewModel?> create(modelClass: Class<T>): T {
         return modelClass
-            .getConstructor(Application::class.java, Long::class.java)
+            .getConstructor(Application::class.java)
             .newInstance(app)
     }
 }
