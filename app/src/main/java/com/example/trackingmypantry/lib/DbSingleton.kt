@@ -74,4 +74,12 @@ class DbSingleton(context: Context) {
     fun getAllCollections(): LiveData<List<Collection>> {
         return collectionDao.getAllCollections().asLiveData()
     }
+
+    fun createCollection(vararg collections: Collection) {
+        runBlocking {
+            launch {
+                collectionDao.insertCollection(*collections)
+            }
+        }
+    }
 }

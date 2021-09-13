@@ -22,11 +22,16 @@ class CollectionsActivity : AppCompatActivity() {
     private lateinit var gridView: GridView
     private lateinit var itemsButton: AppCompatButton
     private lateinit var createCollectionButton: AppCompatButton
-    //TODO: buttons and listener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collections)
+
+        this.itemsButton = findViewById(R.id.localItemsButton)
+        this.createCollectionButton = findViewById(R.id.createCollectionButton)
+
+        this.gridView = findViewById(R.id.collectionsGridView)
+        this.gridView.adapter = CollectionsAdapter(this, arrayOf<Collection>())
 
         this.itemsButton.setOnClickListener {
             val intent = Intent(this, LocalItemsActivity::class.java)
@@ -41,17 +46,16 @@ class CollectionsActivity : AppCompatActivity() {
                 .setView(nameInput)
                 .setNegativeButton(R.string.negative1, null)
                 .setPositiveButton(R.string.create, DialogInterface.OnClickListener { _, _ ->
-                    if (!Utils.stringPattern(EvalMode.WHITESPACE, nameInput.text.toString())) {
-                        DbSingleton.getInstance(this).insertCollection()    //TODO
+                    val name = nameInput.text.toString()
+
+                    if (!Utils.stringPattern(EvalMode.WHITESPACE, name)) {
+                        DbSingleton.getInstance(this).createCollection(Collection(1, name))
                     } else {
                         Utils.toastShow(this, "Invalid name for collection")
                     }
                 })
                 .show()
         }
-
-        this.gridView = findViewById(R.id.collectionsGridView)
-        this.gridView.adapter = CollectionsAdapter(this, arrayOf<Collection>())
 
         val model: CollectionsViewModel by viewModels {
             CollectionsViewModelFactory(this.application)
