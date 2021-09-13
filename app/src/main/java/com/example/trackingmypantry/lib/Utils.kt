@@ -32,5 +32,17 @@ class Utils {
                 null
             }
         }
+
+        fun stringPattern(mode: EvalMode, s: String): Boolean {
+            return when (mode) {
+                EvalMode.EMPTY -> s == ""
+                EvalMode.WHITESPACE -> s.all { c -> c == ' ' }
+            }
+        }
     }
+}
+
+enum class EvalMode {
+    EMPTY,
+    WHITESPACE
 }
