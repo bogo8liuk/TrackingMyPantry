@@ -3,7 +3,9 @@ package com.example.trackingmypantry.lib.credentials
 import android.content.Context
 import com.example.trackingmypantry.R
 
-/* Class that offers methods to handle shared preferences for tokens */
+/**
+ * Class that offers methods to handle shared preferences for tokens
+ */
 class TokenHandler() {
     companion object {
         private const val ACCESS = "accessToken"
