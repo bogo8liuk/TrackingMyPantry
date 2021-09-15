@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.lib.DbSingleton
+import com.example.trackingmypantry.lib.EvalMode
 import com.example.trackingmypantry.lib.credentials.TokenHandler
 import com.example.trackingmypantry.lib.credentials.TokenType
 import com.example.trackingmypantry.lib.Utils
@@ -94,10 +95,10 @@ class AddDescriptionActivity : CameraLauncherActivity() {
         val extras = this.intent.extras
 
         this.sendButton.setOnClickListener {
-            if (this.nameEditText.text.toString() == "") {
+            if (Utils.stringPattern(EvalMode.EMPTY, this.nameEditText.text.toString())) {
                 this.nameEditText.requestFocus()
                 Utils.toastShow(this, "Name is mandatory")
-            } else if (this.descEditText.text.toString().all { c -> c == ' ' }) { // No text inserted
+            } else if (Utils.stringPattern(EvalMode.WHITESPACE, this.descEditText.text.toString())) { // No text inserted
                 AlertDialog.Builder(this)
                     .setMessage("Are you sure of keeping an empty description?")
                     .setTitle("No description provided")

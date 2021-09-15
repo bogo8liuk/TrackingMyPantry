@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.example.trackingmypantry.lib.EvalMode
 import com.example.trackingmypantry.lib.net.HttpHandler
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.ResultCode
@@ -20,13 +21,13 @@ class SignUpActivity : AppCompatActivity() {
 
         signUpButton.setText(R.string.signUp)
         signUpButton.setOnClickListener {
-            if (usernameEditText.text.toString() == "") {
+            if (Utils.stringPattern(EvalMode.EMPTY, usernameEditText.text.toString())) {
                 usernameEditText.requestFocus()
                 Utils.toastShow(this, "Username field is required")
-            } else if (emailEditText.text.toString() == "") {
+            } else if (Utils.stringPattern(EvalMode.EMPTY, emailEditText.text.toString())) {
                 emailEditText.requestFocus()
                 Utils.toastShow(this, "Email field is required")
-            } else if (passwordEditText.text.toString() == "") {
+            } else if (Utils.stringPattern(EvalMode.EMPTY, passwordEditText.text.toString())) {
                 passwordEditText.requestFocus()
                 Utils.toastShow(this, "Password field is required")
             } else {

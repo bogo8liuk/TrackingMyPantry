@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.example.trackingmypantry.lib.EvalMode
 import com.example.trackingmypantry.lib.credentials.TokenHandler
 import com.example.trackingmypantry.lib.credentials.TokenType
 import com.example.trackingmypantry.lib.net.HttpHandler
@@ -31,10 +32,10 @@ class SignInActivity : AppCompatActivity() {
         usernameEditText.visibility = android.view.View.GONE
 
         signInButton.setOnClickListener {
-            if (emailEditText.text.toString() == "") {
+            if (Utils.stringPattern(EvalMode.EMPTY, emailEditText.text.toString())) {
                 emailEditText.requestFocus()
                 Utils.toastShow(this, "Email field is required")
-            } else if (passwordEditText.text.toString() == "") {
+            } else if (Utils.stringPattern(EvalMode.EMPTY, passwordEditText.text.toString())) {
                 passwordEditText.requestFocus()
                 Utils.toastShow(this, "Password field is required")
             } else {
