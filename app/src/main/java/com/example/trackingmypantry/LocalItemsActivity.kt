@@ -29,10 +29,7 @@ class LocalItemsActivity : AppCompatActivity() {
         val collection: Long = this.intent.extras!!.getLong("collection")
 
         val model: LocalItemsViewModel by viewModels {
-            if (collection < 0)
-                LocalItemsViewModelFactory(this.application, null)
-            else
-                LocalItemsViewModelFactory(this.application, collection)
+            LocalItemsViewModelFactory(this.application, collection)
         }
 
         model.getLocalItems().observe(this, Observer<List<Item>> {

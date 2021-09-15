@@ -53,6 +53,6 @@ class CollectionsAdapter(private val context: Context, private val collections: 
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        return convertView ?: this.initView(this.inflater.inflate(R.layout.collection_row, parent), position)
+        return convertView ?: this.initView(this.inflater.inflate(R.layout.collection_row, parent, false), position)
     }
-}addView(View, LayoutParams) is not supported in AdapterView
+}
