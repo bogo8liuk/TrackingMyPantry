@@ -1,8 +1,9 @@
 package com.example.trackingmypantry.lib
 
-/* Using a class to avoid names conflicts: the class has the only purpose of namespace.
-* Set of possible returned values from activities started with `startActivityForResult`.
-* 1 is RESULT_OK, 0 is RESULT_CANCELED */
+/**
+ * Using a class to avoid names conflicts: the class has the only purpose of namespace.
+ * Set of possible returned values from activities started with `startActivityForResult`.
+*/
 class ResultCode {
     companion object {
         //        RESULT_CANCELED

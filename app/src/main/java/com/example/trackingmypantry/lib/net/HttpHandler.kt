@@ -237,7 +237,7 @@ class HttpHandler() {
             error: (Int, String) -> Unit,
             getParams: GetParams? = null,
             voteParams: VoteParams? = null,
-            describeParams: DescribeParams? = null    //TODO: finish to change the api
+            describeParams: DescribeParams? = null
         ) {
             when (type) {
                 RequestType.GET -> {
