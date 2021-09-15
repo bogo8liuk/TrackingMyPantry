@@ -12,14 +12,10 @@ import androidx.appcompat.widget.AppCompatButton
 import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.EvalMode
-import com.example.trackingmypantry.lib.credentials.TokenHandler
-import com.example.trackingmypantry.lib.credentials.TokenType
 import com.example.trackingmypantry.lib.Utils
-import com.example.trackingmypantry.lib.net.HttpHandler
+import com.example.trackingmypantry.lib.connectivity.net.HttpHandler
 import com.example.trackingmypantry.lib.ResultCode
-import com.example.trackingmypantry.lib.credentials.CredentialsHandler
 import org.json.JSONObject
-import java.text.SimpleDateFormat
 import java.util.*
 
 class AddDescriptionActivity : CameraLauncherActivity() {

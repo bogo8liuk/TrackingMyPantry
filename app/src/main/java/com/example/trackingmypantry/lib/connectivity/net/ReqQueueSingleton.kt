@@ -1,4 +1,4 @@
-package com.example.trackingmypantry.lib.net
+package com.example.trackingmypantry.lib.connectivity.net
 
 import android.content.Context
 import com.android.volley.Request

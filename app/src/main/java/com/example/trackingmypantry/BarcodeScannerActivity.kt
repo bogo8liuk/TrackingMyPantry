@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_camera.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
+//TODO: debug
 class BarcodeScannerActivity : CameraActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var barcodesText: TextView

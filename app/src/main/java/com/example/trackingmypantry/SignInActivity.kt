@@ -5,12 +5,9 @@ import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trackingmypantry.lib.EvalMode
-import com.example.trackingmypantry.lib.credentials.TokenHandler
-import com.example.trackingmypantry.lib.credentials.TokenType
-import com.example.trackingmypantry.lib.net.HttpHandler
+import com.example.trackingmypantry.lib.connectivity.net.HttpHandler
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.ResultCode
-import com.example.trackingmypantry.lib.credentials.CredentialsHandler
 
 class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

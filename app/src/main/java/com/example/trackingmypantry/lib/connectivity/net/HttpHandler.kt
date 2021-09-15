@@ -1,7 +1,6 @@
-package com.example.trackingmypantry.lib.net
+package com.example.trackingmypantry.lib.connectivity.net
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
@@ -42,7 +41,9 @@ class HttpHandler() {
                 "$DOMAIN$AUTH_PATH",
                 JSONObject("{ \"email\": \"$email\", \"password\": \"$password\"}"),
                 { res ->
-                    TokenHandler.setToken(context, TokenType.ACCESS, res.getString(ACCESS_TOKEN_FIELD))
+                    TokenHandler.setToken(context, TokenType.ACCESS, res.getString(
+                        ACCESS_TOKEN_FIELD
+                    ))
                     CredentialsHandler.setCredentials(context, email, password)
                     successCallback(res) },
                 { err -> errorCallback(
