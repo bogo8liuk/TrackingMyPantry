@@ -12,7 +12,7 @@ class TokenHandler() {
         const val INEXISTENT_TOKEN = "__IT"
 
         fun setToken(context: Context, type: TokenType, token: String) {
-            val pref = context.getSharedPreferences(context.resources.getString(R.string.accessToken), Context.MODE_PRIVATE)
+            val pref = Encrypted.sharedPrefs(context)
             val editor = pref.edit()
 
             if (type == TokenType.ACCESS)
@@ -24,7 +24,7 @@ class TokenHandler() {
         }
 
         fun removeToken(context: Context, type: TokenType) {
-            val pref = context.getSharedPreferences(context.resources.getString(R.string.accessToken), Context.MODE_PRIVATE)
+            val pref = Encrypted.sharedPrefs(context)
             val editor = pref.edit()
             if (type == TokenType.ACCESS)
                 editor.putString(ACCESS, INEXISTENT_TOKEN)
@@ -35,10 +35,10 @@ class TokenHandler() {
 
         /**
          * @warning: A call to this function with @param `type` as ACCESS remove the token, if @param
-         * `remove` is true.
+         * `remove` is true. If @param `type` has value SESSION, @param `remove` is ignored
          */
         fun getToken(context: Context, type: TokenType, remove: Boolean): String {
-            val pref = context.getSharedPreferences(context.resources.getString(R.string.accessToken), Context.MODE_PRIVATE)
+            val pref = Encrypted.sharedPrefs(context)
             return if (type == TokenType.ACCESS) {
                 val token = pref.getString(ACCESS, INEXISTENT_TOKEN) ?: INEXISTENT_TOKEN
                 if (remove) {
