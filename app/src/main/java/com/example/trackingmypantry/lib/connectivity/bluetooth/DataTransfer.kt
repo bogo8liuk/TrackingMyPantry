@@ -2,8 +2,8 @@ package com.example.trackingmypantry.lib.connectivity.bluetooth
 
 import android.bluetooth.BluetoothSocket
 import android.os.Handler
+import android.util.Log
 import java.io.IOException
-import java.io.InputStream
 
 class DataTransfer(private val handler: Handler) {
     data class IncomingData(
@@ -31,8 +31,29 @@ class DataTransfer(private val handler: Handler) {
         }
     }
 
-    inner class Send(socket: BluetoothSocket, bytes: ByteArray): Thread() {
+    inner class Send(private val socket: BluetoothSocket, private val bytes: ByteArray): Thread() {
         private val stream = socket.outputStream
 
+        override fun run() {
+            try {
+                this.stream.write(bytes)
+            } catch (exception: IOException) {
+                Log.e("Socket bt write error", exception.message ?: "Cannot send data")
+                val msg = handler.obtainMessage(MessageType.ERROR_WRITE, "Cannot send data")
+                msg.sendToTarget()
+                return
+            }
+
+            val msg = handler.obtainMessage(MessageType.WRITE_DATA)
+            msg.sendToTarget()
+        }
+
+        fun cancel() {
+            try {
+                this.socket.close()
+            } catch (exception: IOException) {
+                Log.e("Socket bt close error", "Cannot close socket")
+            }
+        }
     }
 }
