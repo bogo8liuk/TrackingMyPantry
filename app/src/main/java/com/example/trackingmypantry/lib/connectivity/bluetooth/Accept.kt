@@ -10,7 +10,7 @@ class Accept(
     adapter: BluetoothAdapter,
     private val handleSocket: (BluetoothSocket?) -> Unit): Thread() {
 
-    private val SERVICE_NAME = "TrMyPa_service_name"
+    private val SERVICE_NAME = "trmypa_service_name"
     private val welcomingSocket: BluetoothServerSocket by lazy(LazyThreadSafetyMode.NONE) {
         adapter.listenUsingRfcommWithServiceRecord(SERVICE_NAME, APP_UUID)
     }

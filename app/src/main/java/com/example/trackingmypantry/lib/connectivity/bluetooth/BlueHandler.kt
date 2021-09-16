@@ -4,6 +4,7 @@ import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
+import android.bluetooth.BluetoothSocket
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -97,6 +98,28 @@ class BlueHandler {
                     }
                 }
             }
+        }
+
+        /**
+         * Given an adapter, it accepts bluetooth connections and it executes the callback
+         * whenever a connection is established.
+         * @warning It may fails and not connect.
+         */
+        fun accept(adapter: BluetoothAdapter, callback: (BluetoothSocket?) -> Unit) {
+            Accept(adapter) {
+                callback(it)
+            }.run()
+        }
+
+        /**
+         * Given an adapter and a device, it continues trying to connect to the device and
+         * it executes whenever a connection is established.
+         * @warning It may fails and not connect.
+         */
+        fun connect(adapter: BluetoothAdapter, device: BluetoothDevice, callback: (BluetoothSocket) -> Unit) {
+            Connect(adapter, device) {
+                callback(it)
+            }.run()
         }
     }
 }
