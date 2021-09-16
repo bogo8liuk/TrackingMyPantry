@@ -3,13 +3,18 @@ package com.example.trackingmypantry.lib.connectivity.bluetooth
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
+import android.os.Handler
 import android.util.Log
 import java.io.IOException
 
+/**
+ * Thread for the raw bluetooth connect(). The returning socket is sent through a message to
+ * the thread that passed @param `handler`.
+ */
 class Connect(
     private val adapter: BluetoothAdapter,
     device: BluetoothDevice,
-    private val handleSocket: (BluetoothSocket) -> Unit): Thread() {
+    private val handler: Handler): Thread() {
 
     private val connectSocket: BluetoothSocket by lazy(LazyThreadSafetyMode.NONE) {
         device.createRfcommSocketToServiceRecord(APP_UUID)
@@ -21,7 +26,7 @@ class Connect(
         this.connectSocket.let { it ->
             try {
                 it.connect()
-                this.handleSocket(it)
+                val msg = this.handler.obtainMessage(MessageType.CONNECT_SOCKET, it)
             } catch (exception: IOException) {
                 Log.e("Socket bt connection error", exception.message ?: "Cannot call connect")
             }

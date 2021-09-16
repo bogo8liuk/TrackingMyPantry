@@ -3,12 +3,17 @@ package com.example.trackingmypantry.lib.connectivity.bluetooth
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
+import android.os.Handler
 import android.util.Log
 import java.io.IOException
 
+/**
+ * Thread for the raw bluetooth accept(). The returning socket is sent through a message to
+ * the thread that passed @param `handler`.
+ */
 class Accept(
     adapter: BluetoothAdapter,
-    private val handleSocket: (BluetoothSocket?) -> Unit): Thread() {
+    private val handler: Handler): Thread() {
 
     private val SERVICE_NAME = "trmypa_service_name"
     private val welcomingSocket: BluetoothServerSocket by lazy(LazyThreadSafetyMode.NONE) {
@@ -27,7 +32,8 @@ class Accept(
             }
 
             socket.also {
-                this.handleSocket(it)
+                val msg = handler.obtainMessage(MessageType.ACCEPT_SOCKET, it)
+                msg.sendToTarget()
                 this.welcomingSocket.close()
                 loop = false
             }
