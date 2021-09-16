@@ -7,9 +7,10 @@ import android.util.Log
 import java.io.IOException
 
 class Accept(
-    private val adapter: BluetoothAdapter,
+    adapter: BluetoothAdapter,
     private val handleSocket: (BluetoothSocket?) -> Unit): Thread() {
-    private val SERVICE_NAME = "tmp_service_name"
+
+    private val SERVICE_NAME = "TrMyPa_service_name"
     private val welcomingSocket: BluetoothServerSocket by lazy(LazyThreadSafetyMode.NONE) {
         adapter.listenUsingRfcommWithServiceRecord(SERVICE_NAME, APP_UUID)
     }
@@ -20,7 +21,7 @@ class Accept(
             val socket: BluetoothSocket? = try {
                 this.welcomingSocket.accept()
             } catch (exception: IOException) {
-                Log.e("Socket accept error", exception.message ?: "Cannot accept connections")
+                Log.e("Socket bt accept error", exception.message ?: "Cannot accept connections")
                 loop = false
                 null
             }
@@ -37,7 +38,7 @@ class Accept(
         try {
             this.welcomingSocket.close()
         } catch (exception: IOException) {
-            Log.e("Socket close error", exception.message ?: "Cannot close connections")
+            Log.e("Socket bt close error", exception.message ?: "Cannot close connections")
         }
     }
 }
