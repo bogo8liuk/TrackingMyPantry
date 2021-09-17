@@ -11,6 +11,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/activity_sign.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/collection_row.xml" value="0.34148550724637683" />
+        <entry key="app/src/main/res/layout/local_item_row.xml" value="0.30932971014492755" />
         <entry key="app/src/main/res/layout/received_item_row.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/select_barcode.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.371875" />

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -56,4 +57,40 @@
         android:text="@string/delete"
         android:background="@drawable/orange_medium_corner_button"
         android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/handleItemLayout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/removeQuantityButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@color/red"
+            android:layout_marginEnd="10dp"
+            app:srcCompat="@drawable/ic_baseline_remove_24" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/addQuantityButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@color/green"
+            android:layout_marginEnd="10dp"
+            app:srcCompat="@drawable/ic_baseline_add_24"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/changeCollectionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="remove from collection"
+            android:textColor="@color/white"
+            android:background="@drawable/orange_medium_corner_button"/>
+
+    </LinearLayout>
 </LinearLayout>
