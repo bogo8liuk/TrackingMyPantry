@@ -48,7 +48,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val withCollecti
 
             if (withCollections) {
                 this.changeCollectionButton.setOnClickListener {
-                    //TODO: remove collection
+                    DbSingleton.getInstance(view.context).removeItemFromCollection(items[this.adapterPosition].id)
                 }
             } else {
                 this.changeCollectionButton.setOnClickListener {
@@ -68,12 +68,12 @@ class LocalItemsAdapter(private val items: Array<Item>, private val withCollecti
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        /* The check of expiration date is done here because in `onBindViewHolder()`,
-            * I cannot access the context. */
+        val context = holder.barcodeText.context    // getting the context from a view (whatever it is)
+
         val expiration = items[position].expiration_date
         if (expiration != null && Date().after(expiration)) {  // Date() returns the allocation date
-            holder.nameButton.background = ContextCompat.getDrawable(holder.barcodeText.context, R.color.red)
-            holder.nameExpandedButton.background = ContextCompat.getDrawable(holder.barcodeText.context, R.color.red)
+            holder.nameButton.background = ContextCompat.getDrawable(context, R.color.red)
+            holder.nameExpandedButton.background = ContextCompat.getDrawable(context, R.color.red)
         }
         holder.nameButton.text = items[position].name
         holder.nameExpandedButton.text = items[position].name
