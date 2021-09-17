@@ -12,6 +12,7 @@
     <string name="negative">No</string>
     <string name="negative1">Cancel</string>
     <string name="positive">Yes</string>
+    <string name="positive1">OK</string>
     <string name="choose">Choose</string>
     <string name="choose1">Choose the product you wish to buy</string>
     <string name="describe">Description</string>

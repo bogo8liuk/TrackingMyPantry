@@ -6,13 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.EmptyResultSetException
 import com.example.trackingmypantry.R
+import com.example.trackingmypantry.db.entities.Collection
 import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.lib.DbSingleton
 import java.util.*
@@ -34,9 +37,13 @@ class LocalItemsAdapter(private val items: Array<Item>, private val withCollecti
         val removeQuantityButton = handleItemLayout.findViewById<AppCompatImageButton>(R.id.removeQuantityButton)
         val changeCollectionButton = handleItemLayout.findViewById<AppCompatButton>(R.id.changeCollectionButton)
 
+        private var collections: List<Collection>? = null
+
         init {
+            val context = view.context
+
             this.deleteButton.setOnClickListener {
-                AlertDialog.Builder(view.context)
+                AlertDialog.Builder(context)
                     .setTitle("Delete")
                     .setMessage("Are you sure you want to delete this item from your grocery?")
                     .setNegativeButton(R.string.negative, null)
@@ -48,11 +55,35 @@ class LocalItemsAdapter(private val items: Array<Item>, private val withCollecti
 
             if (withCollections) {
                 this.changeCollectionButton.setOnClickListener {
-                    DbSingleton.getInstance(view.context).removeItemFromCollection(items[this.adapterPosition].id)
+                    DbSingleton.getInstance(context).removeItemFromCollection(items[this.adapterPosition].id)
                 }
             } else {
                 this.changeCollectionButton.setOnClickListener {
-                    //TODO: add collection
+                    try {
+                        if (collections == null) {
+                            this.collections = DbSingleton.getInstance(context).getAllCollections().value
+                        }
+
+                        val collectionPicker = NumberPicker(context)
+                        //TODO: set values to picker
+
+                        AlertDialog.Builder(context)
+                            .setTitle("Collections")
+                            .setMessage("Choose a collection")
+                            .setView(collectionPicker)
+                            .setNegativeButton(R.string.negative1, null)    // do nothing
+                            .setPositiveButton(R.string.choose, { _, _ ->
+                                //TODO: call to db with the right taken collection
+                            })
+                            .show()
+
+                    } catch(exception: EmptyResultSetException) {
+                        this.collections = null     // necessary???
+                        AlertDialog.Builder(context)
+                            .setMessage("No existing collections")
+                            .setPositiveButton(R.string.positive1, null)
+                            .show()
+                    }
                 }
             }
         }
