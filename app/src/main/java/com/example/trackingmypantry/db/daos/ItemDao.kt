@@ -23,5 +23,13 @@ interface ItemDao {
 
     // Update
     @Query("update Item set quantity=quantity+:adding where id like :id")
-    suspend fun changeQuantity(id: Long, adding: Int)
+    suspend fun changeItemQuantity(id: Long, adding: Int)
+
+    // Update
+    @Query("update Item set collection=null where id like :id")
+    suspend fun removeItemFromCollection(id: Long)
+
+    // Update
+    @Query("update Item set collection=:collectionId where id like :itemId")
+    suspend fun insertItemIntoCollection(itemId: Long, collectionId: Long)
 }

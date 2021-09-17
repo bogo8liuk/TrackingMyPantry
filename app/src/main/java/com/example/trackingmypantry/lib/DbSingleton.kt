@@ -63,10 +63,26 @@ class DbSingleton(context: Context) {
         }
     }
 
-    fun changeQuantity(id: Long, adding: Int) {
+    fun changeItemQuantity(id: Long, adding: Int) {
         runBlocking {
             launch {
-                itemDao.changeQuantity(id, adding)
+                itemDao.changeItemQuantity(id, adding)
+            }
+        }
+    }
+
+    fun removeItemFromCollection(id: Long) {
+        runBlocking {
+            launch {
+                itemDao.removeItemFromCollection(id)
+            }
+        }
+    }
+
+    fun insertItemIntoCollection(id: Long, collection: Long) {
+        runBlocking {
+            launch {
+                itemDao.insertItemIntoCollection(id, collection)
             }
         }
     }
