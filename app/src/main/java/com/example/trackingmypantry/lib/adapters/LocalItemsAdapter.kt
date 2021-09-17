@@ -5,9 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R
@@ -15,7 +17,7 @@ import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.lib.DbSingleton
 import java.util.*
 
-class LocalItemsAdapter(private val items: Array<Item>):
+class LocalItemsAdapter(private val items: Array<Item>, private val withCollections: Boolean):
     RecyclerView.Adapter<LocalItemsAdapter.ViewHolder>() {
     private var isExpanded = BooleanArray(items.size) { _ -> false }
 
@@ -27,6 +29,10 @@ class LocalItemsAdapter(private val items: Array<Item>):
         val descText = view.findViewById<TextView>(R.id.descLocalItemText)
         val purchaseText = view.findViewById<TextView>(R.id.purchaseLocalItemText)
         val expirationText = view.findViewById<TextView>(R.id.expirationLocalItemText)
+        val handleItemLayout = view.findViewById<LinearLayout>(R.id.handleItemLayout)
+        val addQuantityButton = handleItemLayout.findViewById<AppCompatImageButton>(R.id.addQuantityButton)
+        val removeQuantityButton = handleItemLayout.findViewById<AppCompatImageButton>(R.id.removeQuantityButton)
+        val changeCollectionButton = handleItemLayout.findViewById<AppCompatButton>(R.id.changeCollectionButton)
 
         init {
             this.deleteButton.setOnClickListener {
@@ -38,6 +44,16 @@ class LocalItemsAdapter(private val items: Array<Item>):
                         // TODO: delete delete button
                     })
                     .show()
+            }
+
+            if (withCollections) {
+                this.changeCollectionButton.setOnClickListener {
+                    //TODO: remove collection
+                }
+            } else {
+                this.changeCollectionButton.setOnClickListener {
+                    //TODO: add collection
+                }
             }
         }
     }
@@ -65,16 +81,13 @@ class LocalItemsAdapter(private val items: Array<Item>):
         holder.purchaseText.text = "Purchase date: " + items[position].purchase_date // TODO: safe?
         holder.expirationText.text = "Expiration date: " + items[position].expiration_date
         holder.barcodeText.text = "Barcode: " + items[position].barcode
+        if (this.withCollections) {
+            holder.changeCollectionButton.text = "Remove from collection"
+        } else {
+            holder.changeCollectionButton.text = "Add to collection"
+        }
 
         if (this.isExpanded[position]) {
-            holder.nameButton.visibility = android.view.View.VISIBLE
-            holder.nameExpandedButton.visibility = android.view.View.GONE
-            holder.deleteButton.visibility = android.view.View.GONE
-            holder.barcodeText.visibility = android.view.View.GONE
-            holder.descText.visibility = android.view.View.GONE
-            holder.purchaseText.visibility = android.view.View.GONE
-            holder.expirationText.visibility = android.view.View.GONE
-        } else {
             holder.nameButton.visibility = android.view.View.GONE
             holder.nameExpandedButton.visibility = android.view.View.VISIBLE
             holder.deleteButton.visibility = android.view.View.VISIBLE
@@ -82,6 +95,16 @@ class LocalItemsAdapter(private val items: Array<Item>):
             holder.descText.visibility = android.view.View.VISIBLE
             holder.purchaseText.visibility = android.view.View.VISIBLE
             holder.expirationText.visibility = android.view.View.VISIBLE
+            holder.handleItemLayout.visibility = android.view.View.VISIBLE
+        } else {
+            holder.nameButton.visibility = android.view.View.VISIBLE
+            holder.nameExpandedButton.visibility = android.view.View.GONE
+            holder.deleteButton.visibility = android.view.View.GONE
+            holder.barcodeText.visibility = android.view.View.GONE
+            holder.descText.visibility = android.view.View.GONE
+            holder.purchaseText.visibility = android.view.View.GONE
+            holder.expirationText.visibility = android.view.View.GONE
+            holder.handleItemLayout.visibility = android.view.View.GONE
         }
 
         holder.nameButton.setOnClickListener {

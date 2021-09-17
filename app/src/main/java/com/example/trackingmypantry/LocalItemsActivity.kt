@@ -23,7 +23,7 @@ class LocalItemsActivity : AppCompatActivity() {
         this.descriptionTextView = this.findViewById(R.id.localDescText)
         this.recyclerView = this.findViewById(R.id.localItemsRecView)
 
-        this.recyclerView.adapter = LocalItemsAdapter(arrayOf<Item>())    // To avoid layout skipping
+        this.recyclerView.adapter = LocalItemsAdapter(arrayOf<Item>(), false)    // To avoid layout skipping
         this.recyclerView.layoutManager = LinearLayoutManager(this)
 
         val collection: Long = this.intent.extras!!.getLong("collection")
@@ -34,7 +34,12 @@ class LocalItemsActivity : AppCompatActivity() {
 
         model.getLocalItems().observe(this, Observer<List<Item>> {
             this.descriptionTextView.text = "Here are the products of your pantry"
-            val adapter = LocalItemsAdapter(it.toTypedArray())
+            val adapter: LocalItemsAdapter
+            if (collection < 0) {
+                adapter = LocalItemsAdapter(it.toTypedArray(), false)
+            } else {
+                adapter = LocalItemsAdapter(it.toTypedArray(), true)
+            }
             this.recyclerView.adapter = adapter
         })
     }
