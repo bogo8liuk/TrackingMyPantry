@@ -1,6 +1,8 @@
 package com.example.trackingmypantry.lib.adapters
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -36,6 +38,13 @@ class CollectionsAdapter(private val context: Context, private val collections: 
 
         collectionButton.setBackgroundResource(this.getColor(position))
         collectionText.text = this.collections[position].name
+
+        collectionButton.setOnClickListener {
+            val currentActivity = it.context as Activity
+            val intent = Intent()
+            intent.putExtra("collection", collections[position].id)
+            currentActivity.startActivity(intent)
+        }
 
         return view
     }

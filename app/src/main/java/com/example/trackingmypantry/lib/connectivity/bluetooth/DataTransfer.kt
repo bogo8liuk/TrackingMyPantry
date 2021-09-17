@@ -11,7 +11,7 @@ class DataTransfer(private val handler: Handler) {
         val data: ByteArray
     )
 
-    inner class Receive(socket: BluetoothSocket): Thread() {
+    inner class Receive(private val socket: BluetoothSocket): Thread() {
         private val stream = socket.inputStream
         private val buffer = ByteArray(2048)
 
@@ -28,6 +28,14 @@ class DataTransfer(private val handler: Handler) {
 
             val msg = handler.obtainMessage(MessageType.READ_DATA, IncomingData(readBytes, this.buffer))
             msg.sendToTarget()
+        }
+
+        fun cancel() {
+            try {
+                this.socket.close()
+            } catch (exception: IOException) {
+                Log.e("Socket bt close error", "Cannot close socket")
+            }
         }
     }
 
