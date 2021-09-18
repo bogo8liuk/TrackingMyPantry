@@ -18,6 +18,7 @@ import com.example.trackingmypantry.R
 import com.example.trackingmypantry.db.entities.Collection
 import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.lib.DbSingleton
+import com.example.trackingmypantry.lib.Utils
 import java.util.*
 
 class LocalItemsAdapter(private val items: Array<Item>, private val withCollections: Boolean):
@@ -38,6 +39,21 @@ class LocalItemsAdapter(private val items: Array<Item>, private val withCollecti
         val changeCollectionButton = handleItemLayout.findViewById<AppCompatButton>(R.id.changeCollectionButton)
 
         private var collections: List<Collection>? = null
+
+        /**
+         * It returns the collection id, given a position of a collection. It is sured not
+         * to have conflicts between names because they are unique.
+         */
+        private fun getCollectionFromName(position: Int): Long? {
+            for ((c, collection) in collections!!.withIndex()) {
+                if (c == position) {
+                    return collection.id
+                }
+            }
+
+            Log.e("Unreachable", "Value out of range while iterating list of collections")
+            return null
+        }
 
         init {
             val context = view.context
@@ -64,25 +80,31 @@ class LocalItemsAdapter(private val items: Array<Item>, private val withCollecti
                             this.collections = DbSingleton.getInstance(context).getAllCollections().value
                         }
 
+                        val values = mutableListOf<String>()
+                        for (collection in collections!!) {
+                            values.add(collection.name)
+                        }
+
                         val collectionPicker = NumberPicker(context)
-                        //TODO: set values to picker
+                        collectionPicker.minValue = 0
+                        collectionPicker.displayedValues = values.toTypedArray()
 
                         AlertDialog.Builder(context)
                             .setTitle("Collections")
                             .setMessage("Choose a collection")
                             .setView(collectionPicker)
                             .setNegativeButton(R.string.negative1, null)    // do nothing
-                            .setPositiveButton(R.string.choose, { _, _ ->
-                                //TODO: call to db with the right taken collection
-                            })
+                            .setPositiveButton(R.string.choose) { _, _ ->
+                                DbSingleton.getInstance(context).insertItemIntoCollection(
+                                    items[this.adapterPosition].id,
+                                    this.getCollectionFromName(collectionPicker.value)!!
+                                )
+                            }
                             .show()
 
                     } catch(exception: EmptyResultSetException) {
                         this.collections = null     // necessary???
-                        AlertDialog.Builder(context)
-                            .setMessage("No existing collections")
-                            .setPositiveButton(R.string.positive1, null)
-                            .show()
+                        Utils.toastShow(context, "Create a collection before")
                     }
                 }
             }
