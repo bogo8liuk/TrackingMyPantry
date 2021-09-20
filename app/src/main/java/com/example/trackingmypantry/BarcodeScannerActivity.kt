@@ -1,7 +1,9 @@
 package com.example.trackingmypantry
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
@@ -13,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.lib.BarcodeAnalyzer
+import com.example.trackingmypantry.lib.PermissionEvaluer
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.ScannedBarcodesAdapter
 import com.google.mlkit.vision.barcode.Barcode
@@ -32,6 +35,12 @@ class BarcodeScannerActivity : CameraActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.setContentCamera()
+
+        if (PermissionEvaluer.got(this, Manifest.permission.CAMERA)) {
+            this.startCamera()
+        } else {
+            PermissionEvaluer.request(this, Manifest.permission.CAMERA, PERMISSION_REQUEST_CODE)
+        }
     }
 
     private fun setContentBarcodes(barcodes: List<Barcode>?) {
@@ -81,6 +90,7 @@ class BarcodeScannerActivity : CameraActivity() {
         }
 
         this.homeButton.setOnClickListener {
+            Log.e("pippo", "here")
             this.setResult(RESULT_CANCELED, Intent())
             this.finish()
         }
@@ -89,38 +99,48 @@ class BarcodeScannerActivity : CameraActivity() {
     private fun setContentCamera() {
         this.setContentView(R.layout.activity_camera)
 
+        Log.e("DEBUG", "0") //TODO
         this.cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
     override fun startCamera() {
+        Log.e("DEBUG", "1") //TODO
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
         cameraProviderFuture.addListener(Runnable {
+            Log.e("DEBUG", "3") //TODO
             val cameraProvider = cameraProviderFuture.get()
 
             val preview = Preview.Builder().build().also {
-                it.setSurfaceProvider(viewFinder.surfaceProvider)
+                it.setSurfaceProvider(this.viewFinder.surfaceProvider)
             }
 
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
+            Log.e("DEBUG", "4") //TODO
             try {
                 cameraProvider.unbindAll()
+                Log.e("DEBUG", "5") //TODO
                 val imageAnalysis = ImageAnalysis.Builder()
                     .build()
                     .also {
-                        it.setAnalyzer(cameraExecutor, BarcodeAnalyzer({ barcodes ->
-                            this.setContentBarcodes(barcodes)
+                        it.setAnalyzer(this.cameraExecutor, BarcodeAnalyzer({ barcodes ->
+                            Log.d("pluto", barcodes?.get(0)?.rawValue?:"NO") //TODO
                         },
                         {
-                            this.setContentBarcodes(null)
+
                         }))
                     }
+                Log.e("DEBUG", "7") //TODO
                 cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis)
+                Log.e("DEBUG", "8") //TODO
             } catch(exception: Exception) {
-                this.setContentBarcodes(null)
+                Log.e("DEBUG", "6") //TODO
+                //this.setContentBarcodes(null)
             }
         }, ContextCompat.getMainExecutor(this))
+
+        Log.e("DEBUG", "2") //TODO
     }
 
     override fun onDestroy() {

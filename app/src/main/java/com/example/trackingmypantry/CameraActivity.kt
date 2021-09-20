@@ -18,11 +18,7 @@ abstract class CameraActivity() : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (PermissionEvaluer.got(this, Manifest.permission.CAMERA)) {
-            this.startCamera()
-        } else {
-            PermissionEvaluer.request(this, Manifest.permission.CAMERA, PERMISSION_REQUEST_CODE)
-        }
+
     }
 
     override fun onRequestPermissionsResult(
