@@ -77,6 +77,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val withCollecti
                 this.changeCollectionButton.setOnClickListener {
                     try {
                         if (collections == null) {
+                            //TODO: NullPtrException
                             this.collections = DbSingleton.getInstance(context).getAllCollections().value
                         }
 

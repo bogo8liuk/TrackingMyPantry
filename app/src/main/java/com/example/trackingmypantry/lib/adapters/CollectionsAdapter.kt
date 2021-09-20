@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageButton
 import android.widget.TextView
+import com.example.trackingmypantry.LocalItemsActivity
 import com.example.trackingmypantry.R
 import com.example.trackingmypantry.db.entities.Collection
 
@@ -41,7 +42,7 @@ class CollectionsAdapter(private val context: Context, private val collections: 
 
         collectionButton.setOnClickListener {
             val currentActivity = it.context as Activity
-            val intent = Intent()
+            val intent = Intent(currentActivity, LocalItemsActivity::class.java)
             intent.putExtra("collection", collections[position].id)
             currentActivity.startActivity(intent)
         }

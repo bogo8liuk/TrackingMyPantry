@@ -55,7 +55,6 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                             { res ->
                                 DbSingleton.getInstance(view.context).insertItems(
                                     Item(
-                                        0,
                                         products[this.adapterPosition].barcode,
                                         products[this.adapterPosition].name,
                                         products[this.adapterPosition].description,

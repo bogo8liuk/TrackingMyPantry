@@ -49,7 +49,7 @@ class CollectionsActivity : AppCompatActivity() {
                     val name = nameInput.text.toString()
 
                     if (!Utils.stringPattern(EvalMode.WHITESPACE, name)) {
-                        DbSingleton.getInstance(this).createCollection(Collection(1, name))
+                        DbSingleton.getInstance(this).createCollection(Collection(name))
                     } else {
                         Utils.toastShow(this, "Invalid name for collection")
                     }

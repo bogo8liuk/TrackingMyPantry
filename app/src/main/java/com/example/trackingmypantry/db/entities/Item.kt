@@ -14,7 +14,6 @@ import java.util.Date
     )]
 )
 data class Item(
-    @PrimaryKey(autoGenerate = true) val id: Long,
     val barcode: String,
     val name: String,
     val description: String,
@@ -22,5 +21,6 @@ data class Item(
     val purchase_date: Date,
     val expiration_date: Date?,
     val collection: Long?,
-    @ColumnInfo(defaultValue = "1") val quantity: Int
+    @ColumnInfo(defaultValue = "1") val quantity: Int,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0
 )

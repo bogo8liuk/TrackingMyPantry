@@ -40,7 +40,6 @@ class AddDescriptionActivity : CameraLauncherActivity() {
                 res as JSONObject
                 DbSingleton.getInstance(this).insertItems(
                     Item(
-                        0,
                         res.getString("barcode"),
                         res.getString("name"),
                         res.getString("description"),

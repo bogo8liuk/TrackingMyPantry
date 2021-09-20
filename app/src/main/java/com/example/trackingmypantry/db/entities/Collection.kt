@@ -9,6 +9,6 @@ import androidx.room.PrimaryKey
     indices = arrayOf(Index(value = ["name"], unique = true))
 )
 data class Collection(
-    @PrimaryKey(autoGenerate = true) val id: Long,
-    @ColumnInfo(name = "name")val name: String  // Unique
+    @ColumnInfo(name = "name")val name: String,  // Unique
+    @PrimaryKey(autoGenerate = true) val id: Long = 0
 )

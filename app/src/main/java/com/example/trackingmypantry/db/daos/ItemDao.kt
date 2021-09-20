@@ -18,7 +18,7 @@ interface ItemDao {
     @Query("select * from Item where collection like :collection")
     fun getItemFromCollection(collection: Long): Flow<List<Item>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert
     suspend fun insertItems(vararg items: Item)
 
     // Update
