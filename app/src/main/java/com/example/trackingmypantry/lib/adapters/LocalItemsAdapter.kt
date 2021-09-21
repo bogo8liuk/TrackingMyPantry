@@ -36,6 +36,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
         val nameExpandedButton = view.findViewById<AppCompatButton>(R.id.localItemNameExpandedButton)
         val barcodeText = view.findViewById<TextView>(R.id.barcodeDescText)
         val descText = view.findViewById<TextView>(R.id.descLocalItemText)
+        val quantityText = view.findViewById<TextView>(R.id.quantityText)
         val purchaseText = view.findViewById<TextView>(R.id.purchaseLocalItemText)
         val expirationText = view.findViewById<TextView>(R.id.expirationLocalItemText)
         val handleItemLayout = view.findViewById<LinearLayout>(R.id.handleItemLayout)
@@ -81,8 +82,8 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
 
             this.removeQuantityButton.setOnClickListener {
                 val quantityPicker = NumberPicker(context)
-                quantityPicker.minValue = -items[this.adapterPosition].quantity
-                quantityPicker.maxValue = -1
+                quantityPicker.minValue = 1
+                quantityPicker.maxValue = items[this.adapterPosition].quantity
                 AlertDialog.Builder(context)
                     .setTitle("Remove")
                     .setMessage("Choose the quantity of this product you want to remove")
@@ -91,7 +92,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
                     .setPositiveButton(R.string.remove) { _, _ ->
                         DbSingleton.getInstance(context).changeItemQuantity(
                             items[this.adapterPosition].id,
-                            quantityPicker.value
+                            -quantityPicker.value
                         )
                     }
                     .show()
@@ -155,6 +156,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
         holder.nameButton.text = items[position].name
         holder.nameExpandedButton.text = items[position].name
         holder.descText.text = items[position].description
+        holder.quantityText.text = "Quantity: " + items[position].quantity.toString()
         holder.purchaseText.text = "Purchase date: " + items[position].purchase_date // TODO: safe?
         holder.expirationText.text = "Expiration date: " + items[position].expiration_date
         holder.barcodeText.text = "Barcode: " + items[position].barcode
@@ -169,6 +171,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
             holder.nameExpandedButton.visibility = android.view.View.VISIBLE
             holder.barcodeText.visibility = android.view.View.VISIBLE
             holder.descText.visibility = android.view.View.VISIBLE
+            holder.quantityText.visibility = android.view.View.VISIBLE
             holder.purchaseText.visibility = android.view.View.VISIBLE
             holder.expirationText.visibility = android.view.View.VISIBLE
             holder.handleItemLayout.visibility = android.view.View.VISIBLE
@@ -177,6 +180,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
             holder.nameExpandedButton.visibility = android.view.View.GONE
             holder.barcodeText.visibility = android.view.View.GONE
             holder.descText.visibility = android.view.View.GONE
+            holder.quantityText.visibility = android.view.View.GONE
             holder.purchaseText.visibility = android.view.View.GONE
             holder.expirationText.visibility = android.view.View.GONE
             holder.handleItemLayout.visibility = android.view.View.GONE
