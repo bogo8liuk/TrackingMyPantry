@@ -23,14 +23,16 @@ import kotlinx.android.synthetic.main.activity_camera.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-//TODO: debug
 class BarcodeScannerActivity : CameraActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var barcodesText: TextView
     private lateinit var selectButton: AppCompatButton
     private lateinit var retryButton: AppCompatButton
     private lateinit var homeButton: AppCompatImageButton
+    private lateinit var stopButton: AppCompatButton
     private lateinit var cameraExecutor: ExecutorService
+
+    private var barcodes = mutableListOf<Barcode>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,17 +45,18 @@ class BarcodeScannerActivity : CameraActivity() {
         }
     }
 
-    private fun setContentBarcodes(barcodes: List<Barcode>?) {
+    private fun setContentBarcodes() {
         this.setContentView(R.layout.select_barcode)
 
         this.recyclerView = this.findViewById(R.id.scannedBarcodesRecView)
+        this.barcodesText = this.findViewById(R.id.scannedBarcodesDescText)
         this.selectButton = this.findViewById(R.id.selectBarcodeButton)
         this.retryButton = this.findViewById(R.id.retryScanButton)
         this.homeButton = this.findViewById(R.id.homeButton)
 
         this.recyclerView.layoutManager = LinearLayoutManager(this)
 
-        if (barcodes != null && barcodes.isNotEmpty()) {
+        if (this.barcodes.isNotEmpty()) {
             lateinit var list: MutableList<String>
             for (barcode in barcodes) {
                 if (barcode.rawValue != null) {
@@ -90,7 +93,6 @@ class BarcodeScannerActivity : CameraActivity() {
         }
 
         this.homeButton.setOnClickListener {
-            Log.e("pippo", "here")
             this.setResult(RESULT_CANCELED, Intent())
             this.finish()
         }
@@ -98,17 +100,19 @@ class BarcodeScannerActivity : CameraActivity() {
 
     private fun setContentCamera() {
         this.setContentView(R.layout.activity_camera)
+        this.stopButton = findViewById(R.id.stopButton)
 
-        Log.e("DEBUG", "0") //TODO
+        this.stopButton.setOnClickListener {
+            this.setContentBarcodes()
+        }
+
         this.cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
     override fun startCamera() {
-        Log.e("DEBUG", "1") //TODO
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
         cameraProviderFuture.addListener(Runnable {
-            Log.e("DEBUG", "3") //TODO
             val cameraProvider = cameraProviderFuture.get()
 
             val preview = Preview.Builder().build().also {
@@ -117,30 +121,25 @@ class BarcodeScannerActivity : CameraActivity() {
 
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
-            Log.e("DEBUG", "4") //TODO
             try {
                 cameraProvider.unbindAll()
-                Log.e("DEBUG", "5") //TODO
                 val imageAnalysis = ImageAnalysis.Builder()
                     .build()
                     .also {
-                        it.setAnalyzer(this.cameraExecutor, BarcodeAnalyzer({ barcodes ->
-                            Log.d("pluto", barcodes?.get(0)?.rawValue?:"NO") //TODO
+                        it.setAnalyzer(this.cameraExecutor, BarcodeAnalyzer({ scannered ->
+                            if (scannered != null) {
+                                this.barcodes.addAll(scannered)
+                            }
                         },
                         {
-
+                            this.setContentBarcodes()
                         }))
                     }
-                Log.e("DEBUG", "7") //TODO
                 cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis)
-                Log.e("DEBUG", "8") //TODO
             } catch(exception: Exception) {
-                Log.e("DEBUG", "6") //TODO
-                //this.setContentBarcodes(null)
+                this.setContentBarcodes()
             }
         }, ContextCompat.getMainExecutor(this))
-
-        Log.e("DEBUG", "2") //TODO
     }
 
     override fun onDestroy() {

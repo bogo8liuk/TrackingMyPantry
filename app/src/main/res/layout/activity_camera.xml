@@ -6,26 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".CameraActivity">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/takePhotoButton"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="@drawable/white_circle_button"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/guideline21"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.92" />
-
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+    </androidx.camera.view.PreviewView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/stopButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/red_circle_button"
+        android:text="@string/stop"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/guideline35"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline35"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
