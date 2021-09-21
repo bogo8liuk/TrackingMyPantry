@@ -61,6 +61,24 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
         init {
             val context = view.context
 
+            this.addQuantityButton.setOnClickListener {
+                val quantityPicker = NumberPicker(context)
+                quantityPicker.minValue = 1
+                quantityPicker.maxValue = 50    // arbitrary
+                AlertDialog.Builder(context)
+                    .setTitle("Buy")
+                    .setMessage("Choose the quantity of this product you want to buy")
+                    .setView(quantityPicker)
+                    .setNegativeButton(R.string.negative1, null)
+                    .setPositiveButton(R.string.buy1) { _, _ ->
+                        DbSingleton.getInstance(context).changeItemQuantity(
+                            items[this.adapterPosition].id,
+                            quantityPicker.value
+                        )
+                    }
+                    .show()
+            }
+
             if (collections == null) {
                 this.changeCollectionButton.setOnClickListener {
                     DbSingleton.getInstance(context).removeItemFromCollection(items[this.adapterPosition].id)
