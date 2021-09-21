@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()) { result ->
         when (result.resultCode) {
             RESULT_OK -> {
-                var intent = Intent()
+                var intent = Intent(this, BuyActivity::class.java)
                 intent.putExtra("barcode", result.data!!.extras!!["barcode"] as String)
                 this.buyLauncher.launch(intent)
             }

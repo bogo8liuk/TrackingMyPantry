@@ -57,7 +57,7 @@ class BarcodeScannerActivity : CameraActivity() {
         this.recyclerView.layoutManager = LinearLayoutManager(this)
 
         if (this.barcodes.isNotEmpty()) {
-            lateinit var list: MutableList<String>
+            val list = mutableListOf<String>()
             for (barcode in barcodes) {
                 if (barcode.rawValue != null) {
                     list.add(barcode.rawValue)
@@ -105,6 +105,7 @@ class BarcodeScannerActivity : CameraActivity() {
         this.stopButton = findViewById(R.id.stopButton)
 
         this.stopButton.setOnClickListener {
+            Log.e("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN", "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
             this.setContentBarcodes()
         }
 
