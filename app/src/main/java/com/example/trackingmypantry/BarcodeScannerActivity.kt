@@ -83,6 +83,8 @@ class BarcodeScannerActivity : CameraActivity() {
             if (checkedBarcode != null) {
                 var intent = Intent()
                 intent.putExtra("barcode", checkedBarcode)
+                this.setResult(RESULT_OK, intent)
+                this.finish()
             } else {
                 Utils.toastShow(this, "No barcode selected")
             }

@@ -77,13 +77,6 @@ class MainActivity : AppCompatActivity() {
     }
     private val barcodeScanLauncher = this.registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_CANCELED) { // TODO
-            Log.e("pippo", "RESULT CANCELED")
-        } else if (result.resultCode == RESULT_OK) {
-            Log.e("pippo", "RESULT OK")
-        } else {
-            Log.e("pippo", result.resultCode.toString())
-        }
         when (result.resultCode) {
             RESULT_OK -> {
                 var intent = Intent()
