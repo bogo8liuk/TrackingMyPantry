@@ -1,5 +1,6 @@
 package com.example.trackingmypantry.lib.adapters
 
+import android.app.Activity
 import android.content.DialogInterface
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,10 +9,13 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.EmptyResultSetException
 import com.example.trackingmypantry.R
@@ -19,9 +23,11 @@ import com.example.trackingmypantry.db.entities.Collection
 import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.Utils
+import com.example.trackingmypantry.lib.viewmodels.CollectionsViewModel
+import com.example.trackingmypantry.lib.viewmodels.CollectionsViewModelFactory
 import java.util.*
 
-class LocalItemsAdapter(private val items: Array<Item>, private val withCollections: Boolean):
+class LocalItemsAdapter(private val items: Array<Item>, private val collections: List<Collection>?):
     RecyclerView.Adapter<LocalItemsAdapter.ViewHolder>() {
     private var isExpanded = BooleanArray(items.size) { _ -> false }
 
@@ -38,14 +44,12 @@ class LocalItemsAdapter(private val items: Array<Item>, private val withCollecti
         val removeQuantityButton = handleItemLayout.findViewById<AppCompatImageButton>(R.id.removeQuantityButton)
         val changeCollectionButton = handleItemLayout.findViewById<AppCompatButton>(R.id.changeCollectionButton)
 
-        private var collections: List<Collection>? = null
-
         /**
          * It returns the collection id, given a position of a collection. It is sured not
          * to have conflicts between names because they are unique.
          */
-        private fun getCollectionFromName(position: Int): Long? {
-            for ((c, collection) in collections!!.withIndex()) {
+        private fun getCollectionFromName(position: Int, collections: List<Collection>): Long? {
+            for ((c, collection) in collections.withIndex()) {
                 if (c == position) {
                     return collection.id
                 }
@@ -69,25 +73,24 @@ class LocalItemsAdapter(private val items: Array<Item>, private val withCollecti
                     .show()
             }
 
-            if (withCollections) {
+            if (collections == null) {
                 this.changeCollectionButton.setOnClickListener {
                     DbSingleton.getInstance(context).removeItemFromCollection(items[this.adapterPosition].id)
                 }
             } else {
-                this.changeCollectionButton.setOnClickListener {
-                    try {
-                        if (collections == null) {
-                            //TODO: NullPtrException
-                            this.collections = DbSingleton.getInstance(context).getAllCollections().value
-                        }
 
+                this.changeCollectionButton.setOnClickListener {
+                    if (collections.isEmpty()) {
+                        Utils.toastShow(context, "Create a collection before")
+                    } else {
                         val values = mutableListOf<String>()
-                        for (collection in collections!!) {
+                        for (collection in collections) {
                             values.add(collection.name)
                         }
 
                         val collectionPicker = NumberPicker(context)
                         collectionPicker.minValue = 0
+                        collectionPicker.maxValue = values.size - 1
                         collectionPicker.displayedValues = values.toTypedArray()
 
                         AlertDialog.Builder(context)
@@ -98,14 +101,10 @@ class LocalItemsAdapter(private val items: Array<Item>, private val withCollecti
                             .setPositiveButton(R.string.choose) { _, _ ->
                                 DbSingleton.getInstance(context).insertItemIntoCollection(
                                     items[this.adapterPosition].id,
-                                    this.getCollectionFromName(collectionPicker.value)!!
+                                    this.getCollectionFromName(collectionPicker.value, collections)!!
                                 )
                             }
                             .show()
-
-                    } catch(exception: EmptyResultSetException) {
-                        this.collections = null     // necessary???
-                        Utils.toastShow(context, "Create a collection before")
                     }
                 }
             }
@@ -135,7 +134,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val withCollecti
         holder.purchaseText.text = "Purchase date: " + items[position].purchase_date // TODO: safe?
         holder.expirationText.text = "Expiration date: " + items[position].expiration_date
         holder.barcodeText.text = "Barcode: " + items[position].barcode
-        if (this.withCollections) {
+        if (this.collections == null) {
             holder.changeCollectionButton.text = "Remove from collection"
         } else {
             holder.changeCollectionButton.text = "Add to collection"

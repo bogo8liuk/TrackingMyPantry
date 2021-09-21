@@ -36,7 +36,7 @@ android {
 
 dependencies {
     // START - Volley deps
-    implementation ("com.android.volley:volley:1.2.0")
+    implementation ("com.android.volley:volley:1.2.1")
     // END - Volley deps
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.6.0'
