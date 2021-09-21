@@ -79,6 +79,24 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
                     .show()
             }
 
+            this.removeQuantityButton.setOnClickListener {
+                val quantityPicker = NumberPicker(context)
+                quantityPicker.minValue = -items[this.adapterPosition].quantity
+                quantityPicker.maxValue = -1
+                AlertDialog.Builder(context)
+                    .setTitle("Remove")
+                    .setMessage("Choose the quantity of this product you want to remove")
+                    .setView(quantityPicker)
+                    .setNegativeButton(R.string.negative1, null)
+                    .setPositiveButton(R.string.remove) { _, _ ->
+                        DbSingleton.getInstance(context).changeItemQuantity(
+                            items[this.adapterPosition].id,
+                            quantityPicker.value
+                        )
+                    }
+                    .show()
+            }
+
             if (collections == null) {
                 this.changeCollectionButton.setOnClickListener {
                     DbSingleton.getInstance(context).removeItemFromCollection(items[this.adapterPosition].id)
