@@ -50,19 +50,12 @@
         android:textColor="@color/white"
         android:visibility="gone"/>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/deleteButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/delete"
-        android:background="@drawable/orange_medium_corner_button"
-        android:visibility="gone"/>
-
     <LinearLayout
         android:id="@+id/handleItemLayout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:visibility="gone">
 
         <androidx.appcompat.widget.AppCompatImageButton

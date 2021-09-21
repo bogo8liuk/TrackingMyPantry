@@ -34,7 +34,6 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val nameButton = view.findViewById<AppCompatButton>(R.id.localItemNameButton)
         val nameExpandedButton = view.findViewById<AppCompatButton>(R.id.localItemNameExpandedButton)
-        val deleteButton = view.findViewById<AppCompatButton>(R.id.deleteButton)
         val barcodeText = view.findViewById<TextView>(R.id.barcodeDescText)
         val descText = view.findViewById<TextView>(R.id.descLocalItemText)
         val purchaseText = view.findViewById<TextView>(R.id.purchaseLocalItemText)
@@ -61,17 +60,6 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
 
         init {
             val context = view.context
-
-            this.deleteButton.setOnClickListener {
-                AlertDialog.Builder(context)
-                    .setTitle("Delete")
-                    .setMessage("Are you sure you want to delete this item from your grocery?")
-                    .setNegativeButton(R.string.negative, null)
-                    .setPositiveButton(R.string.positive, DialogInterface.OnClickListener { _, _ ->
-                        // TODO: delete delete button
-                    })
-                    .show()
-            }
 
             if (collections == null) {
                 this.changeCollectionButton.setOnClickListener {
@@ -143,7 +131,6 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
         if (this.isExpanded[position]) {
             holder.nameButton.visibility = android.view.View.GONE
             holder.nameExpandedButton.visibility = android.view.View.VISIBLE
-            holder.deleteButton.visibility = android.view.View.VISIBLE
             holder.barcodeText.visibility = android.view.View.VISIBLE
             holder.descText.visibility = android.view.View.VISIBLE
             holder.purchaseText.visibility = android.view.View.VISIBLE
@@ -152,7 +139,6 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
         } else {
             holder.nameButton.visibility = android.view.View.VISIBLE
             holder.nameExpandedButton.visibility = android.view.View.GONE
-            holder.deleteButton.visibility = android.view.View.GONE
             holder.barcodeText.visibility = android.view.View.GONE
             holder.descText.visibility = android.view.View.GONE
             holder.purchaseText.visibility = android.view.View.GONE
