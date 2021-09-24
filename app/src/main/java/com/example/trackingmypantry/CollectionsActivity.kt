@@ -44,7 +44,7 @@ class CollectionsActivity : AppCompatActivity() {
             AlertDialog.Builder(this)
                 .setTitle("Create a collection")
                 .setView(nameInput)
-                .setNegativeButton(R.string.negative1, null)
+                .setNegativeButton(R.string.negativeCanc, null)
                 .setPositiveButton(R.string.create, DialogInterface.OnClickListener { _, _ ->
                     val name = nameInput.text.toString()
 

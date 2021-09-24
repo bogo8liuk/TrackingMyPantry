@@ -47,7 +47,7 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                     .setTitle("Rate")
                     .setMessage("Select a rating for the product you chose")
                     .setView(ratePicker)
-                    .setNegativeButton(R.string.negative1, null)
+                    .setNegativeButton(R.string.negativeCanc, null)
                     .setPositiveButton(R.string.send, DialogInterface.OnClickListener { _, _ ->
                         HttpHandler.retryOnFailure(
                             HttpHandler.RequestType.VOTE,
@@ -98,7 +98,7 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                     .setTitle("Expiration date")
                     .setMessage("Set an expiration date for the product")
                     .setView(datePicker)
-                    .setNegativeButton(R.string.negative1, null)
+                    .setNegativeButton(R.string.negativeCanc, null)
                     .setPositiveButton(R.string.set, DialogInterface.OnClickListener { _, _ ->
                         this.expDate = Calendar.getInstance().also {
                             it.set(datePicker.year, datePicker.month, datePicker.dayOfMonth) }

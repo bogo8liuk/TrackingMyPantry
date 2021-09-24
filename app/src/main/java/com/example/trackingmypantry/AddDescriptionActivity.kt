@@ -121,7 +121,7 @@ class AddDescriptionActivity : CameraLauncherActivity() {
                 .setTitle("Expiration date")
                 .setMessage("Set an expiration date, it will be saved")
                 .setView(datePicker)
-                .setNegativeButton(R.string.negative1, null)
+                .setNegativeButton(R.string.negativeCanc, null)
                 .setPositiveButton(R.string.set, DialogInterface.OnClickListener { _, _ ->
                     this.expirationDate = Calendar.getInstance().also {
                         it.set(datePicker.year, datePicker.month, datePicker.dayOfMonth) }

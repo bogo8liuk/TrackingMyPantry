@@ -70,8 +70,8 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
                     .setTitle("Buy")
                     .setMessage("Choose the quantity of this product you want to buy")
                     .setView(quantityPicker)
-                    .setNegativeButton(R.string.negative1, null)
-                    .setPositiveButton(R.string.buy1) { _, _ ->
+                    .setNegativeButton(R.string.negativeCanc, null)
+                    .setPositiveButton(R.string.buy) { _, _ ->
                         DbSingleton.getInstance(context).changeItemQuantity(
                             items[this.adapterPosition].id,
                             quantityPicker.value
@@ -88,7 +88,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
                     .setTitle("Remove")
                     .setMessage("Choose the quantity of this product you want to remove")
                     .setView(quantityPicker)
-                    .setNegativeButton(R.string.negative1, null)
+                    .setNegativeButton(R.string.negativeCanc, null)
                     .setPositiveButton(R.string.remove) { _, _ ->
                         DbSingleton.getInstance(context).changeItemQuantity(
                             items[this.adapterPosition].id,
@@ -122,7 +122,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
                             .setTitle("Collections")
                             .setMessage("Choose a collection")
                             .setView(collectionPicker)
-                            .setNegativeButton(R.string.negative1, null)    // do nothing
+                            .setNegativeButton(R.string.negativeCanc, null)    // do nothing
                             .setPositiveButton(R.string.choose) { _, _ ->
                                 DbSingleton.getInstance(context).insertItemIntoCollection(
                                     items[this.adapterPosition].id,
