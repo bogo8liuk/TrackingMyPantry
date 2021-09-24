@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
+import com.example.trackingmypantry.lib.EvalMode
 import com.example.trackingmypantry.lib.credentials.TokenHandler
 import com.example.trackingmypantry.lib.credentials.TokenType
 import com.example.trackingmypantry.lib.Utils
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraButton: AppCompatImageButton
     private lateinit var searchButton: AppCompatButton
     private lateinit var barcodeText: EditText
+    private lateinit var suggestButton: AppCompatButton
 
     // Activity launchers
     private val signupLauncher = this.registerForActivityResult(
@@ -105,6 +107,7 @@ class MainActivity : AppCompatActivity() {
         this.cameraButton = this.findViewById(R.id.cameraButton)
         this.searchButton = this.findViewById(R.id.searchButton)
         this.barcodeText = this.findViewById(R.id.barcodeText)
+        this.suggestButton = this.findViewById(R.id.suggestionsButton)
 
         if (TokenHandler.getToken(this, TokenType.ACCESS, false) == TokenHandler.INEXISTENT_TOKEN) {
             this.searchButton.visibility = android.view.View.GONE
@@ -124,7 +127,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         this.searchButton.setOnClickListener {
-            if (barcodeText.text.equals("")) {
+            if (Utils.stringPattern(EvalMode.EMPTY, barcodeText.text.toString())) {
                 barcodeText.requestFocus()
             } else {
                 var intent = Intent(this, BuyActivity::class.java)
@@ -150,6 +153,10 @@ class MainActivity : AppCompatActivity() {
             this.cameraButton.visibility = android.view.View.GONE
             this.barcodeText.visibility = android.view.View.GONE
             this.logoutButton.visibility = android.view.View.GONE
+        }
+
+        this.suggestButton.setOnClickListener {
+            this.startActivity(Intent(this, BluetoothManagerActivity::class.java))
         }
     }
 
