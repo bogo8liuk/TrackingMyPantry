@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable/green_circle_button.xml" value="0.371875" />
         <entry key="app/src/main/res/layout/activity_add_description.xml" value="0.29528985507246375" />
+        <entry key="app/src/main/res/layout/activity_bluetooth_manager.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/activity_buy.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/activity_camera.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/activity_collections.xml" value="0.34646739130434784" />

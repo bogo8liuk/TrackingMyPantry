@@ -84,9 +84,19 @@
             android:id="@+id/localButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/orange_medium_corner_button"
             android:drawableStart="@drawable/ic_baseline_store_24"
             android:text="@string/local"
+            android:textColor="@color/white" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/suggestionsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/lightblue_medium_corner_button"
+            android:drawableStart="@drawable/ic_baseline_bluetooth_24"
+            android:text="@string/suggest"
             android:textColor="@color/white" />
 
     </LinearLayout>
@@ -96,7 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.25" />
+        app:layout_constraintGuide_percent="0.15" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline11"
