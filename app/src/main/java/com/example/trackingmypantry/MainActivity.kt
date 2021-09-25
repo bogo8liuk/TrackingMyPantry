@@ -13,6 +13,7 @@ import com.example.trackingmypantry.lib.credentials.TokenHandler
 import com.example.trackingmypantry.lib.credentials.TokenType
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.ResultCode
+import com.example.trackingmypantry.lib.connectivity.bluetooth.BlueUtils
 import com.example.trackingmypantry.lib.credentials.CredentialsHandler
 
 class MainActivity : AppCompatActivity() {
@@ -99,6 +100,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        this.startService(Intent(this, ClearCredentialsService::class.java))
+
         this.setContentView(R.layout.activity_main)
         this.signupButton = this.findViewById(R.id.signupButton)
         this.signinButton = this.findViewById(R.id.signinButton)
@@ -108,6 +111,10 @@ class MainActivity : AppCompatActivity() {
         this.searchButton = this.findViewById(R.id.searchButton)
         this.barcodeText = this.findViewById(R.id.barcodeText)
         this.suggestButton = this.findViewById(R.id.suggestionsButton)
+
+        if (!BlueUtils.hasBluetoothFeature(this)) {
+            this.suggestButton.visibility = android.view.View.GONE
+        }
 
         if (TokenHandler.getToken(this, TokenType.ACCESS, false) == TokenHandler.INEXISTENT_TOKEN) {
             this.searchButton.visibility = android.view.View.GONE
@@ -158,13 +165,5 @@ class MainActivity : AppCompatActivity() {
         this.suggestButton.setOnClickListener {
             this.startActivity(Intent(this, BluetoothManagerActivity::class.java))
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        CredentialsHandler.clearCredentials(this)
-        TokenHandler.removeToken(this, TokenType.ACCESS)
-        TokenHandler.removeToken(this, TokenType.SESSION)
     }
 }

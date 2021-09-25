@@ -25,6 +25,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrackingMyPantry">
+
+        <service
+            android:name=".ClearCredentialsService"
+            android:enabled="false"
+            android:exported="false"
+            android:stopWithTask="false" />
+
         <!-- TMP activities -->
         <activity
             android:name=".MainActivity"
@@ -43,7 +50,7 @@
         <activity android:name=".CameraActivity" />
         <activity android:name=".BarcodeScannerActivity" />
         <activity android:name=".CameraLauncherActivity" />
-        <activity android:name=".CollectionsActivity"/>
+        <activity android:name=".CollectionsActivity" />
         <activity android:name=".BluetoothManagerActivity" />
     </application>
 
