@@ -28,7 +28,7 @@
 
         <service
             android:name=".ClearCredentialsService"
-            android:enabled="false"
+            android:enabled="true"
             android:exported="false"
             android:stopWithTask="false" />
 

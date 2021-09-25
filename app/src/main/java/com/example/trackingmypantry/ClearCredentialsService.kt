@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.HandlerThread
 import android.os.IBinder
 import android.os.Process
+import android.util.Log
 import com.example.trackingmypantry.lib.credentials.CredentialsHandler
 import com.example.trackingmypantry.lib.credentials.TokenHandler
 import com.example.trackingmypantry.lib.credentials.TokenType
@@ -17,6 +18,10 @@ class ClearCredentialsService : Service() {
         HandlerThread("service", Process.THREAD_PRIORITY_LOWEST).apply {
             start()
         }
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        return START_STICKY
     }
 
     override fun onBind(intent: Intent?): IBinder? {
