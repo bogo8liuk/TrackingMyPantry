@@ -105,7 +105,6 @@ class BarcodeScannerActivity : CameraActivity() {
         this.stopButton = findViewById(R.id.stopButton)
 
         this.stopButton.setOnClickListener {
-            Log.e("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN", "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
             this.setContentBarcodes()
         }
 

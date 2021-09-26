@@ -1,22 +1,32 @@
 package com.example.trackingmypantry
 
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
 import com.example.trackingmypantry.lib.EvalMode
+import com.example.trackingmypantry.lib.PermissionEvaluer
 import com.example.trackingmypantry.lib.credentials.TokenHandler
 import com.example.trackingmypantry.lib.credentials.TokenType
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.ResultCode
 import com.example.trackingmypantry.lib.connectivity.bluetooth.BlueUtils
 import com.example.trackingmypantry.lib.credentials.CredentialsHandler
+import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
+    private val BLUETOOTH_REQUEST_BACKGROUND = 1
+    private val BLUETOOTH_REQUEST_COARSE = 2
+
     // UI elements
     private lateinit var signupButton: AppCompatButton
     private lateinit var signinButton: AppCompatButton
@@ -97,6 +107,40 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showPermissionsInfo(performRequest: Boolean) {
+        AlertDialog.Builder(this)
+            .setTitle("SENSITIVE PERMISSIONS")
+            .setMessage(
+                "In order to use this functionality you have to grant location permission. " +
+                "By clicking 'OK', a screen where you are asked to grant this type of " +
+                "permission will be displayed. If this is not going to happen, you have to " +
+                "navigate the android settings and grant the permission from there. Anyway, " +
+                "it's important that you select the entry 'ALLOW ALL THE TIME'"
+            )
+            .setPositiveButton(R.string.positiveOk, DialogInterface.OnClickListener() { _, _ ->
+                if (performRequest) {
+                    PermissionEvaluer.request(
+                        this,
+                        android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                        BLUETOOTH_REQUEST_BACKGROUND
+                    )
+                }
+            })
+            .show()
+    }
+
+    private fun locationCheck() {
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q &&
+            !PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+            this.showPermissionsInfo(true)
+        } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q &&
+            !PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+            this.showPermissionsInfo(false)
+        } else {
+            this.startActivity(Intent(this, BluetoothManagerActivity::class.java))
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -163,7 +207,38 @@ class MainActivity : AppCompatActivity() {
         }
 
         this.suggestButton.setOnClickListener {
-            this.startActivity(Intent(this, BluetoothManagerActivity::class.java))
+            if (!PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                PermissionEvaluer.request(
+                    this,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                    BLUETOOTH_REQUEST_COARSE
+                )
+            } else {
+                this.locationCheck()
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            BLUETOOTH_REQUEST_BACKGROUND -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    this.startActivity(Intent(this, BluetoothManagerActivity::class.java))
+                } else {
+                    Utils.toastShow(this, "Do not have permissions")
+                }
+            }
+
+            BLUETOOTH_REQUEST_COARSE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    this.locationCheck()
+                }
+            }
         }
     }
 }

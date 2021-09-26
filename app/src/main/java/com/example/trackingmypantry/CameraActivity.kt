@@ -15,12 +15,6 @@ import java.util.concurrent.Executors
 abstract class CameraActivity() : AppCompatActivity() {
     protected val PERMISSION_REQUEST_CODE = 1
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
