@@ -32,7 +32,7 @@ class Accept(
             }
 
             socket.also {
-                val msg = handler.obtainMessage(MessageType.ACCEPT_SOCKET, it)
+                val msg = handler.obtainMessage(MessageType.ACCEPTED, it)
                 msg.sendToTarget()
                 this.welcomingSocket.close()
                 loop = false

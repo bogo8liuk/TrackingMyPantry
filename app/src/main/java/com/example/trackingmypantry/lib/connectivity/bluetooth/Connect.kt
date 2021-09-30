@@ -26,7 +26,8 @@ class Connect(
         this.connectSocket.let { it ->
             try {
                 it.connect()
-                val msg = this.handler.obtainMessage(MessageType.CONNECT_SOCKET, it)
+                val msg = this.handler.obtainMessage(MessageType.CONNECTED, it)
+                msg.sendToTarget()
             } catch (exception: IOException) {
                 Log.e("Socket bt connection error", exception.message ?: "Cannot call connect")
             }
