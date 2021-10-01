@@ -140,7 +140,8 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
         val view = LayoutInflater.from(parent.context).inflate(
             R.layout.local_item_row,
             parent,
-            false)
+            false
+        )
 
         return ViewHolder(view)
     }

@@ -3,6 +3,7 @@ package com.example.trackingmypantry.lib.adapters
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.os.Handler
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
@@ -27,11 +28,17 @@ class BluetoothDevicesAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        TODO("Not yet implemented")
+        val view = LayoutInflater.from(parent.context).inflate(
+            R.layout.bluetooth_device_row,
+            parent,
+            false
+        )
+
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.deviceButton.text = devices[position].name
     }
 
     override fun getItemCount(): Int {
