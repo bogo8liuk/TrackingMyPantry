@@ -11,7 +11,7 @@ import java.io.IOException
  * Thread for the raw bluetooth accept(). The returning socket is sent through a message to
  * the thread that passed @param `handler`.
  */
-class Accept(
+class AcceptThread(
     adapter: BluetoothAdapter,
     private val handler: Handler): Thread() {
 

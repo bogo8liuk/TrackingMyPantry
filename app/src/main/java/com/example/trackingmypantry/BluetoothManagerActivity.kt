@@ -5,11 +5,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.lib.Utils
+import com.example.trackingmypantry.lib.connectivity.bluetooth.AcceptThread
+import com.example.trackingmypantry.lib.connectivity.bluetooth.ConnectThread
 import com.example.trackingmypantry.lib.connectivity.bluetooth.MessageType
 
 class BluetoothManagerActivity : AppCompatActivity() {
@@ -18,10 +19,27 @@ class BluetoothManagerActivity : AppCompatActivity() {
     private lateinit var pairButton: AppCompatButton
     private lateinit var acceptButton: AppCompatButton
 
+    private lateinit var connectThread: ConnectThread
+    private lateinit var acceptThread: AcceptThread
+
     private val btInfoHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
+                MessageType.START_CONNECT -> {
+                    connectThread = msg.obj as ConnectThread
+                }
+
+                MessageType.START_ACCEPT -> {
+                    acceptThread = msg.obj as AcceptThread
+                }
+
                 MessageType.CONNECTED -> {
+                    connectThread.cancel()
+                    //TODO: state connected, start ShareActivity
+                }
+
+                MessageType.ACCEPTED -> {
+                    acceptThread.cancel()
                     //TODO: state connected, start ShareActivity
                 }
 

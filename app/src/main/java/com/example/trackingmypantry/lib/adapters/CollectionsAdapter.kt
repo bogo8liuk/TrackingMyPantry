@@ -14,7 +14,7 @@ import com.example.trackingmypantry.LocalItemsActivity
 import com.example.trackingmypantry.R
 import com.example.trackingmypantry.db.entities.Collection
 
-class CollectionsAdapter(private val context: Context, private val collections: Array<Collection>): BaseAdapter() {
+class CollectionsAdapter(context: Context, private val collections: Array<Collection>): BaseAdapter() {
     private val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private val MAX_COLOR = 6
 

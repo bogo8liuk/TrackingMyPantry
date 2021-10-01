@@ -11,7 +11,7 @@ class DataTransfer(private val handler: Handler) {
         val data: ByteArray
     )
 
-    inner class Receive(private val socket: BluetoothSocket): Thread() {
+    inner class ReceiveThread(private val socket: BluetoothSocket): Thread() {
         private val stream = socket.inputStream
         private val buffer = ByteArray(2048)
 
@@ -39,7 +39,7 @@ class DataTransfer(private val handler: Handler) {
         }
     }
 
-    inner class Send(private val socket: BluetoothSocket, private val bytes: ByteArray): Thread() {
+    inner class SendThread(private val socket: BluetoothSocket, private val bytes: ByteArray): Thread() {
         private val stream = socket.outputStream
 
         override fun run() {

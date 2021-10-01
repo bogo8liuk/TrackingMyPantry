@@ -11,7 +11,7 @@ import java.io.IOException
  * Thread for the raw bluetooth connect(). The returning socket is sent through a message to
  * the thread that passed @param `handler`.
  */
-class Connect(
+class ConnectThread(
     private val adapter: BluetoothAdapter,
     device: BluetoothDevice,
     private val handler: Handler): Thread() {
@@ -25,9 +25,13 @@ class Connect(
 
         this.connectSocket.let { it ->
             try {
+                val startMsg = this.handler.obtainMessage(MessageType.START_CONNECT, this)
+                startMsg.sendToTarget()
+
                 it.connect()
-                val msg = this.handler.obtainMessage(MessageType.CONNECTED, it)
-                msg.sendToTarget()
+
+                val connectedMsg = this.handler.obtainMessage(MessageType.CONNECTED, it)
+                connectedMsg.sendToTarget()
             } catch (exception: IOException) {
                 Log.e("Socket bt connection error", exception.message ?: "Cannot call connect")
 
