@@ -21,9 +21,12 @@ class AcceptThread(
     }
 
     override fun run() {
-        var loop = true
-        while (loop) {
+        var notAccepted = true
+        while (notAccepted) {
             val socket: BluetoothSocket? = try {
+                val msg = handler.obtainMessage(MessageType.START_ACCEPT, this)
+                msg.sendToTarget()
+
                 this.welcomingSocket.accept()
             } catch (exception: IOException) {
                 Log.e("Socket bt accept error", exception.message ?: "Cannot accept connections")
@@ -31,15 +34,18 @@ class AcceptThread(
                 val msg = handler.obtainMessage(MessageType.ERROR_ACCEPT)
                 msg.sendToTarget()
 
-                loop = false
+                notAccepted = false
                 null
             }
 
             socket.also {
-                val msg = handler.obtainMessage(MessageType.CONNECTED, it)
-                msg.sendToTarget()
+                if (notAccepted) {
+                    val msg = handler.obtainMessage(MessageType.ACCEPTED, it)
+                    msg.sendToTarget()
+                    notAccepted = false
+                }
+
                 this.welcomingSocket.close()
-                loop = false
             }
         }
     }
