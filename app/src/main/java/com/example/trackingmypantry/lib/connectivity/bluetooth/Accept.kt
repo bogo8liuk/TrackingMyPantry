@@ -27,12 +27,16 @@ class Accept(
                 this.welcomingSocket.accept()
             } catch (exception: IOException) {
                 Log.e("Socket bt accept error", exception.message ?: "Cannot accept connections")
+
+                val msg = handler.obtainMessage(MessageType.ERROR_ACCEPT)
+                msg.sendToTarget()
+
                 loop = false
                 null
             }
 
             socket.also {
-                val msg = handler.obtainMessage(MessageType.ACCEPTED, it)
+                val msg = handler.obtainMessage(MessageType.CONNECTED, it)
                 msg.sendToTarget()
                 this.welcomingSocket.close()
                 loop = false

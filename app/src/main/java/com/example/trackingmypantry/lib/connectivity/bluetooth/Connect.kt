@@ -30,6 +30,9 @@ class Connect(
                 msg.sendToTarget()
             } catch (exception: IOException) {
                 Log.e("Socket bt connection error", exception.message ?: "Cannot call connect")
+
+                val msg = this.handler.obtainMessage(MessageType.ERROR_CONNECT)
+                msg.sendToTarget()
             }
         }
     }

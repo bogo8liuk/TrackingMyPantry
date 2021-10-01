@@ -9,6 +9,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
+import com.example.trackingmypantry.lib.connectivity.bluetooth.MessageType
 
 class BluetoothManagerActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -18,7 +19,19 @@ class BluetoothManagerActivity : AppCompatActivity() {
 
     private val btInfoHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
-            //TODO
+            when (msg.what) {
+                MessageType.CONNECTED -> {
+                    //TODO: state connected, another activity?
+                }
+
+                MessageType.ERROR_CONNECT -> {
+
+                }
+
+                MessageType.ERROR_ACCEPT -> {
+
+                }
+            }
         }
     }
 
