@@ -9,6 +9,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
+import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.connectivity.bluetooth.MessageType
 
 class BluetoothManagerActivity : AppCompatActivity() {
@@ -21,15 +22,15 @@ class BluetoothManagerActivity : AppCompatActivity() {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 MessageType.CONNECTED -> {
-                    //TODO: state connected, another activity?
+                    //TODO: state connected, start ShareActivity
                 }
 
                 MessageType.ERROR_CONNECT -> {
-
+                    Utils.toastShow(this@BluetoothManagerActivity, "Could not connect to this device")
                 }
 
                 MessageType.ERROR_ACCEPT -> {
-
+                    Utils.toastShow(this@BluetoothManagerActivity, "Could not connect to other devices")
                 }
             }
         }
