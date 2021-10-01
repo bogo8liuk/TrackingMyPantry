@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Handler
+import androidx.activity.result.ActivityResultLauncher
 
 class BlueUtils {
     companion object {
@@ -34,10 +35,10 @@ class BlueUtils {
          * @warning It calls `startActivityForResult`, so the request needs to be handled
          * by implementing `onActivityResult`.
          */
-        fun enableRequestIfDisabled(activity: Activity, adapter: BluetoothAdapter) {
+        fun enableRequestIfDisabled(activity: Activity, adapter: BluetoothAdapter, launcher: ActivityResultLauncher<Intent>) {
             if (!adapter.isEnabled) {
                 val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                activity.startActivityForResult(intent, BLUETOOTH_ENABLING_REQUEST_CODE)
+                launcher.launch(intent)
             }
         }
 

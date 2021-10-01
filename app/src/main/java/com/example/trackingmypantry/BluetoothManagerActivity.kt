@@ -1,12 +1,14 @@
 package com.example.trackingmypantry
 
 import android.bluetooth.BluetoothDevice
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.Observer
@@ -62,8 +64,26 @@ class BluetoothManagerActivity : AppCompatActivity() {
         }
     }
 
+    private val enablingLauncher = this.registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result ->
+        when (result.resultCode) {
+            RESULT_OK -> {
+                //do nothing, the user can continue using this functionality
+            }
+
+            RESULT_CANCELED -> {
+                Utils.toastShow(this, "Enable bluetooth to use this functionality")
+                this.finish()
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val btAdapter = BlueUtils.bluetoothAdapter(this)
+        BlueUtils.enableRequestIfDisabled(this, btAdapter, this.enablingLauncher)
+
         this.setContentView(R.layout.activity_bluetooth_manager)
 
         this.recyclerView = this.findViewById(R.id.btDevicesRecView)
@@ -71,10 +91,16 @@ class BluetoothManagerActivity : AppCompatActivity() {
         this.pairButton = this.findViewById(R.id.pairButton)
         this.acceptButton = this.findViewById(R.id.acceptButton)
 
-        val btAdapter = BlueUtils.bluetoothAdapter(this)
-
         this.recyclerView.adapter = BluetoothDevicesAdapter(btAdapter, btInfoHandler, arrayOf<BluetoothDevice>())
         this.recyclerView.layoutManager = LinearLayoutManager(this)
+
+        this.acceptButton.setOnClickListener {
+            AcceptThread(btAdapter, btInfoHandler).run()
+        }
+
+        this.pairButton.setOnClickListener {
+
+        }
 
         val model: BluetoothDevicesViewModel by viewModels {
             BluetoothDevicesViewModelFactory(btAdapter)
