@@ -26,6 +26,7 @@ import java.util.jar.Manifest
 class MainActivity : AppCompatActivity() {
     private val BLUETOOTH_REQUEST_BACKGROUND = 1
     private val BLUETOOTH_REQUEST_COARSE = 2
+    private val LOCATION_REQUEST_COARSE = 3
 
     // UI elements
     private lateinit var signupButton: AppCompatButton
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var searchButton: AppCompatButton
     private lateinit var barcodeText: EditText
     private lateinit var suggestButton: AppCompatButton
+    private lateinit var locationsButton: AppCompatButton
 
     // Activity launchers
     private val signupLauncher = this.registerForActivityResult(
@@ -155,6 +157,7 @@ class MainActivity : AppCompatActivity() {
         this.searchButton = this.findViewById(R.id.searchButton)
         this.barcodeText = this.findViewById(R.id.barcodeText)
         this.suggestButton = this.findViewById(R.id.suggestionsButton)
+        this.locationsButton = this.findViewById(R.id.locationsButton)
 
         if (!BlueUtils.hasBluetoothFeature(this)) {
             this.suggestButton.visibility = android.view.View.GONE
@@ -217,6 +220,18 @@ class MainActivity : AppCompatActivity() {
                 this.locationCheck()
             }
         }
+
+        this.locationsButton.setOnClickListener {
+            if (!PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                PermissionEvaluer.request(
+                    this,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                    LOCATION_REQUEST_COARSE
+                )
+            } else {
+                this.startActivity(Intent(this, LocationsActivity::class.java))
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -237,6 +252,16 @@ class MainActivity : AppCompatActivity() {
             BLUETOOTH_REQUEST_COARSE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     this.locationCheck()
+                } else {
+                    Utils.toastShow(this, "Do not have permissions")
+                }
+            }
+
+            LOCATION_REQUEST_COARSE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    this.startActivity(Intent(this, LocationsActivity::class.java))
+                } else {
+                    Utils.toastShow(this, "Do not have permissions")
                 }
             }
         }

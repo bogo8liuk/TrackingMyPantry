@@ -87,7 +87,7 @@ class BlueUtils {
         }
 
         /**
-         * It returns a `BroadcastReceiver` object that handles the case `stratDiscovery()`
+         * It returns a `BroadcastReceiver` object that handles the case `startDiscovery()`
          * finds a device.
          * @warning The receiver must unregistered.
          */

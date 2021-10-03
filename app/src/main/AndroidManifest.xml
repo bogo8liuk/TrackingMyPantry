@@ -51,7 +51,8 @@
         <activity android:name=".CameraLauncherActivity" />
         <activity android:name=".CollectionsActivity" />
         <activity android:name=".BluetoothManagerActivity" />
-        <activity android:name=".ShareActivity"/>
+        <activity android:name=".ShareActivity" />
+        <activity android:name=".LocationsActivity"/>
     </application>
 
 </manifest>

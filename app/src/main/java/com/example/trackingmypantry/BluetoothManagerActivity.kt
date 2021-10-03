@@ -99,7 +99,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
         }
 
         this.pairButton.setOnClickListener {
-
+            //TODO: discovery, new activity???
         }
 
         val model: BluetoothDevicesViewModel by viewModels {
