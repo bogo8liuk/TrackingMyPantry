@@ -39,7 +39,9 @@
             android:name=".ClearCredentialsService"
             android:enabled="true"
             android:exported="false"
-            android:stopWithTask="false" /> <!-- TMP activities -->
+            android:stopWithTask="false" />
+
+        <!-- TMP activities -->
         <activity
             android:name=".MainActivity"
             android:exported="true">

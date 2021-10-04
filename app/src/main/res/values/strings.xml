@@ -41,6 +41,7 @@
     <string name="requestAccept">Accept a request</string>
     <string name="pair">Pair</string>
     <string name="locations">Locations</string>
+    <string name="positionMy">My position</string>
     <!--Buttons texts-->
 
     <!--Hints-->
