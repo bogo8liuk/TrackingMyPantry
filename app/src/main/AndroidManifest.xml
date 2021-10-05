@@ -33,6 +33,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrackingMyPantry">
+        <activity
+            android:name=".SecureChangesActivity"
+            android:exported="true" />
+        <activity
+            android:name=".RemoveLocationsActivity"
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -45,9 +51,7 @@
             android:name=".ClearCredentialsService"
             android:enabled="true"
             android:exported="false"
-            android:stopWithTask="false" />
-
-        <!-- TMP activities -->
+            android:stopWithTask="false" /> <!-- TMP activities -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -68,7 +72,7 @@
         <activity android:name=".CollectionsActivity" />
         <activity android:name=".BluetoothManagerActivity" />
         <activity android:name=".ShareActivity" />
-        <activity android:name=".LocationsActivity"/>
+        <activity android:name=".LocationsActivity" />
     </application>
 
 </manifest>

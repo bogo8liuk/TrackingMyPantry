@@ -12,4 +12,5 @@ import com.example.trackingmypantry.db.entities.Collection
 abstract class Db: RoomDatabase() {
     abstract fun itemDao(): ItemDao
     abstract fun collectionDao(): CollectionDao
+    abstract fun placeDao(): PlaceDao
 }

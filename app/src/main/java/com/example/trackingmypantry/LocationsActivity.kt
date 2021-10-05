@@ -23,7 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 
-class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
+class LocationsActivity : SecureChangesActivity(), OnMapReadyCallback {
     data class MarkerAndPosition (
         val marker: Marker?,
         val latitude: Double,

@@ -58,7 +58,5 @@ class LocalItemsActivity : AppCompatActivity() {
                 this.recyclerView.adapter = adapter
             })
         }
-
-
     }
 }

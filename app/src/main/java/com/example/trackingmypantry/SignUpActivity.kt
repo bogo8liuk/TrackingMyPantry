@@ -17,7 +17,7 @@ class SignUpActivity : AppCompatActivity() {
         var usernameEditText = this.findViewById<EditText>(R.id.usernameEditText)
         var emailEditText = this.findViewById<EditText>(R.id.emailEditText)
         var passwordEditText = this.findViewById<EditText>(R.id.passwordEditText)
-        var signUpButton = findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.signButton)
+        var signUpButton = this.findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.signButton)
 
         signUpButton.setText(R.string.signUp)
         signUpButton.setOnClickListener {
