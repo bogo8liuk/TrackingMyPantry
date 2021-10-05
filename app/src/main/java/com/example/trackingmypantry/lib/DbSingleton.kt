@@ -8,6 +8,7 @@ import androidx.room.Room
 import com.example.trackingmypantry.db.Db
 import com.example.trackingmypantry.db.entities.Collection
 import com.example.trackingmypantry.db.entities.Item
+import com.example.trackingmypantry.db.entities.Place
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -37,6 +38,7 @@ class DbSingleton(context: Context) {
     .build()
     private val itemDao = db.itemDao()
     private val collectionDao = db.collectionDao()
+    private val placeDao = db.placeDao()
 
     /* From here, wrapper functions */
     fun getAllItems(): LiveData<List<Item>> {
@@ -95,6 +97,26 @@ class DbSingleton(context: Context) {
         runBlocking {
             launch {
                 collectionDao.insertCollection(*collections)
+            }
+        }
+    }
+
+    fun getAllPlaces(): LiveData<List<Place>> {
+        return placeDao.getAllPlaces().asLiveData()
+    }
+
+    fun insertPlaces(vararg places: Place) {
+        runBlocking {
+            launch {
+                placeDao.insertPlaces(*places)
+            }
+        }
+    }
+
+    fun deletePlaces(vararg places: Place) {
+        runBlocking {
+            launch {
+                placeDao.deletePlaces(*places)
             }
         }
     }
