@@ -7,6 +7,8 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -221,7 +223,29 @@ class MainActivity : AppCompatActivity() {
         }
 
         this.locationsButton.setOnClickListener {
-            this.startActivity(Intent(this, LocationsActivity::class.java))
+            val actionButtons = RadioGroup(this)
+            val addLocationsButton = RadioButton(this)
+            val removeLocationsButton = RadioButton(this)
+
+            addLocationsButton.text = "Add new locations"
+            removeLocationsButton.text = "Remove your locations"
+
+            actionButtons.addView(addLocationsButton)
+            actionButtons.addView(removeLocationsButton)
+
+            AlertDialog.Builder(this)
+                .setTitle("Choose action")
+                .setMessage("Choose one of the following action")
+                .setView(actionButtons)
+                .setNegativeButton(R.string.negativeCanc, null)
+                .setPositiveButton(R.string.choose, DialogInterface.OnClickListener { _, _ ->
+                    if (addLocationsButton.isChecked) {
+                        this.startActivity(Intent(this, LocationsActivity::class.java))
+                    } else if (removeLocationsButton.isChecked) {
+                        //TODO: start new activity
+                    }
+                })
+                .show()
         }
     }
 

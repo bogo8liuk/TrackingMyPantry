@@ -8,7 +8,6 @@ import android.location.LocationRequest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import com.example.trackingmypantry.lib.EvalMode
@@ -42,13 +41,6 @@ class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var saveButton: AppCompatButton
 
     private fun addMarkedPosition(map: GoogleMap, title: String, location: LatLng) {
-        /*this.currentMarker?.remove()
-        this.currentMarker = map.addMarker(
-            MarkerOptions()
-                .position(location)
-                .title(title)
-        )*/
-
         this.markedLocations.add(
             MarkerAndPosition(
                 map.addMarker(
