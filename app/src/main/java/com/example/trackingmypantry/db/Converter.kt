@@ -13,4 +13,14 @@ class Converter {
     fun dateToLong(date: Date?): Long? {
         return date?.time
     }
+
+    @TypeConverter
+    fun stringToDouble(value: String?): Double? {
+        return value?.toDouble()
+    }
+
+    @TypeConverter
+    fun doubleToString(value: Double?): String? {
+        return value?.toString()
+    }
 }

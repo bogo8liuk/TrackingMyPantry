@@ -2,16 +2,12 @@ package com.example.trackingmypantry.db.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 
-@Entity(
-    foreignKeys = [ForeignKey(
-        entity = Item::class,
-        parentColumns = arrayOf("id"),
-        childColumns = arrayOf("item")
-    )],
-    primaryKeys = ["item", "place"]
-)
+@Entity
 data class Place(
-    val item: Long,
-    val place: String
+    val latitude: Double,
+    val longitude: Double,
+    val title: String,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0
 )
