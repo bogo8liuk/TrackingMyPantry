@@ -10,6 +10,8 @@ import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
+import com.example.trackingmypantry.db.entities.Place
+import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.EvalMode
 import com.example.trackingmypantry.lib.PermissionEvaluer
 import com.example.trackingmypantry.lib.Utils
@@ -23,7 +25,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 
-class LocationsActivity : SecureChangesActivity(), OnMapReadyCallback {
+class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
     data class MarkerAndPosition (
         val marker: Marker?,
         val latitude: Double,
@@ -78,6 +80,17 @@ class LocationsActivity : SecureChangesActivity(), OnMapReadyCallback {
         this.setContentView(R.layout.activity_locations)
 
         this.myPositionButton = this.findViewById(R.id.myPositionButton)
+        this.saveButton = this.findViewById(R.id.saveButton)
+
+        this.saveButton.setOnClickListener {
+            DbSingleton.getInstance(this).insertPlaces(
+                places = this.markedLocations.map {
+                    Place(it.latitude, it.longitude, it.marker?.title)
+                }.toTypedArray()
+            )
+
+            Utils.toastShow(this, "Your changes will be saved")
+        }
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -114,6 +127,19 @@ class LocationsActivity : SecureChangesActivity(), OnMapReadyCallback {
             } else {
                 this.getCurrentLocation()
             }
+        }
+    }
+
+    override fun onBackPressed() {
+        if (this.markedLocations.isNotEmpty()) {
+            AlertDialog.Builder(this)
+                .setTitle("Unsaved changes")
+                .setMessage("There are unsaved changes, by going back you will" +
+                        "lose them. Continuing?")
+                .setNegativeButton(R.string.negative, null)
+                .setPositiveButton(R.string.positive, DialogInterface.OnClickListener { _, _ ->
+                    super.onBackPressed()
+                })
         }
     }
 
