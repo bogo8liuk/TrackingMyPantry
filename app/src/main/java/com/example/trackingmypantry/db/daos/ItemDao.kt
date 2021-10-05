@@ -6,10 +6,10 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ItemDao {
-    @Query("select * from item")
+    @Query("select * from Item")
     fun getAllItems(): Flow<List<Item>>
 
-    @Query("select * from item where barcode like :barcode")
+    @Query("select * from Item where barcode like :barcode")
     fun getItemsByBarcode(barcode: String): Flow<List<Item>>
 
     @Query("select * from Item where id like :id")
