@@ -25,32 +25,41 @@ import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 
 class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
-    private var currentMarker: Marker? = null
-    private var latitude: Double? = null
-    private var longitude: Double? = null
+    data class MarkerAndPosition (
+        val marker: Marker?,
+        val latitude: Double,
+        val longitude: Double
+    )
+
+    private var markedLocations = mutableListOf<MarkerAndPosition>()
     private lateinit var map: GoogleMap
-    private lateinit var selectedLocation: String
 
     private val DEFAULT_LOCATION_NAME = "My point of interest"
     private val LOCATION_REQUEST_FINE = 0
 
     // UI elements
-    private lateinit var locationText: TextView
     private lateinit var myPositionButton: AppCompatButton
     private lateinit var saveButton: AppCompatButton
 
-    private fun updateCurrentMarker(map: GoogleMap, title: String, location: LatLng) {
-        this.currentMarker?.remove()
+    private fun addMarkedPosition(map: GoogleMap, title: String, location: LatLng) {
+        /*this.currentMarker?.remove()
         this.currentMarker = map.addMarker(
             MarkerOptions()
                 .position(location)
                 .title(title)
-        )
-    }
+        )*/
 
-    private fun changeLocationText(title: String) {
-        this.selectedLocation = title
-        this.locationText.text = this.selectedLocation
+        this.markedLocations.add(
+            MarkerAndPosition(
+                map.addMarker(
+                    MarkerOptions()
+                        .position(location)
+                        .title(title)
+                ),
+                location.latitude,
+                location.longitude
+            )
+        )
     }
 
     private fun showSetNameDialog(latitude: Double, longitude: Double, map: GoogleMap) {
@@ -67,14 +76,7 @@ class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
                     title = nameEditText.text.toString()
                 }
 
-                val location = LatLng(latitude, longitude)
-
-                this.updateCurrentMarker(map, title, location)
-
-                this.latitude = location.latitude
-                this.longitude = location.longitude
-
-                this.changeLocationText(title)
+                this.addMarkedPosition(map, title, LatLng(latitude, longitude))
             })
             .show()
     }
@@ -83,7 +85,6 @@ class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_locations)
 
-        this.locationText = this.findViewById(R.id.locationText)
         this.myPositionButton = this.findViewById(R.id.myPositionButton)
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -97,6 +98,8 @@ class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
             LocationRequest.QUALITY_HIGH_ACCURACY,
             CancellationTokenSource().token
         )
+
+        Utils.toastShow(this, "It might take a few second")
 
         task.addOnSuccessListener { location ->
             this.showSetNameDialog(location.latitude, location.longitude, this.map)
