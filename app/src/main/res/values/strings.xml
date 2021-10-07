@@ -15,7 +15,6 @@
     <string name="positiveOk">OK</string>
     <string name="choose">Choose</string>
     <string name="chooseDevice">Choose the device you want to connect to</string>
-    <string name="chooseLocation">Choose the locations you wish to delete</string>
     <string name="describe">Description</string>
     <string name="describeName">Set a name and a description for</string>
     <string name="describeAdd">Add a description</string>
@@ -44,7 +43,6 @@
     <string name="locations">Locations</string>
     <string name="positionMy">My position</string>
     <string name="save">Save</string>
-    <string name="noLocation">You don\'t have locations yet</string>
     <!--Buttons texts-->
 
     <!--Hints-->
