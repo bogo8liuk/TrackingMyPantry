@@ -9,6 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.db.entities.Place
+import com.example.trackingmypantry.lib.DbSingleton
+import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.LocationsToRemoveAdapter
 import com.example.trackingmypantry.lib.viewmodels.LocationsToRemoveViewModel
 import com.example.trackingmypantry.lib.viewmodels.LocationsToRemoveViewModelFactory
@@ -28,7 +30,7 @@ class RemoveLocationsActivity : AppCompatActivity() {
         this.recView = this.findViewById(R.id.locationsRecView)
         this.removeButton = this.findViewById(R.id.deleteLocationsButton)
 
-        // Netx two lines to avoid layout skipping
+        // Next two lines to avoid layout skipping
         this.recView.adapter = LocationsToRemoveAdapter(arrayOf<Place>(), { _ -> }, { _ -> })
         this.recView.layoutManager = LinearLayoutManager(this)
 
@@ -38,7 +40,7 @@ class RemoveLocationsActivity : AppCompatActivity() {
 
         model.getPlaces().observe(this, Observer<List<Place>> {
             if (it.isEmpty()) {
-                this.descriptionText.text = "You did not saved locations yet"
+                this.descriptionText.text = "You did not saved any location yet"
             } else {
                 this.descriptionText.text = "Choose the locations you wish to delete"
             }
@@ -53,5 +55,19 @@ class RemoveLocationsActivity : AppCompatActivity() {
                 }
             )
         })
+
+        this.removeButton.setOnClickListener {
+            if (this.locationsToRemove.isNotEmpty()) {
+                DbSingleton.getInstance(this).deletePlaces(
+                    places = this.locationsToRemove.toTypedArray()
+                )
+
+                Utils.toastShow(this, "Your locations will soon be removed")
+            } else {
+                Utils.toastShow(this, "No selecte locations")
+            }
+
+            this.finish()
+        }
     }
 }

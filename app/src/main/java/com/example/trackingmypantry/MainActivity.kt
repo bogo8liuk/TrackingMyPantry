@@ -242,7 +242,7 @@ class MainActivity : AppCompatActivity() {
                     if (addLocationsButton.isChecked) {
                         this.startActivity(Intent(this, LocationsActivity::class.java))
                     } else if (removeLocationsButton.isChecked) {
-                        //TODO: start new activity
+                        this.startActivity(Intent(this, RemoveLocationsActivity::class.java))
                     }
                 })
                 .show()
