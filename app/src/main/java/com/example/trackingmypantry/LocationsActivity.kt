@@ -7,6 +7,7 @@ import android.location.Location
 import android.location.LocationRequest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
@@ -77,23 +78,35 @@ class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.e("pippo", "1") //TODO
         this.setContentView(R.layout.activity_locations)
 
+        Log.e("pippo", "1.5") //TODO
         this.myPositionButton = this.findViewById(R.id.myPositionButton)
         this.saveButton = this.findViewById(R.id.saveButton)
 
+        Log.e("pippo", "2") //TODO
         this.saveButton.setOnClickListener {
-            DbSingleton.getInstance(this).insertPlaces(
-                places = this.markedLocations.map {
-                    Place(it.latitude, it.longitude, it.marker?.title)
-                }.toTypedArray()
-            )
+            if (this.markedLocations.isNotEmpty()) {
+                DbSingleton.getInstance(this).insertPlaces(
+                    places = this.markedLocations.map {
+                        Place(it.latitude, it.longitude, it.marker?.title)
+                    }.toTypedArray()
+                )
 
-            Utils.toastShow(this, "Your changes will be saved")
+                Utils.toastShow(this, "Your changes will be saved")
+
+                this.markedLocations.clear()
+            } else {
+                Utils.toastShow(this, "You didn't add locations yet")
+            }
         }
 
+        Log.e("pippo", "3") //TODO
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        Log.e("pippo", "3.5") //TODO
         mapFragment.getMapAsync(this)
+        Log.e("pippo", "4") //TODO
     }
 
     @SuppressLint("MissingPermission")
@@ -112,11 +125,13 @@ class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(map: GoogleMap) {
+        Log.e("pippo", "5") //TODO
         this.map = map
         map.setOnMapClickListener { location ->
             this.showSetNameDialog(location.latitude, location.longitude, map)
         }
 
+        Log.e("pippo", "6") //TODO
         this.myPositionButton.setOnClickListener {
             if (!PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
                 PermissionEvaluer.request(
@@ -128,6 +143,7 @@ class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
                 this.getCurrentLocation()
             }
         }
+        Log.e("pippo", "7") //TODO
     }
 
     override fun onBackPressed() {
@@ -140,6 +156,9 @@ class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
                 .setPositiveButton(R.string.positive, DialogInterface.OnClickListener { _, _ ->
                     super.onBackPressed()
                 })
+                .show()
+        } else {
+            super.onBackPressed()
         }
     }
 

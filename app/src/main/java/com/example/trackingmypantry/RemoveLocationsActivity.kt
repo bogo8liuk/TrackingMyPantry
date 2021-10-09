@@ -64,10 +64,8 @@ class RemoveLocationsActivity : AppCompatActivity() {
 
                 Utils.toastShow(this, "Your locations will soon be removed")
             } else {
-                Utils.toastShow(this, "No selecte locations")
+                Utils.toastShow(this, "No selected locations")
             }
-
-            this.finish()
         }
     }
 }

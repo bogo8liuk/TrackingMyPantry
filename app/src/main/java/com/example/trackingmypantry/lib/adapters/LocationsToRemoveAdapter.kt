@@ -1,8 +1,10 @@
 package com.example.trackingmypantry.lib.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R
@@ -21,15 +23,15 @@ class LocationsToRemoveAdapter(
     RecyclerView.Adapter<LocationsToRemoveAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        val radioButton: RadioButton = view.findViewById<RadioButton>(R.id.locationButton)
+        val checkBox: CheckBox = view.findViewById(R.id.locationCheckBox)
 
         init {
-            this.radioButton.setOnClickListener {
-                it as RadioButton
+            this.checkBox.setOnClickListener {
+                it as CheckBox
                 if (it.isChecked) {
-                    onUncheck(locations[this.adapterPosition])
-                } else {
                     onCheck(locations[this.adapterPosition])
+                } else {
+                    onUncheck(locations[this.adapterPosition])
                 }
             }
         }
@@ -46,7 +48,7 @@ class LocationsToRemoveAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.radioButton.text = locations[position].title
+        holder.checkBox.text = locations[position].title
     }
 
     override fun getItemCount(): Int {

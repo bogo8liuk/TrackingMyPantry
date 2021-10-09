@@ -4,10 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RadioButton
-        android:id="@+id/locationButton"
+    <CheckBox
+        android:id="@+id/locationCheckBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
+
 </LinearLayout>
