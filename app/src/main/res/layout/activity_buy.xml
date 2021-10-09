@@ -69,6 +69,7 @@
         android:id="@+id/newProdButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="@string/productNew"
         android:textColor="@color/white"
         android:background="@drawable/green_medium_corner_button"

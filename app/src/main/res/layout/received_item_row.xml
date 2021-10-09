@@ -33,16 +33,18 @@
         android:id="@+id/receivedItemImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:visibility="gone" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/receivedItemSetExpButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/lightblue_medium_corner_button"
         android:text="@string/dateExpireSet"
         android:textSize="15sp"
+        android:textColor="@color/white"
         android:visibility="gone"
         />
 
@@ -50,9 +52,11 @@
         android:id="@+id/receivedItemChooseButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:background="@drawable/green_medium_corner_button"
         android:text="@string/choose"
         android:textSize="15sp"
+        android:textColor="@color/white"
         android:visibility="gone"/>
 
 </LinearLayout>

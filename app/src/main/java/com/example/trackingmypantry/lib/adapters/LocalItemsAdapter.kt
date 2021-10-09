@@ -187,6 +187,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
             holder.purchaseText.visibility = android.view.View.VISIBLE
             holder.expirationText.visibility = android.view.View.VISIBLE
             holder.handleItemLayout.visibility = android.view.View.VISIBLE
+            holder.image.visibility = android.view.View.VISIBLE
         } else {
             holder.nameButton.visibility = android.view.View.VISIBLE
             holder.nameExpandedButton.visibility = android.view.View.GONE
@@ -196,6 +197,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
             holder.purchaseText.visibility = android.view.View.GONE
             holder.expirationText.visibility = android.view.View.GONE
             holder.handleItemLayout.visibility = android.view.View.GONE
+            holder.image.visibility = android.view.View.GONE
         }
 
         holder.nameButton.setOnClickListener {
