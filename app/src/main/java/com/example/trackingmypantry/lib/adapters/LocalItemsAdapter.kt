@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.TextView
@@ -39,6 +40,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
         val quantityText = view.findViewById<TextView>(R.id.quantityText)
         val purchaseText = view.findViewById<TextView>(R.id.purchaseLocalItemText)
         val expirationText = view.findViewById<TextView>(R.id.expirationLocalItemText)
+        val image = view.findViewById<ImageView>(R.id.itemImage)
         val handleItemLayout = view.findViewById<LinearLayout>(R.id.handleItemLayout)
         val addQuantityButton = handleItemLayout.findViewById<AppCompatImageButton>(R.id.addQuantityButton)
         val removeQuantityButton = handleItemLayout.findViewById<AppCompatImageButton>(R.id.removeQuantityButton)
@@ -161,10 +163,19 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
         holder.purchaseText.text = "Purchase date: " + items[position].purchase_date // TODO: safe?
         holder.expirationText.text = "Expiration date: " + items[position].expiration_date
         holder.barcodeText.text = "Barcode: " + items[position].barcode
+
         if (this.collections == null) {
             holder.changeCollectionButton.text = "Remove from collection"
         } else {
             holder.changeCollectionButton.text = "Add to collection"
+        }
+
+        if (items[position].image != null) {
+            val bitmap = Utils.base64ToBitmap(items[position].image!!)
+
+            if (bitmap != null) {
+                holder.image.setImageBitmap(bitmap)
+            }
         }
 
         if (this.isExpanded[position]) {

@@ -57,6 +57,12 @@
         android:textColor="@color/white"
         android:visibility="gone"/>
 
+    <ImageView
+        android:id="@+id/itemImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:id="@+id/handleItemLayout"
         android:orientation="horizontal"
