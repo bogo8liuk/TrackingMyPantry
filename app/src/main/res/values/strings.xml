@@ -44,6 +44,7 @@
     <string name="locations">Locations</string>
     <string name="positionMy">My position</string>
     <string name="save">Save</string>
+    <string name="noElements">No available elements</string>
     <!--Buttons texts-->
 
     <!--Hints-->
