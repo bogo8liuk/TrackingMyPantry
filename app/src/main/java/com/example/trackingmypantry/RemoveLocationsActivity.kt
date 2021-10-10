@@ -13,7 +13,7 @@ import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.LocationsToRemoveAdapter
 import com.example.trackingmypantry.lib.viewmodels.LocationsToRemoveViewModel
-import com.example.trackingmypantry.lib.viewmodels.LocationsToRemoveViewModelFactory
+import com.example.trackingmypantry.lib.viewmodels.DefaultAppViewModelFactory
 
 class RemoveLocationsActivity : AppCompatActivity() {
     private lateinit var descriptionText: TextView
@@ -35,7 +35,7 @@ class RemoveLocationsActivity : AppCompatActivity() {
         this.recView.layoutManager = LinearLayoutManager(this)
 
         val model: LocationsToRemoveViewModel by viewModels {
-            LocationsToRemoveViewModelFactory(this.application)
+            DefaultAppViewModelFactory(this.application)
         }
 
         model.getPlaces().observe(this, Observer<List<Place>> {
