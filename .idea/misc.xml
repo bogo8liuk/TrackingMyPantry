@@ -3,7 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.371875" />
         <entry key="app/src/main/res/drawable/green_circle_button.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/ic_baseline_add_shopping_cart_24.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/ic_baseline_bad_event_sentiment_24.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/ic_baseline_bluetooth_24.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/ic_baseline_keyboard_arrow_down_24.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/ic_baseline_keyboard_arrow_up_24.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/ic_baseline_my_location_24.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/ic_baseline_photo_camera_24.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/ic_baseline_remove_24.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/ic_baseline_store_24.xml" value="0.371875" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.371875" />
         <entry key="app/src/main/res/layout/activity_add_description.xml" value="0.29528985507246375" />
         <entry key="app/src/main/res/layout/activity_bluetooth_manager.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/activity_buy.xml" value="0.35572916666666665" />
@@ -22,6 +38,8 @@
         <entry key="app/src/main/res/layout/location_to_remove_row.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/received_item_row.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/select_barcode.xml" value="0.35572916666666665" />
+        <entry key="app/src/main/res/layout/suggested_item_row.xml" value="0.34057971014492755" />
+        <entry key="app/src/main/res/layout/suggested_place_row.xml" value="0.34057971014492755" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.371875" />
       </map>
     </option>
