@@ -1,7 +1,5 @@
 package com.example.trackingmypantry.lib.adapters
 
-import android.app.Activity
-import android.content.DialogInterface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,22 +8,16 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.EmptyResultSetException
 import com.example.trackingmypantry.R
 import com.example.trackingmypantry.db.entities.Collection
 import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.Utils
-import com.example.trackingmypantry.lib.viewmodels.CollectionsViewModel
-import com.example.trackingmypantry.lib.viewmodels.CollectionsViewModelFactory
 import java.util.*
 
 class LocalItemsAdapter(private val items: Array<Item>, private val collections: List<Collection>?):

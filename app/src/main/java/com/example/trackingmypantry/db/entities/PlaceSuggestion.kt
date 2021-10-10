@@ -2,16 +2,12 @@ package com.example.trackingmypantry.db.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 
-@Entity(
-    foreignKeys = [ForeignKey(
-        entity = Suggestion::class,
-        parentColumns = arrayOf("id"),
-        childColumns = arrayOf("suggestion")
-    )],
-    primaryKeys = ["suggestion", "place"]
-)
+@Entity
 data class PlaceSuggestion(
-    val suggestion: Long,
-    val place: String
+    val latitude: Double,
+    val longitude: Double,
+    val title: String,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0
 )

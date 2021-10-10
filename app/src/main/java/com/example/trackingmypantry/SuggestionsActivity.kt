@@ -21,8 +21,12 @@ class SuggestionsActivity : AppCompatActivity() {
         val recyclerView = this.findViewById<RecyclerView>(R.id.suggestionsRecView)
         val noElemsText = this.findViewById<TextView>(R.id.noElemsAdviseText)
 
-        val itemsOrPlacesExtra = this.intent.extras!!.getBoolean(ITEMS_ELSE_PLACES_EXTRA)
+        val itemsExtra = this.intent.extras!!.getBoolean(ITEMS_ELSE_PLACES_EXTRA)
 
-        //TODO
+        if (itemsExtra) {
+
+        } else {
+
+        }
     }
 }
