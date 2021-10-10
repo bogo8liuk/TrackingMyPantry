@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.GridView
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
@@ -22,13 +24,15 @@ class CollectionsActivity : AppCompatActivity() {
     private lateinit var gridView: GridView
     private lateinit var itemsButton: AppCompatButton
     private lateinit var createCollectionButton: AppCompatButton
+    private lateinit var suggestionsButton: AppCompatButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collections)
 
-        this.itemsButton = findViewById(R.id.localItemsButton)
-        this.createCollectionButton = findViewById(R.id.createCollectionButton)
+        this.itemsButton = this.findViewById(R.id.localItemsButton)
+        this.createCollectionButton = this.findViewById(R.id.createCollectionButton)
+        this.suggestionsButton = this.findViewById(R.id.suggestionsButton)
 
         this.gridView = findViewById(R.id.collectionsGridView)
         this.gridView.adapter = CollectionsAdapter(this, arrayOf<Collection>())
@@ -52,6 +56,35 @@ class CollectionsActivity : AppCompatActivity() {
                         DbSingleton.getInstance(this).createCollection(Collection(name))
                     } else {
                         Utils.toastShow(this, "Invalid name for collection")
+                    }
+                })
+                .show()
+        }
+
+        this.suggestionsButton.setOnClickListener {
+            val actionButtons = RadioGroup(this)
+            val itemsButton = RadioButton(this)
+            val placesButton = RadioButton(this)
+
+            itemsButton.text = "Add new locations"
+            placesButton.text = "Remove your locations"
+
+            actionButtons.addView(itemsButton)
+            actionButtons.addView(placesButton)
+
+            AlertDialog.Builder(this)
+                .setTitle("Choose an action")
+                .setMessage("Choose what to see")
+                .setNegativeButton(R.string.negativeCanc, null)
+                .setPositiveButton(R.string.positiveOk, DialogInterface.OnClickListener { _, _ ->
+                    if (itemsButton.isChecked) {
+                        val intent = Intent(this, SuggestionsActivity::class.java)
+                        intent.putExtra(SuggestionsActivity.ITEMS_ELSE_PLACES_EXTRA, true)
+                        this.startActivity(intent)
+                    } else if (placesButton.isChecked) {
+                        val intent = Intent(this, SuggestionsActivity::class.java)
+                        intent.putExtra(SuggestionsActivity.ITEMS_ELSE_PLACES_EXTRA, false)
+                        this.startActivity(intent)
                     }
                 })
                 .show()

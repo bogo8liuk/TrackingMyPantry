@@ -37,9 +37,7 @@
             android:name=".ClearCredentialsService"
             android:enabled="true"
             android:exported="false"
-            android:stopWithTask="false" />
-
-        <!-- TMP activities -->
+            android:stopWithTask="false" /> <!-- TMP activities -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -61,7 +59,8 @@
         <activity android:name=".BluetoothManagerActivity" />
         <activity android:name=".ShareActivity" />
         <activity android:name=".LocationsActivity" />
-        <activity android:name=".RemoveLocationsActivity"/>
+        <activity android:name=".RemoveLocationsActivity" />
+        <activity android:name=".SuggestionsActivity" />
     </application>
 
 </manifest>
