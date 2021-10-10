@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8" />
+        app:layout_constraintGuide_percent="0.67" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline33"
@@ -50,23 +50,37 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/createCollectionButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:background="@drawable/orange_medium_corner_button"
         android:text="@string/collectionCreate"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline34"
         app:layout_constraintStart_toStartOf="@+id/guideline33"
         app:layout_constraintTop_toTopOf="@+id/guideline32" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/localItemsButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:background="@drawable/orange_medium_corner_button"
         android:text="@string/productWatch"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline34"
-        app:layout_constraintTop_toTopOf="@+id/guideline32" />
+        app:layout_constraintStart_toStartOf="@+id/guideline33"
+        app:layout_constraintTop_toBottomOf="@+id/createCollectionButton" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/suggestionsButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_medium_corner_button"
+        android:text="@string/suggestWatch"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/guideline34"
+        app:layout_constraintStart_toStartOf="@+id/guideline33"
+        app:layout_constraintTop_toBottomOf="@+id/localItemsButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

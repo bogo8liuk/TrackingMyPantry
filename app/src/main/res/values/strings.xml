@@ -38,6 +38,7 @@
     <string name="remove">Remove</string>
     <string name="stop">Stop</string>
     <string name="suggest">Suggestions</string>
+    <string name="suggestWatch">See received suggestions</string>
     <string name="requestAccept">Accept a request</string>
     <string name="pair">Pair</string>
     <string name="locations">Locations</string>

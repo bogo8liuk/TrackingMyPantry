@@ -157,7 +157,7 @@ class MainActivity : AppCompatActivity() {
         this.cameraButton = this.findViewById(R.id.cameraButton)
         this.searchButton = this.findViewById(R.id.searchButton)
         this.barcodeText = this.findViewById(R.id.barcodeText)
-        this.suggestButton = this.findViewById(R.id.suggestionsButton)
+        this.suggestButton = this.findViewById(R.id.bluetoothButton)
         this.locationsButton = this.findViewById(R.id.locationsButton)
 
         if (!BlueUtils.hasBluetoothFeature(this)) {
