@@ -18,14 +18,13 @@ class Suggested {
     inner class ItemsAdapter(private val items: Array<ItemSuggestion>):
     RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
         private var isExpanded = BooleanArray(items.size) { _ -> false }
-
         /**
-         * firstBind is used to prevent the re-set of those already set fields
+         * firstBindAt is used to prevent the re-set of those already set fields
          * of the references of the viewholder that will keep their values
          * "forever" (i.e. the barcode text of the TextView `barcodeText`), when
          * one of the two nameButton is clicked.
          */
-        private var firstBind = true
+        private var firstBindAt = BooleanArray(items.size) { _ -> true }
 
         inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
             val nameButton: AppCompatButton = view.findViewById(R.id.suggestedItemNameButton)
@@ -54,7 +53,7 @@ class Suggested {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            if (firstBind) {
+            if (firstBindAt[position]) {
                 holder.nameButton.text = items[position].name
                 holder.nameExpandedButton.text = items[position].name
                 holder.barcodeText.text = items[position].barcode
@@ -68,7 +67,7 @@ class Suggested {
                     )
                 }
 
-                firstBind = false
+                firstBindAt[position] = false
             }
 
             if (this.isExpanded[position]) {
@@ -106,7 +105,6 @@ class Suggested {
     inner class PlacesAdapter(private val places: Array<PlaceSuggestion>):
     RecyclerView.Adapter<PlacesAdapter.ViewHolder>() {
         private var isExpanded = BooleanArray(places.size) { _ -> false }
-
         // same as above
         private var firstBindAt = BooleanArray(places.size) { _ -> true }
 

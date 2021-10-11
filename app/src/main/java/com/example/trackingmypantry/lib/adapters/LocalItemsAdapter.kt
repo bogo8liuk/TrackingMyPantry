@@ -23,14 +23,13 @@ import java.util.*
 class LocalItemsAdapter(private val items: Array<Item>, private val collections: List<Collection>?):
     RecyclerView.Adapter<LocalItemsAdapter.ViewHolder>() {
     private var isExpanded = BooleanArray(items.size) { _ -> false }
-
     /**
-     * firstBind is used to prevent the re-set of those already set fields
+     * firstBindAt is used to prevent the re-set of those already set fields
      * of the references of the viewholder that will keep their values
      * "forever" (i.e. the barcode text of the TextView `barcodeText`), when
      * one of the two nameButton is clicked.
      */
-    private var firstBind = true
+    private var firstBindAt = BooleanArray(items.size) { _ -> true }
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val nameButton = view.findViewById<AppCompatButton>(R.id.localItemNameButton)
@@ -149,7 +148,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (firstBind) {
+        if (firstBindAt[position]) {
             val context = holder.barcodeText.context    // getting the context from a view (whatever it is)
 
             val expiration = items[position].expiration_date
@@ -179,7 +178,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
                 }
             }
 
-            firstBind = false
+            firstBindAt[position] = false
         }
 
         if (this.isExpanded[position]) {

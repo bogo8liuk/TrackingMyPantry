@@ -24,14 +24,13 @@ import java.util.*
 class ReceivedItemsAdapter(private val products: Array<Product>):
     RecyclerView.Adapter<ReceivedItemsAdapter.ViewHolder>() {
     private var isExpanded = BooleanArray(products.size) { _ -> false }
-
     /**
-     * firstBind is used to prevent the re-set of those already set fields
+     * firstBindAt is used to prevent the re-set of those already set fields
      * of the references of the viewholder that will keep their values
      * "forever" (i.e. the barcode text of the TextView `barcodeText`), when
      * one of the two nameButton is clicked.
      */
-    private var firstBind = true
+    private var firstBindAt = BooleanArray(products.size) { _ -> true }
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val nameButton = view.findViewById<AppCompatButton>(R.id.receivedItemNameButton)
@@ -129,7 +128,7 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (firstBind) {
+        if (firstBindAt[position]) {
             holder.nameButton.text = products[position].name
             holder.nameExpandedButton.text = products[position].name
             holder.descriptionTextView.text = products[position].description
@@ -138,7 +137,7 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                 holder.image.setImageBitmap(bitmap)
             }
 
-            firstBind = false
+            firstBindAt[position] = false
         }
 
         if (this.isExpanded[position]) {
