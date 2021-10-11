@@ -25,6 +25,14 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
     RecyclerView.Adapter<ReceivedItemsAdapter.ViewHolder>() {
     private var isExpanded = BooleanArray(products.size) { _ -> false }
 
+    /**
+     * firstBind is used to prevent the re-set of those already set fields
+     * of the references of the viewholder that will keep their values
+     * "forever" (i.e. the barcode text of the TextView `barcodeText`), when
+     * one of the two nameButton is clicked.
+     */
+    private var firstBind = true
+
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val nameButton = view.findViewById<AppCompatButton>(R.id.receivedItemNameButton)
         val nameExpandedButton = view.findViewById<AppCompatButton>(R.id.receivedItemNameExpandedButton)
@@ -121,13 +129,18 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.nameButton.text = products[position].name
-        holder.nameExpandedButton.text = products[position].name
-        holder.descriptionTextView.text = products[position].description
-        val bitmap = Utils.base64ToBitmap(products[position].image)
-        if (bitmap != null) {
-            holder.image.setImageBitmap(bitmap)
+        if (firstBind) {
+            holder.nameButton.text = products[position].name
+            holder.nameExpandedButton.text = products[position].name
+            holder.descriptionTextView.text = products[position].description
+            val bitmap = Utils.base64ToBitmap(products[position].image)
+            if (bitmap != null) {
+                holder.image.setImageBitmap(bitmap)
+            }
+
+            firstBind = false
         }
+
         if (this.isExpanded[position]) {
             holder.nameButton.visibility = android.view.View.GONE
             holder.nameExpandedButton.visibility = android.view.View.VISIBLE
