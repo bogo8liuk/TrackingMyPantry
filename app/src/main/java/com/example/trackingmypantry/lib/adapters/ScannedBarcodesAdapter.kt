@@ -3,20 +3,27 @@ package com.example.trackingmypantry.lib.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R
 
 class ScannedBarcodesAdapter(private val barcodes: Array<String>):
     RecyclerView.Adapter<ScannedBarcodesAdapter.ViewHolder>() {
-    // It represents the position in the recycler view of the checked radio button
+    // It represents the position in the recycler view of the current checked box
     private var pos: Int = -1
 
+    private var firstBind = true
+
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        var radioButton = view.findViewById<RadioButton>(R.id.barcodeRadioButton)
+        var checkBox: CheckBox = view.findViewById(R.id.barcodeCheckBox)
 
         init {
-            this.radioButton.setOnClickListener {
+            this.checkBox.setOnClickListener {
+                if (pos >= 0) {
+                    notifyItemChanged(pos)
+                }
+
                 pos = this.adapterPosition
             }
         }
@@ -33,7 +40,13 @@ class ScannedBarcodesAdapter(private val barcodes: Array<String>):
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.radioButton.text = barcodes[position]
+        if (firstBind) {
+            holder.checkBox.text = barcodes[position]
+
+            firstBind = false
+        }
+
+        holder.checkBox.isChecked = false
     }
 
     override fun getItemCount(): Int {
