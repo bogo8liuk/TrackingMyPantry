@@ -1,6 +1,5 @@
 package com.example.trackingmypantry
 
-import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
@@ -11,10 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.db.entities.Collection
 import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.lib.adapters.LocalItemsAdapter
-import com.example.trackingmypantry.lib.viewmodels.CollectionsViewModel
-import com.example.trackingmypantry.lib.viewmodels.CollectionsViewModelFactory
-import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModel
-import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModelFactory
+import com.example.trackingmypantry.lib.viewmodels.*
 
 class LocalItemsActivity : AppCompatActivity() {
     private lateinit var descriptionTextView: TextView
@@ -43,7 +39,7 @@ class LocalItemsActivity : AppCompatActivity() {
                 val items = it
 
                 val collectionModel: CollectionsViewModel by viewModels {
-                    CollectionsViewModelFactory(this.application)
+                    DefaultAppViewModelFactory(this.application)
                 }
 
                 collectionModel.getCollections().observe(this, Observer<List<Collection>> {
