@@ -5,8 +5,46 @@
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/suggestedPlaceButton"
+        android:id="@+id/suggestedPlaceNameButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableEnd="@drawable/ic_baseline_send_24"/>
+        android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/suggestedPlaceNameExpandedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_up_24"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/handleSuggestionLayout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/removeSuggestedPlaceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/orange_medium_corner_button"
+            android:text="@string/delete"
+            android:textColor="@color/white"
+            android:drawableEnd="@drawable/ic_baseline_delete_24"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/sendSuggestedPlaceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/orange_medium_corner_button"
+            android:text="@string/send"
+            android:textColor="@color/white"
+            android:drawableEnd="@drawable/ic_baseline_send_24"/>
+
+    </LinearLayout>
 </LinearLayout>

@@ -47,4 +47,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:visibility="gone" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/removeSuggestedItemButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/orange_medium_corner_button"
+        android:text="@string/delete"
+        android:textColor="@color/white"
+        android:drawableEnd="@drawable/ic_baseline_delete_24"
+        android:visibility="gone"/>
 </LinearLayout>
