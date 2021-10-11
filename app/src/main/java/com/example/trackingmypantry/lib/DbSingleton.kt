@@ -6,13 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.room.Room
 import com.example.trackingmypantry.db.Db
+import com.example.trackingmypantry.db.entities.*
 import com.example.trackingmypantry.db.entities.Collection
-import com.example.trackingmypantry.db.entities.Item
-import com.example.trackingmypantry.db.entities.Place
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlin.coroutines.suspendCoroutine
 
 class DbSingleton(context: Context) {
     // Boilerplate code equal to ReqQueueSingleton
@@ -39,18 +39,12 @@ class DbSingleton(context: Context) {
     private val itemDao = db.itemDao()
     private val collectionDao = db.collectionDao()
     private val placeDao = db.placeDao()
+    private val itemSuggestionDao = db.itemSuggestionDao()
+    private val placeSuggestionDao = db.placeSuggestionDao()
 
     /* From here, wrapper functions */
     fun getAllItems(): LiveData<List<Item>> {
         return itemDao.getAllItems().asLiveData()
-    }
-
-    fun getItemsByBarcode(barcode: String): LiveData<List<Item>> {
-        return itemDao.getItemsByBarcode(barcode).asLiveData()
-    }
-
-    fun getItemById(id: Int): LiveData<Item> {
-        return itemDao.getItemById(id).asLiveData()
     }
 
     fun getItemsFromCollection(collection: Long): LiveData<List<Item>> {
@@ -93,7 +87,7 @@ class DbSingleton(context: Context) {
         return collectionDao.getAllCollections().asLiveData()
     }
 
-    fun createCollection(vararg collections: Collection) {
+    fun createCollections(vararg collections: Collection) {
         runBlocking {
             launch {
                 collectionDao.insertCollection(*collections)
@@ -117,6 +111,63 @@ class DbSingleton(context: Context) {
         runBlocking {
             launch {
                 placeDao.deletePlaces(*places)
+            }
+        }
+    }
+
+    fun getAllItemSuggestions(): LiveData<List<ItemSuggestion>> {
+        return itemSuggestionDao.getAllItemSuggestions().asLiveData()
+    }
+
+    fun insertItemSuggestions(vararg suggestions: ItemSuggestion) {
+        runBlocking {
+            launch {
+                itemSuggestionDao.insertItemSuggestions(*suggestions)
+            }
+        }
+    }
+
+    fun deleteItemSuggestions(vararg suggestions: ItemSuggestion) {
+        runBlocking {
+            launch {
+                itemSuggestionDao.deleteItemSuggestion(*suggestions)
+            }
+        }
+    }
+
+    fun getAllPlaceSuggestions(): LiveData<List<PlaceSuggestion>> {
+        return placeSuggestionDao.getAllPlaceSuggestions().asLiveData()
+    }
+
+    fun insertPlaceSuggestions(vararg suggestions: PlaceSuggestion) {
+        runBlocking {
+            launch {
+                placeSuggestionDao.insertPlaceSuggestions(*suggestions)
+            }
+        }
+    }
+
+    fun deletePlaceSuggestions(vararg suggestions: PlaceSuggestion) {
+        runBlocking {
+            launch {
+                placeSuggestionDao.deletePlaceSuggestions(*suggestions)
+            }
+        }
+    }
+
+    fun moveToPlaces(vararg suggestions: PlaceSuggestion) {
+        runBlocking {
+            launch {
+                db.runInTransaction(Runnable {
+                    this.launch {
+                        val places = Array<Place>(suggestions.size) { i ->
+                            Place(suggestions[i].latitude, suggestions[i].longitude, suggestions[i].title)
+                        }
+
+                        placeDao.insertPlaces(*places)
+                        placeSuggestionDao.deletePlaceSuggestions(*suggestions)
+                    }
+                })
             }
         }
     }

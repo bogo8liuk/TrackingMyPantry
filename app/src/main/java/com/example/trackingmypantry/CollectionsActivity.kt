@@ -18,7 +18,7 @@ import com.example.trackingmypantry.lib.EvalMode
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.CollectionsAdapter
 import com.example.trackingmypantry.lib.viewmodels.CollectionsViewModel
-import com.example.trackingmypantry.lib.viewmodels.CollectionsViewModelFactory
+import com.example.trackingmypantry.lib.viewmodels.DefaultAppViewModelFactory
 
 class CollectionsActivity : AppCompatActivity() {
     private lateinit var gridView: GridView
@@ -53,7 +53,7 @@ class CollectionsActivity : AppCompatActivity() {
                     val name = nameInput.text.toString()
 
                     if (!Utils.stringPattern(EvalMode.WHITESPACE, name)) {
-                        DbSingleton.getInstance(this).createCollection(Collection(name))
+                        DbSingleton.getInstance(this).createCollections(Collection(name))
                     } else {
                         Utils.toastShow(this, "Invalid name for collection")
                     }
@@ -91,7 +91,7 @@ class CollectionsActivity : AppCompatActivity() {
         }
 
         val model: CollectionsViewModel by viewModels {
-            CollectionsViewModelFactory(this.application)
+            DefaultAppViewModelFactory(this.application)
         }
 
         model.getCollections().observe(this, Observer<List<Collection>> {

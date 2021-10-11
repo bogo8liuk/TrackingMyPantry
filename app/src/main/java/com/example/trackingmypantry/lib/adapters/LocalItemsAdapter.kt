@@ -101,6 +101,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
 
             if (collections == null) {
                 this.changeCollectionButton.setOnClickListener {
+                    //TODO: cannot remove here (indexing of isExpanded would be wrong)
                     DbSingleton.getInstance(context).removeItemFromCollection(items[this.adapterPosition].id)
                 }
             } else {

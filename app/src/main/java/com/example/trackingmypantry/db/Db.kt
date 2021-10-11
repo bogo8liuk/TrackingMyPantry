@@ -13,4 +13,6 @@ abstract class Db: RoomDatabase() {
     abstract fun itemDao(): ItemDao
     abstract fun collectionDao(): CollectionDao
     abstract fun placeDao(): PlaceDao
+    abstract fun itemSuggestionDao(): ItemSuggestionDao
+    abstract fun placeSuggestionDao(): PlaceSuggestionDao
 }
