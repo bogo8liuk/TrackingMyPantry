@@ -4,12 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R
 import com.example.trackingmypantry.db.entities.ItemSuggestion
 import com.example.trackingmypantry.db.entities.PlaceSuggestion
+import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.Utils
 
 class Suggested {
@@ -32,6 +34,13 @@ class Suggested {
             val descriptionText: TextView = view.findViewById(R.id.suggestedItemDescription)
             val userText: TextView = view.findViewById(R.id.suggestedItemUser)
             val image: ImageView = view.findViewById(R.id.suggestedItemImage)
+            val deleteButton: AppCompatButton = view.findViewById(R.id.removeSuggestedItemButton)
+
+            init {
+                this.deleteButton.setOnClickListener {
+                    DbSingleton.getInstance(view.context) //TODO: delete suggestion item
+                }
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -96,8 +105,21 @@ class Suggested {
 
     inner class PlacesAdapter(private val places: Array<PlaceSuggestion>):
     RecyclerView.Adapter<PlacesAdapter.ViewHolder>() {
-        inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+        private var isExpanded = BooleanArray(places.size) { _ -> false }
 
+        // same as above
+        private var firstBindAt = BooleanArray(places.size) { _ -> true }
+
+        inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+            val nameButton: AppCompatButton = view.findViewById(R.id.suggestedPlaceNameButton)
+            val nameExpandedButton: AppCompatButton = view.findViewById(R.id.suggestedPlaceNameExpandedButton)
+            val layout: LinearLayout = view.findViewById(R.id.handleSuggestionLayout)
+            val deleteButton: AppCompatButton = layout.findViewById(R.id.removeSuggestedPlaceButton)
+            val sendButton: AppCompatButton = layout.findViewById(R.id.sendSuggestedPlaceButton)
+
+            init {
+                //TODO: delete and send place suggestion
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -107,10 +129,36 @@ class Suggested {
                 false
             )
 
-            return ViewHolder(view)        }
+            return ViewHolder(view)
+        }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            TODO("Not yet implemented")
+            if (firstBindAt[position]) {
+                holder.nameButton.text = places[position].title
+                holder.nameExpandedButton.text = places[position].title
+
+                firstBindAt[position] = false
+            }
+
+            if (this.isExpanded[position]) {
+                holder.nameButton.visibility = android.view.View.GONE
+                holder.nameExpandedButton.visibility = android.view.View.VISIBLE
+                holder.layout.visibility = android.view.View.VISIBLE
+            } else {
+                holder.nameButton.visibility = android.view.View.VISIBLE
+                holder.nameExpandedButton.visibility = android.view.View.GONE
+                holder.layout.visibility = android.view.View.GONE
+            }
+
+            holder.nameButton.setOnClickListener {
+                this.isExpanded[position] = true
+                this.notifyItemChanged(position)
+            }
+
+            holder.nameExpandedButton.setOnClickListener {
+                this.isExpanded[position] = false
+                this.notifyItemChanged(position)
+            }
         }
 
         override fun getItemCount(): Int {
