@@ -13,6 +13,10 @@ import com.example.trackingmypantry.lib.adapters.LocalItemsAdapter
 import com.example.trackingmypantry.lib.viewmodels.*
 
 class LocalItemsActivity : AppCompatActivity() {
+    companion object {
+        const val COLLECTION_EXTRA = "collection"
+    }
+
     private lateinit var descriptionTextView: TextView
     private lateinit var recyclerView: RecyclerView
 
@@ -26,7 +30,7 @@ class LocalItemsActivity : AppCompatActivity() {
         this.recyclerView.adapter = LocalItemsAdapter(arrayOf<Item>(), null)    // To avoid layout skipping
         this.recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val collection: Long = this.intent.extras!!.getLong("collection")
+        val collection: Long = this.intent.extras!!.getLong(COLLECTION_EXTRA)
 
         val model: LocalItemsViewModel by viewModels {
             LocalItemsViewModelFactory(this.application, collection)

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.BluetoothDevicesAdapter
 import com.example.trackingmypantry.lib.adapters.IndexedArray
+import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
 import com.example.trackingmypantry.lib.connectivity.bluetooth.AcceptThread
 import com.example.trackingmypantry.lib.connectivity.bluetooth.BlueUtils
 import com.example.trackingmypantry.lib.connectivity.bluetooth.ConnectThread
@@ -114,7 +115,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
         })
     }
 
-    private val connect: (IndexedArray<BluetoothDevice>) -> Unit = {
+    private val connect: IndexedArrayCallback<BluetoothDevice> = {
         ConnectThread(this.btAdapter, it.array[it.index], this.btInfoHandler).run()
     }
 }

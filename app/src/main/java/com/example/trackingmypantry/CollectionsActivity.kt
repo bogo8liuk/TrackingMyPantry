@@ -1,5 +1,6 @@
 package com.example.trackingmypantry
 
+import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.EvalMode
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.CollectionsAdapter
+import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
 import com.example.trackingmypantry.lib.viewmodels.CollectionsViewModel
 import com.example.trackingmypantry.lib.viewmodels.DefaultAppViewModelFactory
 
@@ -95,7 +97,17 @@ class CollectionsActivity : AppCompatActivity() {
         }
 
         model.getCollections().observe(this, Observer<List<Collection>> {
-            this.gridView.adapter = CollectionsAdapter(this, it.toTypedArray())
+            this.gridView.adapter = CollectionsAdapter(
+                this,
+                this.startLocalItemsActivity,
+                it.toTypedArray()
+            )
         })
+    }
+
+    private val startLocalItemsActivity: IndexedArrayCallback<Collection> = {
+        val intent = Intent(this, LocalItemsActivity::class.java)
+        intent.putExtra(LocalItemsActivity.COLLECTION_EXTRA, it.array[it.index].id)
+        this.startActivity(intent)
     }
 }
