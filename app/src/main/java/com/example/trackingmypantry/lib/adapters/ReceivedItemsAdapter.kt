@@ -40,6 +40,7 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
         val setExpButton = view.findViewById<AppCompatButton>(R.id.receivedItemSetExpButton)
         val image = view.findViewById<ImageView>(R.id.receivedItemImage)
 
+        //TODO: move these constants to the activity
         private val MIN_RATE = 1
         private val MAX_RATE = 5
 
@@ -110,7 +111,7 @@ class ReceivedItemsAdapter(private val products: Array<Product>):
                         this.expDate = Calendar.getInstance().also {
                             it.set(datePicker.year, datePicker.month, datePicker.dayOfMonth) }
                             .time
-                        this.chooseButton.callOnClick()
+                        this.chooseButton.callOnClick() //TODO: problematic
                     })
                     .show()
             }

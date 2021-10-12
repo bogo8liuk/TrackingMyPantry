@@ -20,6 +20,7 @@ import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.Utils
 import java.util.*
 
+//TODO: move collections list in the activity
 class LocalItemsAdapter(private val items: Array<Item>, private val collections: List<Collection>?):
     RecyclerView.Adapter<LocalItemsAdapter.ViewHolder>() {
     private var isExpanded = BooleanArray(items.size) { _ -> false }
