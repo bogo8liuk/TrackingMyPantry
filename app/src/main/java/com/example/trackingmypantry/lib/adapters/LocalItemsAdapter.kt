@@ -21,8 +21,13 @@ import com.example.trackingmypantry.lib.Utils
 import java.util.*
 
 //TODO: move collections list in the activity
-class LocalItemsAdapter(private val items: Array<Item>, private val collections: List<Collection>?):
-    RecyclerView.Adapter<LocalItemsAdapter.ViewHolder>() {
+class LocalItemsAdapter(
+    private val addQuantityCallback: IndexedArrayCallback<Item>,
+    private val removeQuantityCallback: IndexedArrayCallback<Item>,
+    private val changeCollectionCallback: IndexedArrayCallback<Item>,
+    private val isToRemove: Boolean,
+    private val items: Array<Item>
+    ): RecyclerView.Adapter<LocalItemsAdapter.ViewHolder>() {
     private var isExpanded = BooleanArray(items.size) { _ -> false }
     /**
      * firstBindAt is used to prevent the re-set of those already set fields
@@ -46,95 +51,17 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
         val removeQuantityButton = handleItemLayout.findViewById<AppCompatImageButton>(R.id.removeQuantityButton)
         val changeCollectionButton = handleItemLayout.findViewById<AppCompatButton>(R.id.changeCollectionButton)
 
-        /**
-         * It returns the collection id, given a position of a collection. It is sured not
-         * to have conflicts between names because they are unique.
-         */
-        private fun getCollectionFromName(position: Int, collections: List<Collection>): Long? {
-            for ((c, collection) in collections.withIndex()) {
-                if (c == position) {
-                    return collection.id
-                }
-            }
-
-            Log.e("Unreachable", "Value out of range while iterating list of collections")
-            return null
-        }
-
         init {
-            val context = view.context
-
             this.addQuantityButton.setOnClickListener {
-                val quantityPicker = NumberPicker(context)
-                quantityPicker.minValue = 1
-                quantityPicker.maxValue = 50    // arbitrary
-                AlertDialog.Builder(context)
-                    .setTitle("Buy")
-                    .setMessage("Choose the quantity of this product you want to buy")
-                    .setView(quantityPicker)
-                    .setNegativeButton(R.string.negativeCanc, null)
-                    .setPositiveButton(R.string.buy) { _, _ ->
-                        DbSingleton.getInstance(context).changeItemQuantity(
-                            items[this.adapterPosition].id,
-                            quantityPicker.value
-                        )
-                    }
-                    .show()
+                addQuantityCallback(IndexedArray(items, this.adapterPosition))
             }
 
             this.removeQuantityButton.setOnClickListener {
-                val quantityPicker = NumberPicker(context)
-                quantityPicker.minValue = 1
-                quantityPicker.maxValue = items[this.adapterPosition].quantity
-                AlertDialog.Builder(context)
-                    .setTitle("Remove")
-                    .setMessage("Choose the quantity of this product you want to remove")
-                    .setView(quantityPicker)
-                    .setNegativeButton(R.string.negativeCanc, null)
-                    .setPositiveButton(R.string.remove) { _, _ ->
-                        DbSingleton.getInstance(context).changeItemQuantity(
-                            items[this.adapterPosition].id,
-                            -quantityPicker.value
-                        )
-                    }
-                    .show()
+                removeQuantityCallback(IndexedArray(items, this.adapterPosition))
             }
 
-            if (collections == null) {
-                this.changeCollectionButton.setOnClickListener {
-                    //TODO: cannot remove here (indexing of isExpanded would be wrong)
-                    DbSingleton.getInstance(context).removeItemFromCollection(items[this.adapterPosition].id)
-                }
-            } else {
-
-                this.changeCollectionButton.setOnClickListener {
-                    if (collections.isEmpty()) {
-                        Utils.toastShow(context, "Create a collection before")
-                    } else {
-                        val values = mutableListOf<String>()
-                        for (collection in collections) {
-                            values.add(collection.name)
-                        }
-
-                        val collectionPicker = NumberPicker(context)
-                        collectionPicker.minValue = 0
-                        collectionPicker.maxValue = values.size - 1
-                        collectionPicker.displayedValues = values.toTypedArray()
-
-                        AlertDialog.Builder(context)
-                            .setTitle("Collections")
-                            .setMessage("Choose a collection")
-                            .setView(collectionPicker)
-                            .setNegativeButton(R.string.negativeCanc, null)    // do nothing
-                            .setPositiveButton(R.string.choose) { _, _ ->
-                                DbSingleton.getInstance(context).insertItemIntoCollection(
-                                    items[this.adapterPosition].id,
-                                    this.getCollectionFromName(collectionPicker.value, collections)!!
-                                )
-                            }
-                            .show()
-                    }
-                }
+            this.changeCollectionButton.setOnClickListener {
+                changeCollectionCallback(IndexedArray(items, this.adapterPosition))
             }
         }
     }
@@ -166,7 +93,7 @@ class LocalItemsAdapter(private val items: Array<Item>, private val collections:
             holder.expirationText.text = "Expiration date: " + items[position].expiration_date
             holder.barcodeText.text = "Barcode: " + items[position].barcode
 
-            if (this.collections == null) {
+            if (this.isToRemove) {
                 holder.changeCollectionButton.text = "Remove from collection"
             } else {
                 holder.changeCollectionButton.text = "Add to collection"

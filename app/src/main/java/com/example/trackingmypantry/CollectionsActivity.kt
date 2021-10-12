@@ -37,7 +37,11 @@ class CollectionsActivity : AppCompatActivity() {
         this.suggestionsButton = this.findViewById(R.id.suggestionsButton)
 
         this.gridView = findViewById(R.id.collectionsGridView)
-        this.gridView.adapter = CollectionsAdapter(this, arrayOf<Collection>())
+        this.gridView.adapter = CollectionsAdapter(
+            this,
+            this.startLocalItemsActivity,
+            arrayOf<Collection>()
+        )
 
         this.itemsButton.setOnClickListener {
             val intent = Intent(this, LocalItemsActivity::class.java)
