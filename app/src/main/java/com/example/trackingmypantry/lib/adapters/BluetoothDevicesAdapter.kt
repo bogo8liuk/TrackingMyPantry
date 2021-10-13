@@ -1,16 +1,12 @@
 package com.example.trackingmypantry.lib.adapters
 
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
-import com.example.trackingmypantry.BluetoothManagerActivity
 import com.example.trackingmypantry.R
-import com.example.trackingmypantry.lib.connectivity.bluetooth.ConnectThread
 
 class BluetoothDevicesAdapter(
     private val deviceClickCallback: IndexedArrayCallback<BluetoothDevice>,
