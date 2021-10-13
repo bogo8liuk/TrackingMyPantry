@@ -12,8 +12,3 @@ typealias ArgsCallback<A> = (
 typealias IndexedArrayCallback<T> = (
     IndexedArray<T>
 ) -> Unit
-
-typealias IndexedArrayArgsCallback<T, A> = (
-    IndexedArray<T>,
-    A
-) -> Unit

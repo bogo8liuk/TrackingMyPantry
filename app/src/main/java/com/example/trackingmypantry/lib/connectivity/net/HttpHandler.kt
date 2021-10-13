@@ -46,10 +46,19 @@ class HttpHandler() {
                     ))
                     CredentialsHandler.setCredentials(context, email, password)
                     successCallback(res) },
-                { err -> errorCallback(
-                    err.networkResponse.statusCode,
-                    JSONObject(String(err.networkResponse.data)).optString("message")
-                )}
+                { err ->
+                    if (err.networkResponse == null) {
+                        errorCallback(
+                            503,    // Service unavailable
+                            "Service unavailable"
+                        )
+                    } else {
+                        errorCallback(
+                            err.networkResponse.statusCode,
+                            JSONObject(String(err.networkResponse.data)).optString("message")
+                        )
+                    }
+                }
             )
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
         }
@@ -66,10 +75,19 @@ class HttpHandler() {
                 "$DOMAIN$REGISTER_PATH",
                 JSONObject("{ \"username\": \"$username\", \"email\": \"$email\", \"password\": \"$password\"}"),
                 { res -> successCallback(res) },
-                { err -> errorCallback(
-                    err.networkResponse.statusCode,
-                    JSONObject(String(err.networkResponse.data)).optString("message")
-                )}
+                { err ->
+                    if (err.networkResponse == null) {
+                        errorCallback(
+                            503,    // Service unavailable
+                            "Service unavailable"
+                        )
+                    } else {
+                        errorCallback(
+                            err.networkResponse.statusCode,
+                            JSONObject(String(err.networkResponse.data)).optString("message")
+                        )
+                    }
+                }
             )
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
         }
@@ -90,10 +108,18 @@ class HttpHandler() {
                 "$DOMAIN$PRODUCT_PATH?barcode=$barcode",
                 { res -> successCallback(res) },
                 { err ->
-                    errorCallback(
-                    err.networkResponse.statusCode,
-                    JSONObject(String(err.networkResponse.data)).optString("message", "No message")
-                )}
+                    if (err.networkResponse == null) {
+                        errorCallback(
+                            503,    // Service unavailable
+                            "Service unavailable"
+                        )
+                    } else {
+                        errorCallback(
+                            err.networkResponse.statusCode,
+                            JSONObject(String(err.networkResponse.data)).optString("message")
+                        )
+                    }
+                }
             ){
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = HashMap<String, String>(super.getHeaders())
@@ -142,10 +168,17 @@ class HttpHandler() {
                     ),
                 { res -> successCallback(res) },
                 { err ->
-                    errorCallback(
-                        err.networkResponse.statusCode,
-                        JSONObject(String(err.networkResponse.data)).optString("message")
-                    )
+                    if (err.networkResponse == null) {
+                        errorCallback(
+                            503,    // Service unavailable
+                            "Service unavailable"
+                        )
+                    } else {
+                        errorCallback(
+                            err.networkResponse.statusCode,
+                            JSONObject(String(err.networkResponse.data)).optString("message")
+                        )
+                    }
                 }
             ) {
                 override fun getHeaders(): MutableMap<String, String> {
@@ -158,7 +191,7 @@ class HttpHandler() {
             return true
         }
 
-        fun serviceDeleteProduct(
+        /*fun serviceDeleteProduct(
             context: Context,
             id: String,
             successCallback: (String) -> Unit,
@@ -173,7 +206,7 @@ class HttpHandler() {
                 )}
             )
             ReqQueueSingleton.getInstance(context.applicationContext).addRequest(req)
-        }
+        }*/
 
         fun serviceVoteProduct(
             context: Context,
@@ -193,10 +226,19 @@ class HttpHandler() {
                 "$DOMAIN$VOTE_PATH",
                 JSONObject("{ \"token\": \"$sessionToken\", \"rating\": $rating, \"productId\": \"$id\" }"),
                 { res -> successCallback(res) },
-                { err -> errorCallback(
-                    err.networkResponse.statusCode,
-                    JSONObject(String(err.networkResponse.data)).optString("message")
-                )}
+                { err ->
+                    if (err.networkResponse == null) {
+                        errorCallback(
+                            503,    // Service unavailable
+                            "Service unavailable"
+                        )
+                    } else {
+                        errorCallback(
+                            err.networkResponse.statusCode,
+                            JSONObject(String(err.networkResponse.data)).optString("message")
+                        )
+                    }
+                }
             ) {
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = HashMap<String, String>(super.getHeaders())
