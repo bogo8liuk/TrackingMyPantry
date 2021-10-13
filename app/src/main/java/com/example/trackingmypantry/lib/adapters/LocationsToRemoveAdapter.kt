@@ -18,9 +18,9 @@ import com.example.trackingmypantry.db.entities.Place
  */
 class LocationsToRemoveAdapter(
     private val locations: Array<Place>,
-    private val onCheck: (Place) -> Unit,
-    private val onUncheck: (Place) -> Unit):
-    RecyclerView.Adapter<LocationsToRemoveAdapter.ViewHolder>() {
+    private val onCheck: ArgsCallback<Place>,
+    private val onUncheck: ArgsCallback<Place>
+): RecyclerView.Adapter<LocationsToRemoveAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val checkBox: CheckBox = view.findViewById(R.id.locationCheckBox)
