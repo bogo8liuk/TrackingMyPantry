@@ -75,6 +75,20 @@ class DbSingleton(context: Context) {
         }
     }
 
+    fun removeMultipleItemsFromCollection(ids: List<Long>) {
+        runBlocking {
+            launch {
+                db.runInTransaction {
+                    this.launch {
+                        ids.forEach {
+                            itemDao.removeItemFromCollection(it)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     fun insertItemIntoCollection(id: Long, collection: Long) {
         runBlocking {
             launch {
@@ -158,7 +172,7 @@ class DbSingleton(context: Context) {
     fun moveToPlaces(vararg suggestions: PlaceSuggestion) {
         runBlocking {
             launch {
-                db.runInTransaction(Runnable {
+                db.runInTransaction {
                     this.launch {
                         val places = Array<Place>(suggestions.size) { i ->
                             Place(suggestions[i].latitude, suggestions[i].longitude, suggestions[i].title)
@@ -167,7 +181,7 @@ class DbSingleton(context: Context) {
                         placeDao.insertPlaces(*places)
                         placeSuggestionDao.deletePlaceSuggestions(*suggestions)
                     }
-                })
+                }
             }
         }
     }

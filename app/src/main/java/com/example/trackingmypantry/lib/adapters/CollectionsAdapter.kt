@@ -1,8 +1,6 @@
 package com.example.trackingmypantry.lib.adapters
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +8,14 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageButton
 import android.widget.TextView
-import com.example.trackingmypantry.LocalItemsActivity
 import com.example.trackingmypantry.R
 import com.example.trackingmypantry.db.entities.Collection
 
-class CollectionsAdapter(context: Context, private val collections: Array<Collection>): BaseAdapter() {
+class CollectionsAdapter(
+    context: Context,
+    private val collectionClickCallback: IndexedArrayCallback<Collection>,
+    private val collections: Array<Collection>
+    ): BaseAdapter() {
     private val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private val MAX_COLOR = 6
 
@@ -41,10 +42,7 @@ class CollectionsAdapter(context: Context, private val collections: Array<Collec
         collectionText.text = this.collections[position].name
 
         collectionButton.setOnClickListener {
-            val currentActivity = it.context as Activity
-            val intent = Intent(currentActivity, LocalItemsActivity::class.java)
-            intent.putExtra("collection", collections[position].id)
-            currentActivity.startActivity(intent)
+            this.collectionClickCallback(IndexedArray(collections, position))
         }
 
         return view

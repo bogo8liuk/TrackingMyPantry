@@ -1,5 +1,6 @@
 package com.example.trackingmypantry
 
+import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.BluetoothDevicesAdapter
+import com.example.trackingmypantry.lib.adapters.IndexedArray
+import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
 import com.example.trackingmypantry.lib.connectivity.bluetooth.AcceptThread
 import com.example.trackingmypantry.lib.connectivity.bluetooth.BlueUtils
 import com.example.trackingmypantry.lib.connectivity.bluetooth.ConnectThread
@@ -29,6 +32,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
     private lateinit var pairButton: AppCompatButton
     private lateinit var acceptButton: AppCompatButton
 
+    private lateinit var btAdapter: BluetoothAdapter
     private lateinit var connectThread: ConnectThread
     private lateinit var acceptThread: AcceptThread
 
@@ -81,7 +85,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val btAdapter = BlueUtils.bluetoothAdapter(this)
+        this.btAdapter = BlueUtils.bluetoothAdapter(this)
         BlueUtils.enableRequestIfDisabled(this, btAdapter, this.enablingLauncher)
 
         this.setContentView(R.layout.activity_bluetooth_manager)
@@ -91,7 +95,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
         this.pairButton = this.findViewById(R.id.pairButton)
         this.acceptButton = this.findViewById(R.id.acceptButton)
 
-        this.recyclerView.adapter = BluetoothDevicesAdapter(btAdapter, btInfoHandler, arrayOf<BluetoothDevice>())
+        this.recyclerView.adapter = BluetoothDevicesAdapter(this.connect, arrayOf<BluetoothDevice>())
         this.recyclerView.layoutManager = LinearLayoutManager(this)
 
         this.acceptButton.setOnClickListener {
@@ -106,8 +110,12 @@ class BluetoothManagerActivity : AppCompatActivity() {
             BluetoothDevicesViewModelFactory(btAdapter)
         }
         model.getDevices().observe(this, Observer<List<BluetoothDevice>> {
-            val adapter = BluetoothDevicesAdapter(btAdapter, btInfoHandler, it.toTypedArray())
+            val adapter = BluetoothDevicesAdapter(this.connect, it.toTypedArray())
             this.recyclerView.adapter = adapter
         })
+    }
+
+    private val connect: IndexedArrayCallback<BluetoothDevice> = {
+        ConnectThread(this.btAdapter, it.array[it.index], this.btInfoHandler).run()
     }
 }

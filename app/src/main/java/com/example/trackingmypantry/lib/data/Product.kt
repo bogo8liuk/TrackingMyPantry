@@ -4,7 +4,7 @@ data class Product(
     val name: String,
     val description: String,
     val barcode: String,
-    val image: String,
+    val image: String?,
     val id: String
 )
 

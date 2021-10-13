@@ -1,19 +1,15 @@
 package com.example.trackingmypantry.lib.adapters
 
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R
-import com.example.trackingmypantry.lib.connectivity.bluetooth.ConnectThread
 
 class BluetoothDevicesAdapter(
-    private val adapter: BluetoothAdapter,
-    private val handler: Handler,
+    private val deviceClickCallback: IndexedArrayCallback<BluetoothDevice>,
     private val devices: Array<BluetoothDevice>
     ): RecyclerView.Adapter<BluetoothDevicesAdapter.ViewHolder>() {
 
@@ -22,7 +18,7 @@ class BluetoothDevicesAdapter(
 
         init {
             this.deviceButton.setOnClickListener {
-                ConnectThread(adapter, devices[this.adapterPosition], handler).run()
+                deviceClickCallback(IndexedArray(devices, this.adapterPosition))
             }
         }
     }

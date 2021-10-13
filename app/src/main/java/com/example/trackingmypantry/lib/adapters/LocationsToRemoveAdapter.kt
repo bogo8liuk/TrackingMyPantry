@@ -1,11 +1,9 @@
 package com.example.trackingmypantry.lib.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R
 import com.example.trackingmypantry.db.entities.Place
@@ -18,9 +16,9 @@ import com.example.trackingmypantry.db.entities.Place
  */
 class LocationsToRemoveAdapter(
     private val locations: Array<Place>,
-    private val onCheck: (Place) -> Unit,
-    private val onUncheck: (Place) -> Unit):
-    RecyclerView.Adapter<LocationsToRemoveAdapter.ViewHolder>() {
+    private val onCheck: ArgsCallback<Place>,
+    private val onUncheck: ArgsCallback<Place>
+): RecyclerView.Adapter<LocationsToRemoveAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val checkBox: CheckBox = view.findViewById(R.id.locationCheckBox)

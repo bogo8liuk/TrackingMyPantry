@@ -17,6 +17,7 @@ import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.EvalMode
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.CollectionsAdapter
+import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
 import com.example.trackingmypantry.lib.viewmodels.CollectionsViewModel
 import com.example.trackingmypantry.lib.viewmodels.DefaultAppViewModelFactory
 
@@ -35,7 +36,11 @@ class CollectionsActivity : AppCompatActivity() {
         this.suggestionsButton = this.findViewById(R.id.suggestionsButton)
 
         this.gridView = findViewById(R.id.collectionsGridView)
-        this.gridView.adapter = CollectionsAdapter(this, arrayOf<Collection>())
+        this.gridView.adapter = CollectionsAdapter(
+            this,
+            this.startLocalItemsActivity,
+            arrayOf<Collection>()
+        )
 
         this.itemsButton.setOnClickListener {
             val intent = Intent(this, LocalItemsActivity::class.java)
@@ -95,7 +100,17 @@ class CollectionsActivity : AppCompatActivity() {
         }
 
         model.getCollections().observe(this, Observer<List<Collection>> {
-            this.gridView.adapter = CollectionsAdapter(this, it.toTypedArray())
+            this.gridView.adapter = CollectionsAdapter(
+                this,
+                this.startLocalItemsActivity,
+                it.toTypedArray()
+            )
         })
+    }
+
+    private val startLocalItemsActivity: IndexedArrayCallback<Collection> = {
+        val intent = Intent(this, LocalItemsActivity::class.java)
+        intent.putExtra(LocalItemsActivity.COLLECTION_EXTRA, it.array[it.index].id)
+        this.startActivity(intent)
     }
 }
