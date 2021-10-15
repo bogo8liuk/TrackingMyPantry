@@ -42,9 +42,11 @@
     <string name="requestAccept">Accept a request</string>
     <string name="pair">Pair</string>
     <string name="locations">Locations</string>
+    <string name="locationsWatch">See your locations</string>
     <string name="positionMy">My position</string>
     <string name="save">Save</string>
     <string name="noElements">No available elements</string>
+    <string name="end">End</string>
     <!--Buttons texts-->
 
     <!--Hints-->
