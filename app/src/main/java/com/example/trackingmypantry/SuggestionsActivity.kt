@@ -16,6 +16,7 @@ import com.example.trackingmypantry.lib.adapters.SuggestedPlacesAdapter
 import com.example.trackingmypantry.lib.viewmodels.DefaultAppViewModelFactory
 import com.example.trackingmypantry.lib.viewmodels.SuggestionItemsViewModel
 import com.example.trackingmypantry.lib.viewmodels.SuggestionPlacesViewModel
+import kotlinx.android.synthetic.main.activity_suggestions.*
 
 /**
  * @warning To start this activity, it is mandatory to put the extra `ITEMS_ELSE_PLACES_EXTRA`
@@ -48,7 +49,11 @@ class SuggestionsActivity : AppCompatActivity() {
             }
 
             model.getSuggestionItems().observe(this, Observer<List<ItemSuggestion>> {
-                recyclerView.adapter = SuggestedItemsAdapter(this.deleteItemSuggestion, it.toTypedArray())
+                if (it.isEmpty()) {
+                    noElemsText.visibility = android.view.View.VISIBLE
+                } else {
+                    recyclerView.adapter = SuggestedItemsAdapter(this.deleteItemSuggestion, it.toTypedArray())
+                }
             })
         } else {
             val model: SuggestionPlacesViewModel by viewModels {
@@ -56,11 +61,15 @@ class SuggestionsActivity : AppCompatActivity() {
             }
 
             model.getSuggestionPlaces().observe(this, {
-                recyclerView.adapter = SuggestedPlacesAdapter(
-                    this.deletePlaceSuggestion,
-                    this.movePlaceSuggestion,
-                    it.toTypedArray()
-                )
+                if (it.isEmpty()) {
+                    noElemsText.visibility = android.view.View.VISIBLE
+                } else {
+                    recyclerView.adapter = SuggestedPlacesAdapter(
+                        this.deletePlaceSuggestion,
+                        this.movePlaceSuggestion,
+                        it.toTypedArray()
+                    )
+                }
             })
         }
     }
@@ -83,7 +92,7 @@ class SuggestionsActivity : AppCompatActivity() {
                 *this.placeSuggestionsToMove.toTypedArray()
             )
         }
-        
+
         super.onBackPressed()
     }
 
