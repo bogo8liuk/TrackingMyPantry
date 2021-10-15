@@ -2,15 +2,21 @@ package com.example.trackingmypantry
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -72,7 +78,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()) { result ->
         when (result.resultCode) {
             RESULT_OK -> {
-                //do nothing, the user can continue using this functionality
+                // Success: do nothing, the user can continue using this functionality
             }
 
             RESULT_CANCELED -> {
@@ -82,11 +88,24 @@ class BluetoothManagerActivity : AppCompatActivity() {
         }
     }
 
+    private val makeDiscoverableLauncher = this.registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result ->
+        when (result.resultCode) {
+            RESULT_OK -> {
+                // Success!
+            }
+
+            RESULT_CANCELED -> {
+                Utils.toastShow(this, "Your device has to be discoverable to be paired")
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         this.btAdapter = BlueUtils.bluetoothAdapter(this)
-        BlueUtils.enableRequestIfDisabled(this, btAdapter, this.enablingLauncher)
+        BlueUtils.enableRequestIfDisabled(this.btAdapter, this.enablingLauncher)
 
         this.setContentView(R.layout.activity_bluetooth_manager)
 
@@ -103,7 +122,29 @@ class BluetoothManagerActivity : AppCompatActivity() {
         }
 
         this.pairButton.setOnClickListener {
-            //TODO: discovery, new activity???
+            val actionButtons = RadioGroup(this)
+            val discoveryButton = RadioButton(this)
+            val makeDiscoverableButton = RadioButton(this)
+
+            discoveryButton.text = "Find devices"
+            makeDiscoverableButton.text = "Make others to find you"
+
+            actionButtons.addView(discoveryButton)
+            actionButtons.addView(makeDiscoverableButton)
+
+            AlertDialog.Builder(this)
+                .setTitle("Choose action")
+                .setMessage("Choose one of the following action")
+                .setView(actionButtons)
+                .setNegativeButton(R.string.negativeCanc, null)
+                .setPositiveButton(R.string.choose, DialogInterface.OnClickListener { _, _ ->
+                    if (discoveryButton.isChecked) {
+                        this.btAdapter.startDiscovery()
+                    } else if (makeDiscoverableButton.isChecked) {
+                        BlueUtils.makeDiscoverable(this.makeDiscoverableLauncher)
+                    }
+                })
+                .show()
         }
 
         val model: BluetoothDevicesViewModel by viewModels {

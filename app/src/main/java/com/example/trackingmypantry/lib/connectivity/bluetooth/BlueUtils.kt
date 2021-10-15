@@ -35,7 +35,7 @@ class BlueUtils {
          * @warning It calls `startActivityForResult`, so the request needs to be handled
          * by implementing `onActivityResult`.
          */
-        fun enableRequestIfDisabled(activity: Activity, adapter: BluetoothAdapter, launcher: ActivityResultLauncher<Intent>) {
+        fun enableRequestIfDisabled(adapter: BluetoothAdapter, launcher: ActivityResultLauncher<Intent>) {
             if (!adapter.isEnabled) {
                 val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
                 launcher.launch(intent)
@@ -72,18 +72,11 @@ class BlueUtils {
          * @warning It calls `startActivityForResult`, so the request needs to be handled
          * by implementing `onActivityResult`.
          */
-        fun makeDiscoverable(activity: Activity) {
+        fun makeDiscoverable(launcher: ActivityResultLauncher<Intent>) {
             val intent = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE).apply {
                 this.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300)
             }
-            activity.startActivityForResult(intent, DISCOVERABLE_REQUEST_CODE)
-        }
-
-        /**
-         * Functions that wraps `startDiscovery()` of `BluetoothAdpater`.
-         */
-        fun startDiscovery(adapter: BluetoothAdapter): Boolean {
-            return adapter.startDiscovery()
+            launcher.launch(intent)
         }
 
         /**

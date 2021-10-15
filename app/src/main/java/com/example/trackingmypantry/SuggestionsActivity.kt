@@ -16,7 +16,6 @@ import com.example.trackingmypantry.lib.adapters.SuggestedPlacesAdapter
 import com.example.trackingmypantry.lib.viewmodels.DefaultAppViewModelFactory
 import com.example.trackingmypantry.lib.viewmodels.SuggestionItemsViewModel
 import com.example.trackingmypantry.lib.viewmodels.SuggestionPlacesViewModel
-import kotlinx.android.synthetic.main.activity_suggestions.*
 
 /**
  * @warning To start this activity, it is mandatory to put the extra `ITEMS_ELSE_PLACES_EXTRA`
