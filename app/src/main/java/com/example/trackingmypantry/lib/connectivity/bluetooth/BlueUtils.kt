@@ -13,9 +13,6 @@ import androidx.activity.result.ActivityResultLauncher
 
 class BlueUtils {
     companion object {
-        const val BLUETOOTH_ENABLING_REQUEST_CODE = 0
-        const val DISCOVERABLE_REQUEST_CODE = 1
-
         /**
          * It returns true if classic bluetooth is supported, false otherwise
          */

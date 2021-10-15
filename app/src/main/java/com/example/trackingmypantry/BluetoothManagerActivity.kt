@@ -2,6 +2,7 @@ package com.example.trackingmypantry
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
+import android.content.BroadcastReceiver
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -39,6 +40,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
     private lateinit var acceptButton: AppCompatButton
 
     private lateinit var btAdapter: BluetoothAdapter
+    private lateinit var receiver: BroadcastReceiver
     private lateinit var connectThread: ConnectThread
     private lateinit var acceptThread: AcceptThread
 
@@ -106,6 +108,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
 
         this.btAdapter = BlueUtils.bluetoothAdapter(this)
         BlueUtils.enableRequestIfDisabled(this.btAdapter, this.enablingLauncher)
+        this.receiver = BlueUtils.bluetoothDeviceReceiver(this.onNewPairedDevice)
 
         this.setContentView(R.layout.activity_bluetooth_manager)
 
@@ -156,7 +159,18 @@ class BluetoothManagerActivity : AppCompatActivity() {
         })
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        this.unregisterReceiver(this.receiver)
+    }
+
     private val connect: IndexedArrayCallback<BluetoothDevice> = {
         ConnectThread(this.btAdapter, it.array[it.index], this.btInfoHandler).run()
+    }
+
+    private val onNewPairedDevice = { device: BluetoothDevice? ->
+        if (device != null) {
+            Utils.toastShow(this, "${device.name} found you!")
+        }
     }
 }
