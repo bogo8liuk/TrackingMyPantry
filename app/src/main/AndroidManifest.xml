@@ -61,6 +61,7 @@
         <activity android:name=".LocationsActivity" />
         <activity android:name=".RemoveLocationsActivity" />
         <activity android:name=".SuggestionsActivity" />
+        <activity android:name=".AcceptSuggestionsActivity"/>
     </application>
 
 </manifest>

@@ -57,12 +57,16 @@ class BluetoothManagerActivity : AppCompatActivity() {
 
                 MessageType.CONNECTED -> {
                     connectThread.cancel()
-                    //TODO: state connected, start ShareActivity
+                    this@BluetoothManagerActivity.startActivity(
+                        Intent(this@BluetoothManagerActivity, ShareActivity::class.java)
+                    )
                 }
 
                 MessageType.ACCEPTED -> {
                     acceptThread.cancel()
-                    //TODO: state connected, start ShareActivity
+                    this@BluetoothManagerActivity.startActivity(
+                        Intent(this@BluetoothManagerActivity, AcceptSuggestionsActivity::class.java)
+                    )
                 }
 
                 MessageType.ERROR_CONNECT -> {
