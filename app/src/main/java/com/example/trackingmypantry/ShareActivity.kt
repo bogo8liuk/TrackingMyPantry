@@ -2,10 +2,55 @@ package com.example.trackingmypantry
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.appcompat.widget.AppCompatButton
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.trackingmypantry.db.entities.Item
+import com.example.trackingmypantry.db.entities.Place
+import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
+import com.example.trackingmypantry.lib.adapters.ShareAdapter
+import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModel
+import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModelFactory
 
 class ShareActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_share)
+
+        val recyclerView: RecyclerView = this.findViewById(R.id.elementsRecView)
+        // to avoid layout skipping
+        recyclerView.adapter = ShareAdapter<Item>(Item::class, this.sendItem, arrayOf())
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        val itemsButton: AppCompatButton = this.findViewById(R.id.itemsWatchButton)
+        val locationsButton: AppCompatButton = this.findViewById(R.id.locationsWatchButton)
+        val terminateButton: AppCompatButton = this.findViewById(R.id.terminateButton)
+
+        itemsButton.setOnClickListener {
+            val model: LocalItemsViewModel by viewModels {
+                LocalItemsViewModelFactory(this.application, -1)
+            }
+            model.getLocalItems().observe(this, {
+                recyclerView.adapter = ShareAdapter<Item>(Item::class, this.sendItem, it.toTypedArray())
+            })
+        }
+
+        locationsButton.setOnClickListener {
+            //TODO
+        }
+
+        terminateButton.setOnClickListener {
+            //TODO: handle handler for write thread
+            this.finish()
+        }
+    }
+
+    private val sendItem: IndexedArrayCallback<Item> = {
+        //TODO
+    }
+
+    private val sendPlace: IndexedArrayCallback<Place> = {
+        //TODO
     }
 }
