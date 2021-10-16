@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.widget.Toast
+import com.example.trackingmypantry.db.entities.Item
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
 
@@ -31,6 +32,23 @@ class Utils {
             } catch (exception: Exception) {
                 null
             }
+        }
+
+        private fun intToByteArray(i: Int): ByteArray {
+            val buffer = ByteArray(4)
+
+            buffer[0] = (i shr 0).toByte()
+            buffer[1] = (i shr 8).toByte()
+            buffer[2] = (i shr 16).toByte()
+            buffer[3] = (i shr 24).toByte()
+
+            return buffer
+        }
+
+        fun itemToByteArray(item: Item): ByteArray {
+            val encBarcode = item.barcode.toByteArray()
+            val lenBarcode = intToByteArray(encBarcode.size)
+            //TODO: finish
         }
 
         fun stringPattern(mode: EvalMode, s: String): Boolean {
