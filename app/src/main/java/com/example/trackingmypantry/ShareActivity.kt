@@ -2,18 +2,42 @@ package com.example.trackingmypantry
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import androidx.activity.viewModels
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.db.entities.Place
+import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
 import com.example.trackingmypantry.lib.adapters.ShareAdapter
+import com.example.trackingmypantry.lib.connectivity.bluetooth.DataTransfer
+import com.example.trackingmypantry.lib.connectivity.bluetooth.MessageType
 import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModel
 import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModelFactory
 
 class ShareActivity : AppCompatActivity() {
+    private val writeHandler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+            when (msg.what) {
+                MessageType.WRITE_DATA -> {
+                    val thread = msg.obj as DataTransfer.SendThread
+                    thread.cancel()
+                }
+
+                MessageType.ERROR_WRITE -> {
+                    val thread = msg.obj as DataTransfer.SendThread
+                    thread.cancel()
+
+                    Utils.toastShow(this@ShareActivity, "Send failure")
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_share)
@@ -41,7 +65,6 @@ class ShareActivity : AppCompatActivity() {
         }
 
         terminateButton.setOnClickListener {
-            //TODO: handle handler for write thread
             this.finish()
         }
     }

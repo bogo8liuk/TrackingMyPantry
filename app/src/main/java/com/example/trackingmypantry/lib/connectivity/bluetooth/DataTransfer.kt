@@ -45,15 +45,16 @@ class DataTransfer(private val handler: Handler) {
         override fun run() {
             try {
                 this.stream.write(bytes)
+
+                val msg = handler.obtainMessage(MessageType.WRITE_DATA)
+                msg.sendToTarget()
             } catch (exception: IOException) {
                 Log.e("Socket bt write error", exception.message ?: "Cannot send data")
+
                 val msg = handler.obtainMessage(MessageType.ERROR_WRITE, "Cannot send data")
                 msg.sendToTarget()
                 return
             }
-
-            val msg = handler.obtainMessage(MessageType.WRITE_DATA)
-            msg.sendToTarget()
         }
 
         fun cancel() {
