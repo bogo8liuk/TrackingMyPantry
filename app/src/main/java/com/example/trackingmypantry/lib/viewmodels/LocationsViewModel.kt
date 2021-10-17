@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import com.example.trackingmypantry.db.entities.Place
 import com.example.trackingmypantry.lib.DbSingleton
 
-class LocationsToRemoveViewModel(app: Application): AndroidViewModel(app) {
+class LocationsViewModel(app: Application): AndroidViewModel(app) {
     private val appContext = app.applicationContext
 
     private val locations = DbSingleton.getInstance(appContext).getAllPlaces()

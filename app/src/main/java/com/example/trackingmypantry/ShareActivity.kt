@@ -16,8 +16,10 @@ import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
 import com.example.trackingmypantry.lib.adapters.ShareAdapter
 import com.example.trackingmypantry.lib.connectivity.bluetooth.DataTransfer
 import com.example.trackingmypantry.lib.connectivity.bluetooth.MessageType
+import com.example.trackingmypantry.lib.viewmodels.DefaultAppViewModelFactory
 import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModel
 import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModelFactory
+import com.example.trackingmypantry.lib.viewmodels.LocationsViewModel
 
 class ShareActivity : AppCompatActivity() {
     private val writeHandler = object : Handler(Looper.getMainLooper()) {
@@ -61,7 +63,12 @@ class ShareActivity : AppCompatActivity() {
         }
 
         locationsButton.setOnClickListener {
-            //TODO
+            val model: LocationsViewModel by viewModels {
+                DefaultAppViewModelFactory(this.application)
+            }
+            model.getPlaces().observe(this, {
+                recyclerView.adapter = ShareAdapter<Place>(Place::class, this.sendPlace, it.toTypedArray())
+            })
         }
 
         terminateButton.setOnClickListener {
@@ -70,7 +77,7 @@ class ShareActivity : AppCompatActivity() {
     }
 
     private val sendItem: IndexedArrayCallback<Item> = {
-        //TODO
+        
     }
 
     private val sendPlace: IndexedArrayCallback<Place> = {
