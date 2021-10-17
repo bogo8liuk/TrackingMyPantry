@@ -6,11 +6,18 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import android.widget.Toast
 import com.example.trackingmypantry.db.entities.Item
+import com.example.trackingmypantry.db.entities.ItemSuggestion
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
+import java.nio.charset.Charset
 
 class Utils {
     companion object {
+        /**
+         * The actual size of Int in Bytes used to convert Int to ByteArray and viceversa.
+         */
+        private const val INT_SIZE = Int.SIZE_BYTES
+
         fun toastShow(context: Context, msg: String) {
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
         }
@@ -34,25 +41,34 @@ class Utils {
             }
         }
 
-        private fun intToByteArray(i: Int): ByteArray {
-            val buffer = ByteArray(4)
+        private fun intToByteArray(n: Int): ByteArray {
+            val buffer = ByteArray(INT_SIZE)
 
-            buffer[0] = (i shr 0).toByte()
-            buffer[1] = (i shr 8).toByte()
-            buffer[2] = (i shr 16).toByte()
-            buffer[3] = (i shr 24).toByte()
+            for (i in 0 until INT_SIZE) {
+                buffer[i] = (n shr (i * 8)).toByte()
+            }
 
             return buffer
         }
 
+        private fun byteArrayToInt(array: ByteArray): Int {
+            var res = 0
+
+            for (i in 0 until INT_SIZE) {
+                res = res or (array[i].toInt() shl (i * 8))
+            }
+
+            return res
+        }
+
         fun itemToByteArray(item: Item): ByteArray {
-            val encBarcode = item.barcode.toByteArray()
+            val encBarcode = item.barcode.toByteArray(Charsets.UTF_8)
             val lenBarcode = intToByteArray(encBarcode.size)
 
-            val encName = item.name.toByteArray()
+            val encName = item.name.toByteArray(Charsets.UTF_8)
             val lenName = intToByteArray(encName.size)
 
-            val encDesc = item.description.toByteArray()
+            val encDesc = item.description.toByteArray(Charsets.UTF_8)
             val lenDesc = intToByteArray(encDesc.size)
 
             val concat = { arrays: Array<ByteArray> ->
@@ -66,7 +82,7 @@ class Utils {
             }
 
             return if (item.image != null) {
-                val encImage = item.image.toByteArray()
+                val encImage = item.image.toByteArray(Charsets.UTF_8)
                 val lenImage = intToByteArray(encImage.size)
 
                 concat(arrayOf(lenBarcode, encBarcode, lenName, encName, lenDesc, encDesc,
@@ -74,6 +90,54 @@ class Utils {
             } else {
                 concat(arrayOf(lenBarcode, encBarcode, lenName, encName, lenDesc, encDesc))
             }
+        }
+
+        fun byteArrayToItemSuggestion(array: ByteArray): Array<String> {
+            var oldCursor = 0
+            var cursor = INT_SIZE
+
+            val lenBarcode = byteArrayToInt(array.sliceArray(IntRange(oldCursor, cursor - 1)))
+
+            oldCursor = cursor
+            cursor += lenBarcode
+
+            val barcode = array.decodeToString(oldCursor, cursor)
+
+            oldCursor = cursor
+            cursor += INT_SIZE
+
+            val lenName = byteArrayToInt(array.sliceArray(IntRange(oldCursor, cursor - 1)))
+
+            oldCursor = cursor
+            cursor += lenName
+
+            val name = array.decodeToString(oldCursor, cursor)
+
+            oldCursor = cursor
+            cursor += INT_SIZE
+
+            val lenDesc = byteArrayToInt(array.sliceArray(IntRange(oldCursor, cursor - 1)))
+
+            oldCursor = cursor
+            cursor += lenDesc
+
+            val desc = array.decodeToString(oldCursor, cursor)
+
+            if (array.size == cursor) {
+                return arrayOf(barcode, name, desc)
+            }
+
+            oldCursor = cursor
+            cursor += INT_SIZE
+
+            val lenImage = byteArrayToInt(array.sliceArray(IntRange(oldCursor, cursor - 1)))
+
+            oldCursor = cursor
+            cursor += lenImage
+
+            val image = array.decodeToString(oldCursor, cursor)
+
+            return arrayOf(barcode, name, desc, image)
         }
 
         fun stringPattern(mode: EvalMode, s: String): Boolean {
