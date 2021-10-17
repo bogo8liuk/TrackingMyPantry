@@ -2,6 +2,7 @@ package com.example.trackingmypantry
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothSocket
 import android.content.BroadcastReceiver
 import android.content.DialogInterface
 import android.content.Intent
@@ -57,16 +58,30 @@ class BluetoothManagerActivity : AppCompatActivity() {
 
                 MessageType.CONNECTED -> {
                     connectThread.cancel()
-                    this@BluetoothManagerActivity.startActivity(
-                        Intent(this@BluetoothManagerActivity, ShareActivity::class.java)
+
+                    val socket = msg.obj as BluetoothSocket
+                    Utils.saveValue(ShareActivity.BLUETOOTH_SOCKET_KEY_EXTRA, socket)
+
+                    val intent = Intent(this@BluetoothManagerActivity, ShareActivity::class.java)
+                    intent.putExtra(
+                        ShareActivity.BLUETOOTH_SOCKET_EXTRA,
+                        ShareActivity.BLUETOOTH_SOCKET_KEY_EXTRA
                     )
+                    this@BluetoothManagerActivity.startActivity(intent)
                 }
 
                 MessageType.ACCEPTED -> {
                     acceptThread.cancel()
-                    this@BluetoothManagerActivity.startActivity(
-                        Intent(this@BluetoothManagerActivity, AcceptSuggestionsActivity::class.java)
+
+                    val socket = msg.obj as BluetoothSocket
+                    Utils.saveValue(AcceptSuggestionsActivity.BLUETOOTH_SOCKET_KEY_EXTRA, socket)
+
+                    val intent = Intent(this@BluetoothManagerActivity, AcceptSuggestionsActivity::class.java)
+                    intent.putExtra(
+                        AcceptSuggestionsActivity.BLUETOOTH_SOCKET_EXTRA,
+                        AcceptSuggestionsActivity.BLUETOOTH_SOCKET_KEY_EXTRA
                     )
+                    this@BluetoothManagerActivity.startActivity(intent)
                 }
 
                 MessageType.ERROR_CONNECT -> {

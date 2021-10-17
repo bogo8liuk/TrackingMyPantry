@@ -22,6 +22,11 @@ import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModelFactory
 import com.example.trackingmypantry.lib.viewmodels.LocationsViewModel
 
 class ShareActivity : AppCompatActivity() {
+    companion object {
+        const val BLUETOOTH_SOCKET_EXTRA = "btSocket"
+        const val BLUETOOTH_SOCKET_KEY_EXTRA = 0
+    }
+
     private val writeHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
@@ -77,7 +82,7 @@ class ShareActivity : AppCompatActivity() {
     }
 
     private val sendItem: IndexedArrayCallback<Item> = {
-        
+
     }
 
     private val sendPlace: IndexedArrayCallback<Place> = {

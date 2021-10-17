@@ -18,6 +18,8 @@ class Utils {
          */
         private const val INT_SIZE = Int.SIZE_BYTES
 
+        private val hashMap = HashMap<Int, Any>()
+
         fun toastShow(context: Context, msg: String) {
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
         }
@@ -144,6 +146,21 @@ class Utils {
             return when (mode) {
                 EvalMode.EMPTY -> s == ""
                 EvalMode.WHITESPACE -> s.all { c -> c == ' ' }
+            }
+        }
+
+        /**
+         * It saves a value that can be retrieved later.
+         */
+        fun saveValue(key: Int, value: Any): Unit {
+            synchronized(hashMap) {
+                hashMap.put(key, value)
+            }
+        }
+
+        fun getSavedValue(key: Int): Any? {
+            synchronized(hashMap) {
+                return hashMap[key]
             }
         }
     }
