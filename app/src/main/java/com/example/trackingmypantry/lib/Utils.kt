@@ -7,8 +7,10 @@ import android.util.Base64
 import android.widget.Toast
 import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.db.entities.ItemSuggestion
+import com.example.trackingmypantry.db.entities.Place
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
+import java.nio.ByteBuffer
 import java.nio.charset.Charset
 
 class Utils {
@@ -17,6 +19,7 @@ class Utils {
          * The actual size of Int in Bytes used to convert Int to ByteArray and viceversa.
          */
         private const val INT_SIZE = Int.SIZE_BYTES
+        private const val DOUBLE_SIZE = Double.SIZE_BYTES
 
         private val hashMap = HashMap<Int, Any>()
 
@@ -63,6 +66,26 @@ class Utils {
             return res
         }
 
+        private fun doubleToByteArray(d: Double): ByteArray {
+            val res = ByteArray(DOUBLE_SIZE)
+            ByteBuffer.wrap(res).putDouble(d)
+            return res
+        }
+
+        private fun byteArrayToDouble(array: ByteArray): Double {
+            return ByteBuffer.wrap(array).double
+        }
+
+        private fun concatByteArrays(arrays: Array<ByteArray>): ByteArray {
+            var res = arrays[0]
+
+            for (i in 1 until arrays.size) {
+                res += arrays[i]
+            }
+
+            return res
+        }
+
         fun itemToByteArray(item: Item): ByteArray {
             val encBarcode = item.barcode.toByteArray(Charsets.UTF_8)
             val lenBarcode = intToByteArray(encBarcode.size)
@@ -73,24 +96,14 @@ class Utils {
             val encDesc = item.description.toByteArray(Charsets.UTF_8)
             val lenDesc = intToByteArray(encDesc.size)
 
-            val concat = { arrays: Array<ByteArray> ->
-                var res = arrays[0]
-
-                for (i in 1 until arrays.size) {
-                    res += arrays[i]
-                }
-
-                res
-            }
-
             return if (item.image != null) {
                 val encImage = item.image.toByteArray(Charsets.UTF_8)
                 val lenImage = intToByteArray(encImage.size)
 
-                concat(arrayOf(lenBarcode, encBarcode, lenName, encName, lenDesc, encDesc,
+                concatByteArrays(arrayOf(lenBarcode, encBarcode, lenName, encName, lenDesc, encDesc,
                     lenImage, encImage))
             } else {
-                concat(arrayOf(lenBarcode, encBarcode, lenName, encName, lenDesc, encDesc))
+                concatByteArrays(arrayOf(lenBarcode, encBarcode, lenName, encName, lenDesc, encDesc))
             }
         }
 
@@ -140,6 +153,28 @@ class Utils {
             val image = array.decodeToString(oldCursor, cursor)
 
             return arrayOf(barcode, name, desc, image)
+        }
+
+        fun placeToByteArray(place: Place): ByteArray {
+            val encLatitude = doubleToByteArray(place.latitude)
+            val lenLatitude = intToByteArray(encLatitude.size)
+
+            val encLongitude = doubleToByteArray(place.longitude)
+            val lenLongitude = intToByteArray(encLongitude.size)
+
+            return if (place.title != null) {
+                val encTitle = place.title.toByteArray(Charsets.UTF_8)
+                val lenTitle = intToByteArray(encTitle.size)
+
+                concatByteArrays(arrayOf(lenLatitude, encLatitude, lenLongitude, encLongitude,
+                    lenTitle, encTitle))
+            } else {
+                concatByteArrays(arrayOf(lenLatitude, encLatitude, lenLongitude, encLongitude))
+            }
+        }
+
+        fun byteArrayToPlaceSuggestion(array: ByteArray): Triple<Double, Double, String> {
+
         }
 
         fun stringPattern(mode: EvalMode, s: String): Boolean {
