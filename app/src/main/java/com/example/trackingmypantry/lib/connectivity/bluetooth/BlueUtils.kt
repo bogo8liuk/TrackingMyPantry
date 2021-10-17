@@ -12,6 +12,11 @@ import android.os.Handler
 import androidx.activity.result.ActivityResultLauncher
 
 class BlueUtils {
+    data class IncomingData(
+        val numBytes: Int,
+        val data: ByteArray
+    )
+
     companion object {
         /**
          * It returns true if classic bluetooth is supported, false otherwise

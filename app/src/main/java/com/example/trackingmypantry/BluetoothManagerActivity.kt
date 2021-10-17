@@ -35,6 +35,11 @@ import com.example.trackingmypantry.lib.viewmodels.BluetoothDevicesViewModel
 import com.example.trackingmypantry.lib.viewmodels.BluetoothDevicesViewModelFactory
 
 class BluetoothManagerActivity : AppCompatActivity() {
+    companion object {
+        private const val BLUETOOTH_ACCEPTED_SOCKET_KEY = 0
+        private const val BLUETOOTH_CONNECTED_SOCKET_KEY = 1
+    }
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var devicesDescText: TextView
     private lateinit var pairButton: AppCompatButton
@@ -60,12 +65,12 @@ class BluetoothManagerActivity : AppCompatActivity() {
                     connectThread.cancel()
 
                     val socket = msg.obj as BluetoothSocket
-                    Utils.saveValue(ShareActivity.BLUETOOTH_SOCKET_KEY_EXTRA, socket)
+                    Utils.saveValue(BLUETOOTH_CONNECTED_SOCKET_KEY, socket)
 
                     val intent = Intent(this@BluetoothManagerActivity, ShareActivity::class.java)
                     intent.putExtra(
                         ShareActivity.BLUETOOTH_SOCKET_EXTRA,
-                        ShareActivity.BLUETOOTH_SOCKET_KEY_EXTRA
+                        BLUETOOTH_CONNECTED_SOCKET_KEY
                     )
                     this@BluetoothManagerActivity.startActivity(intent)
                 }
@@ -74,12 +79,12 @@ class BluetoothManagerActivity : AppCompatActivity() {
                     acceptThread.cancel()
 
                     val socket = msg.obj as BluetoothSocket
-                    Utils.saveValue(AcceptSuggestionsActivity.BLUETOOTH_SOCKET_KEY_EXTRA, socket)
+                    Utils.saveValue(BLUETOOTH_ACCEPTED_SOCKET_KEY, socket)
 
                     val intent = Intent(this@BluetoothManagerActivity, AcceptSuggestionsActivity::class.java)
                     intent.putExtra(
                         AcceptSuggestionsActivity.BLUETOOTH_SOCKET_EXTRA,
-                        AcceptSuggestionsActivity.BLUETOOTH_SOCKET_KEY_EXTRA
+                        BLUETOOTH_ACCEPTED_SOCKET_KEY
                     )
                     this@BluetoothManagerActivity.startActivity(intent)
                 }

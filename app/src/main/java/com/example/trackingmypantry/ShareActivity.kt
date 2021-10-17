@@ -1,5 +1,6 @@
 package com.example.trackingmypantry
 
+import android.bluetooth.BluetoothSocket
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -14,8 +15,8 @@ import com.example.trackingmypantry.db.entities.Place
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
 import com.example.trackingmypantry.lib.adapters.ShareAdapter
-import com.example.trackingmypantry.lib.connectivity.bluetooth.DataTransfer
 import com.example.trackingmypantry.lib.connectivity.bluetooth.MessageType
+import com.example.trackingmypantry.lib.connectivity.bluetooth.SendThread
 import com.example.trackingmypantry.lib.viewmodels.DefaultAppViewModelFactory
 import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModel
 import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModelFactory
@@ -24,19 +25,18 @@ import com.example.trackingmypantry.lib.viewmodels.LocationsViewModel
 class ShareActivity : AppCompatActivity() {
     companion object {
         const val BLUETOOTH_SOCKET_EXTRA = "btSocket"
-        const val BLUETOOTH_SOCKET_KEY_EXTRA = 0
     }
 
     private val writeHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 MessageType.WRITE_DATA -> {
-                    val thread = msg.obj as DataTransfer.SendThread
+                    val thread = msg.obj as SendThread
                     thread.cancel()
                 }
 
                 MessageType.ERROR_WRITE -> {
-                    val thread = msg.obj as DataTransfer.SendThread
+                    val thread = msg.obj as SendThread
                     thread.cancel()
 
                     Utils.toastShow(this@ShareActivity, "Send failure")
@@ -82,7 +82,12 @@ class ShareActivity : AppCompatActivity() {
     }
 
     private val sendItem: IndexedArrayCallback<Item> = {
+        val socketKey = this.intent.extras!!.getInt(BLUETOOTH_SOCKET_EXTRA)
+        val socket = Utils.getSavedValue(socketKey) as BluetoothSocket
 
+        val data = Utils.itemToByteArray(it.array[it.index])
+
+        SendThread(this.writeHandler, socket, data).run()
     }
 
     private val sendPlace: IndexedArrayCallback<Place> = {
