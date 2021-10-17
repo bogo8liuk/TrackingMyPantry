@@ -48,7 +48,32 @@ class Utils {
         fun itemToByteArray(item: Item): ByteArray {
             val encBarcode = item.barcode.toByteArray()
             val lenBarcode = intToByteArray(encBarcode.size)
-            //TODO: finish
+
+            val encName = item.name.toByteArray()
+            val lenName = intToByteArray(encName.size)
+
+            val encDesc = item.description.toByteArray()
+            val lenDesc = intToByteArray(encDesc.size)
+
+            val concat = { arrays: Array<ByteArray> ->
+                var res = arrays[0]
+
+                for (i in 1 until arrays.size) {
+                    res += arrays[i]
+                }
+
+                res
+            }
+
+            return if (item.image != null) {
+                val encImage = item.image.toByteArray()
+                val lenImage = intToByteArray(encImage.size)
+
+                concat(arrayOf(lenBarcode, encBarcode, lenName, encName, lenDesc, encDesc,
+                    lenImage, encImage))
+            } else {
+                concat(arrayOf(lenBarcode, encBarcode, lenName, encName, lenDesc, encDesc))
+            }
         }
 
         fun stringPattern(mode: EvalMode, s: String): Boolean {
