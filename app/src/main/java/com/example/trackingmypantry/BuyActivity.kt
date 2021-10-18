@@ -27,11 +27,6 @@ import com.example.trackingmypantry.lib.viewmodels.ReceivedItemsViewModelFactory
 import java.util.*
 
 class BuyActivity() : AppCompatActivity() {
-    private lateinit var descriptionTextView: TextView
-    private lateinit var sadnessImageView: ImageView
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var newProdButton: AppCompatButton
-
     private val MIN_RATE = 1
     private val MAX_RATE = 5
 
@@ -49,21 +44,21 @@ class BuyActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_buy)
 
-        this.descriptionTextView = this.findViewById(R.id.buyDescription)
-        this.sadnessImageView = this.findViewById(R.id.sadnessImage)
-        this.newProdButton = this.findViewById(R.id.newProdButton)
-        this.recyclerView = this.findViewById(R.id.receivedItemsRecView)
+        val descriptionTextView: TextView = this.findViewById(R.id.buyDescription)
+        val sadnessImageView: ImageView = this.findViewById(R.id.sadnessImage)
+        val newProdButton: AppCompatButton = this.findViewById(R.id.newProdButton)
+        val recyclerView: RecyclerView = this.findViewById(R.id.receivedItemsRecView)
 
-        this.recyclerView.adapter = ReceivedItemsAdapter(
+        recyclerView.adapter = ReceivedItemsAdapter(
             this.buy,
             this.setExpirationAndBuy,
             arrayOf<Product>()
         )    // To avoid layout skipping
-        this.recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         this.barcode = this.intent.extras?.get("barcode") as String
 
-        this.newProdButton.setOnClickListener {
+        newProdButton.setOnClickListener {
             val intent = Intent(this, AddDescriptionActivity::class.java)
             intent.putExtra("barcode", this.barcode)
             this.addDescLauncher.launch(intent)
@@ -74,20 +69,20 @@ class BuyActivity() : AppCompatActivity() {
         }
         model.getReceivedItems().observe(this, Observer<List<Product>> {
             if (it.any { product -> product.barcode == ERR_FIELD }) {
-                this.descriptionTextView.text = "Sorry, you have came across a network failure"
-                this.sadnessImageView.visibility = android.view.View.VISIBLE
+                descriptionTextView.text = "Sorry, you have came across a network failure"
+                sadnessImageView.visibility = android.view.View.VISIBLE
             } else if (it.isEmpty()) {
-                this.descriptionTextView.text = "No products available, be sure to enter details" +
+                descriptionTextView.text = "No products available, be sure to enter details" +
                     " about the product you are buying in order to notify the service"
             } else {
-                this.descriptionTextView.text = "Choose the product you wish to buy or notify the" +
+                descriptionTextView.text = "Choose the product you wish to buy or notify the" +
                     " service about a new one"
                 val adapter = ReceivedItemsAdapter(
                     this.buy,
                     this.setExpirationAndBuy,
                     it.toTypedArray()
                 )
-                this.recyclerView.adapter = adapter
+                recyclerView.adapter = adapter
             }
         })
     }
