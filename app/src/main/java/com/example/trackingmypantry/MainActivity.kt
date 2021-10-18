@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -28,17 +29,6 @@ import java.util.jar.Manifest
 class MainActivity : AppCompatActivity() {
     private val BLUETOOTH_REQUEST_BACKGROUND = 1
     private val BLUETOOTH_REQUEST_COARSE = 2
-
-    // UI elements
-    private lateinit var signupButton: AppCompatButton
-    private lateinit var signinButton: AppCompatButton
-    private lateinit var logoutButton: AppCompatButton
-    private lateinit var localButton: AppCompatButton
-    private lateinit var cameraButton: AppCompatImageButton
-    private lateinit var searchButton: AppCompatButton
-    private lateinit var barcodeText: EditText
-    private lateinit var suggestButton: AppCompatButton
-    private lateinit var locationsButton: AppCompatButton
 
     // Activity launchers
     private val signupLauncher = this.registerForActivityResult(
@@ -61,10 +51,15 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()) { result ->
         when (result.resultCode) {
             RESULT_OK -> {
-                this.logoutButton.visibility = android.view.View.VISIBLE
-                this.searchButton.visibility = android.view.View.VISIBLE
-                this.cameraButton.visibility = android.view.View.VISIBLE
-                this.barcodeText.visibility = android.view.View.VISIBLE
+                val logoutButton: AppCompatButton = this.findViewById(R.id.logoutButton)
+                val searchButton: AppCompatButton = this.findViewById(R.id.searchButton)
+                val cameraButton: AppCompatImageButton = this.findViewById(R.id.cameraButton)
+                val barcodeText: TextView = this.findViewById(R.id.barcodeText)
+
+                logoutButton.visibility = android.view.View.VISIBLE
+                searchButton.visibility = android.view.View.VISIBLE
+                cameraButton.visibility = android.view.View.VISIBLE
+                barcodeText.visibility = android.view.View.VISIBLE
                 Utils.toastShow(this, "You are now signed in!")
             }
 
@@ -150,38 +145,38 @@ class MainActivity : AppCompatActivity() {
         this.startService(Intent(this, ClearCredentialsService::class.java))
 
         this.setContentView(R.layout.activity_main)
-        this.signupButton = this.findViewById(R.id.signupButton)
-        this.signinButton = this.findViewById(R.id.signinButton)
-        this.logoutButton = this.findViewById(R.id.logoutButton)
-        this.localButton = this.findViewById(R.id.localButton)
-        this.cameraButton = this.findViewById(R.id.cameraButton)
-        this.searchButton = this.findViewById(R.id.searchButton)
-        this.barcodeText = this.findViewById(R.id.barcodeText)
-        this.suggestButton = this.findViewById(R.id.bluetoothButton)
-        this.locationsButton = this.findViewById(R.id.locationsButton)
+        val signupButton: AppCompatButton = this.findViewById(R.id.signupButton)
+        val signinButton: AppCompatButton = this.findViewById(R.id.signinButton)
+        val logoutButton: AppCompatButton = this.findViewById(R.id.logoutButton)
+        val localButton: AppCompatButton = this.findViewById(R.id.localButton)
+        val cameraButton: AppCompatImageButton = this.findViewById(R.id.cameraButton)
+        val searchButton: AppCompatButton = this.findViewById(R.id.searchButton)
+        val barcodeText: TextView = this.findViewById(R.id.barcodeText)
+        val suggestButton: AppCompatButton = this.findViewById(R.id.bluetoothButton)
+        val locationsButton: AppCompatButton = this.findViewById(R.id.locationsButton)
 
         if (!BlueUtils.hasBluetoothFeature(this)) {
-            this.suggestButton.visibility = android.view.View.GONE
+            suggestButton.visibility = android.view.View.GONE
         }
 
         if (TokenHandler.getToken(this, TokenType.ACCESS, false) == TokenHandler.INEXISTENT_TOKEN) {
-            this.searchButton.visibility = android.view.View.GONE
-            this.cameraButton.visibility = android.view.View.GONE
-            this.barcodeText.visibility = android.view.View.GONE
-            this.logoutButton.visibility = android.view.View.GONE
+            searchButton.visibility = android.view.View.GONE
+            cameraButton.visibility = android.view.View.GONE
+            barcodeText.visibility = android.view.View.GONE
+            logoutButton.visibility = android.view.View.GONE
         }
 
-        this.signupButton.setOnClickListener {
+        signupButton.setOnClickListener {
             var intent = Intent(this, SignUpActivity::class.java)
             this.signupLauncher.launch(intent)
         }
 
-        this.signinButton.setOnClickListener {
+        signinButton.setOnClickListener {
             var intent = Intent(this, SignInActivity::class.java)
             this.signinLauncher.launch(intent)
         }
 
-        this.searchButton.setOnClickListener {
+        searchButton.setOnClickListener {
             if (Utils.stringPattern(EvalMode.EMPTY, barcodeText.text.toString())) {
                 barcodeText.requestFocus()
             } else {
@@ -191,26 +186,26 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        this.localButton.setOnClickListener {
+        localButton.setOnClickListener {
             this.startActivity(Intent(this, CollectionsActivity::class.java))
         }
 
-        this.cameraButton.setOnClickListener {
+        cameraButton.setOnClickListener {
             var intent = Intent(this, BarcodeScannerActivity::class.java)
             intent.putExtra("imageCapturing", false)
             this.barcodeScanLauncher.launch(intent)
         }
 
-        this.logoutButton.setOnClickListener {
+        logoutButton.setOnClickListener {
             TokenHandler.removeToken(this, TokenType.ACCESS)
 
-            this.searchButton.visibility = android.view.View.GONE
-            this.cameraButton.visibility = android.view.View.GONE
-            this.barcodeText.visibility = android.view.View.GONE
-            this.logoutButton.visibility = android.view.View.GONE
+            searchButton.visibility = android.view.View.GONE
+            cameraButton.visibility = android.view.View.GONE
+            barcodeText.visibility = android.view.View.GONE
+            logoutButton.visibility = android.view.View.GONE
         }
 
-        this.suggestButton.setOnClickListener {
+        suggestButton.setOnClickListener {
             if (!PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 PermissionEvaluer.request(
                     this,
@@ -222,7 +217,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        this.locationsButton.setOnClickListener {
+        locationsButton.setOnClickListener {
             val actionButtons = RadioGroup(this)
             val addLocationsButton = RadioButton(this)
             val removeLocationsButton = RadioButton(this)
