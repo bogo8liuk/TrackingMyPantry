@@ -26,24 +26,21 @@ class LocalItemsActivity : AppCompatActivity() {
     private var collections: List<Collection>? = null
     private val itemsToClear = mutableListOf<Long>()
 
-    private lateinit var descriptionTextView: TextView
-    private lateinit var recyclerView: RecyclerView
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_local_items)
 
-        this.descriptionTextView = this.findViewById(R.id.localDescText)
-        this.recyclerView = this.findViewById(R.id.localItemsRecView)
+        val descriptionTextView: TextView = this.findViewById(R.id.localDescText)
+        val recyclerView: RecyclerView = this.findViewById(R.id.localItemsRecView)
 
-        this.recyclerView.adapter = LocalItemsAdapter(
+        recyclerView.adapter = LocalItemsAdapter(
             this.addQuantityToItem,
             this.removeQuantityToItem,
             this.removeItemFromCollection,
             true,
             arrayOf<Item>()
         )    // To avoid layout skipping
-        this.recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         val collection: Long = this.intent.extras!!.getLong(COLLECTION_EXTRA)
 
@@ -54,7 +51,7 @@ class LocalItemsActivity : AppCompatActivity() {
         var adapter: LocalItemsAdapter
         if (collection < 0) {
             model.getLocalItems().observe(this, Observer<List<Item>> { it ->
-                this.descriptionTextView.text = "Here are the products of your pantry"
+                descriptionTextView.text = "Here are the products of your pantry"
                 val items = it
 
                 val collectionModel: CollectionsViewModel by viewModels {
@@ -70,12 +67,12 @@ class LocalItemsActivity : AppCompatActivity() {
                         false,
                         items.toTypedArray()
                     )
-                    this.recyclerView.adapter = adapter
+                    recyclerView.adapter = adapter
                 })
             })
         } else {
             model.getLocalCollectionItems().observe(this, Observer<List<Item>> {
-                this.descriptionTextView.text = "Here are the products of your collection"
+                descriptionTextView.text = "Here are the products of your collection"
                 adapter = LocalItemsAdapter(
                     this.addQuantityToItem,
                     this.removeQuantityToItem,
@@ -83,7 +80,7 @@ class LocalItemsActivity : AppCompatActivity() {
                     true,
                     it.toTypedArray()
                 )
-                this.recyclerView.adapter = adapter
+                recyclerView.adapter = adapter
             })
         }
     }
