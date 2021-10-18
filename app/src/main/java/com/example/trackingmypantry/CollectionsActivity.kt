@@ -22,33 +22,28 @@ import com.example.trackingmypantry.lib.viewmodels.CollectionsViewModel
 import com.example.trackingmypantry.lib.viewmodels.DefaultAppViewModelFactory
 
 class CollectionsActivity : AppCompatActivity() {
-    private lateinit var gridView: GridView
-    private lateinit var itemsButton: AppCompatButton
-    private lateinit var createCollectionButton: AppCompatButton
-    private lateinit var suggestionsButton: AppCompatButton
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collections)
 
-        this.itemsButton = this.findViewById(R.id.localItemsButton)
-        this.createCollectionButton = this.findViewById(R.id.createCollectionButton)
-        this.suggestionsButton = this.findViewById(R.id.suggestionsButton)
+        val itemsButton: AppCompatButton = this.findViewById(R.id.localItemsButton)
+        val createCollectionButton: AppCompatButton = this.findViewById(R.id.createCollectionButton)
+        val suggestionsButton: AppCompatButton = this.findViewById(R.id.suggestionsButton)
+        val gridView: GridView = findViewById(R.id.collectionsGridView)
 
-        this.gridView = findViewById(R.id.collectionsGridView)
-        this.gridView.adapter = CollectionsAdapter(
+        gridView.adapter = CollectionsAdapter(
             this,
             this.startLocalItemsActivity,
             arrayOf<Collection>()
         )
 
-        this.itemsButton.setOnClickListener {
+        itemsButton.setOnClickListener {
             val intent = Intent(this, LocalItemsActivity::class.java)
             intent.putExtra("collection", -1L)   // No collection provided, just want to show all the items
             this.startActivity(intent)
         }
 
-        this.createCollectionButton.setOnClickListener {
+        createCollectionButton.setOnClickListener {
             val nameInput = EditText(this)
             AlertDialog.Builder(this)
                 .setTitle("Create a collection")
@@ -66,7 +61,7 @@ class CollectionsActivity : AppCompatActivity() {
                 .show()
         }
 
-        this.suggestionsButton.setOnClickListener {
+        suggestionsButton.setOnClickListener {
             val actionButtons = RadioGroup(this)
             val itemsButton = RadioButton(this)
             val placesButton = RadioButton(this)
@@ -100,7 +95,7 @@ class CollectionsActivity : AppCompatActivity() {
         }
 
         model.getCollections().observe(this, Observer<List<Collection>> {
-            this.gridView.adapter = CollectionsAdapter(
+            gridView.adapter = CollectionsAdapter(
                 this,
                 this.startLocalItemsActivity,
                 it.toTypedArray()
