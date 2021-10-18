@@ -24,12 +24,6 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class BarcodeScannerActivity : CameraActivity() {
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var barcodesText: TextView
-    private lateinit var selectButton: AppCompatButton
-    private lateinit var retryButton: AppCompatButton
-    private lateinit var homeButton: AppCompatImageButton
-    private lateinit var stopButton: AppCompatButton
     private lateinit var cameraExecutor: ExecutorService
 
     private var barcodes = mutableListOf<Barcode>()
@@ -48,13 +42,13 @@ class BarcodeScannerActivity : CameraActivity() {
     private fun setContentBarcodes() {
         this.setContentView(R.layout.select_barcode)
 
-        this.recyclerView = this.findViewById(R.id.scannedBarcodesRecView)
-        this.barcodesText = this.findViewById(R.id.scannedBarcodesDescText)
-        this.selectButton = this.findViewById(R.id.selectBarcodeButton)
-        this.retryButton = this.findViewById(R.id.retryScanButton)
-        this.homeButton = this.findViewById(R.id.homeButton)
+        val recyclerView: RecyclerView = this.findViewById(R.id.scannedBarcodesRecView)
+        val barcodesText: TextView = this.findViewById(R.id.scannedBarcodesDescText)
+        val selectButton: AppCompatButton = this.findViewById(R.id.selectBarcodeButton)
+        val retryButton: AppCompatButton = this.findViewById(R.id.retryScanButton)
+        val homeButton: AppCompatButton = this.findViewById(R.id.homeButton)
 
-        this.recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         if (this.barcodes.isNotEmpty()) {
             val list = mutableListOf<String>()
@@ -65,20 +59,20 @@ class BarcodeScannerActivity : CameraActivity() {
             }
 
             if (list.isNotEmpty()) {
-                this.barcodesText.text = "No scanned barcodes, please retry"
+                barcodesText.text = "No scanned barcodes, please retry"
             } else {
-                this.barcodesText.text = "Scanned barcodes:"
+                barcodesText.text = "Scanned barcodes:"
             }
 
-            this.recyclerView.adapter = ScannedBarcodesAdapter(list.toTypedArray())
+            recyclerView.adapter = ScannedBarcodesAdapter(list.toTypedArray())
 
         } else {
-            this.barcodesText.text = "No scanned barcodes, please retry"
-            this.recyclerView.adapter = ScannedBarcodesAdapter(arrayOf<String>())
+            barcodesText.text = "No scanned barcodes, please retry"
+            recyclerView.adapter = ScannedBarcodesAdapter(arrayOf<String>())
         }
 
-        this.selectButton.setOnClickListener {
-            var checkedBarcode = (this.recyclerView.adapter as ScannedBarcodesAdapter).getCheckedBarcode()
+        selectButton.setOnClickListener {
+            var checkedBarcode = (recyclerView.adapter as ScannedBarcodesAdapter).getCheckedBarcode()
 
             if (checkedBarcode != null) {
                 var intent = Intent()
@@ -90,11 +84,11 @@ class BarcodeScannerActivity : CameraActivity() {
             }
         }
 
-        this.retryButton.setOnClickListener {
+        retryButton.setOnClickListener {
             this.setContentCamera()
         }
 
-        this.homeButton.setOnClickListener {
+        homeButton.setOnClickListener {
             this.setResult(RESULT_CANCELED, Intent())
             this.finish()
         }
@@ -102,9 +96,9 @@ class BarcodeScannerActivity : CameraActivity() {
 
     private fun setContentCamera() {
         this.setContentView(R.layout.activity_camera)
-        this.stopButton = findViewById(R.id.stopButton)
+        val stopButton: AppCompatButton = this.findViewById(R.id.stopButton)
 
-        this.stopButton.setOnClickListener {
+        stopButton.setOnClickListener {
             this.setContentBarcodes()
         }
 

@@ -19,14 +19,14 @@ import org.json.JSONObject
 import java.util.*
 
 class AddDescriptionActivity : CameraLauncherActivity() {
-    private lateinit var descEditText: EditText
-    private lateinit var nameEditText: EditText
-
     private var expirationDate: Date? = null
 
     /* Implementing here because there are two points where this function is called:
     * avoiding boiler-plate code. */
     private val send = { barcode: String ->
+        val name = this.findViewById<EditText>(R.id.nameEditText).text.toString()
+        val description = this.findViewById<EditText>(R.id.descEditText).text.toString()
+
         val encoded = this.encodedImage?.let { Utils.bitmapToBase64(it) }
         HttpHandler.retryOnFailure(
             HttpHandler.RequestType.DESCRIBE,
@@ -62,8 +62,8 @@ class AddDescriptionActivity : CameraLauncherActivity() {
                 }
             },
             describeParams = HttpHandler.Companion.DescribeParams(
-                this.nameEditText.text.toString(),
-                this.descEditText.text.toString(),
+                name,
+                description,
                 barcode,
                 encoded
             )
@@ -74,9 +74,8 @@ class AddDescriptionActivity : CameraLauncherActivity() {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_add_description)
 
-        val descText: TextView = this.findViewById(R.id.descText)
-        this.descEditText = this.findViewById(R.id.descEditText)
-        this.nameEditText = this.findViewById(R.id.nameEditText)
+        val descEditText: EditText = this.findViewById(R.id.descEditText)
+        val nameEditText: EditText = this.findViewById(R.id.nameEditText)
         val expirationButton: AppCompatButton = this.findViewById(R.id.expirationDateButton)
         val sendButton: AppCompatButton = this.findViewById(R.id.sendButton)
         val photoButton: AppCompatButton = this.findViewById(R.id.photoButton)
@@ -85,10 +84,10 @@ class AddDescriptionActivity : CameraLauncherActivity() {
         val extras = this.intent.extras
 
         sendButton.setOnClickListener {
-            if (Utils.stringPattern(EvalMode.EMPTY, this.nameEditText.text.toString())) {
-                this.nameEditText.requestFocus()
+            if (Utils.stringPattern(EvalMode.EMPTY, nameEditText.text.toString())) {
+                nameEditText.requestFocus()
                 Utils.toastShow(this, "Name is mandatory")
-            } else if (Utils.stringPattern(EvalMode.WHITESPACE, this.descEditText.text.toString())) { // No text inserted
+            } else if (Utils.stringPattern(EvalMode.WHITESPACE, descEditText.text.toString())) { // No text inserted
                 AlertDialog.Builder(this)
                     .setMessage("Are you sure of keeping an empty description?")
                     .setTitle("No description provided")
