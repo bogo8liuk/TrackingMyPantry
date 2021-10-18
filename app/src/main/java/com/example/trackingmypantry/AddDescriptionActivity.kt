@@ -19,13 +19,8 @@ import org.json.JSONObject
 import java.util.*
 
 class AddDescriptionActivity : CameraLauncherActivity() {
-    private lateinit var descText: TextView
     private lateinit var descEditText: EditText
     private lateinit var nameEditText: EditText
-    private lateinit var expirationButton: AppCompatButton
-    private lateinit var sendButton: AppCompatButton
-    private lateinit var photoButton: AppCompatButton
-    private lateinit var image: ImageView
 
     private var expirationDate: Date? = null
 
@@ -79,17 +74,17 @@ class AddDescriptionActivity : CameraLauncherActivity() {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_add_description)
 
-        this.descText = this.findViewById(R.id.descText)
+        val descText: TextView = this.findViewById(R.id.descText)
         this.descEditText = this.findViewById(R.id.descEditText)
         this.nameEditText = this.findViewById(R.id.nameEditText)
-        this.expirationButton = this.findViewById(R.id.expirationDateButton)
-        this.sendButton = this.findViewById(R.id.sendButton)
-        this.photoButton = this.findViewById(R.id.photoButton)
-        this.image = this.findViewById(R.id.productImage)
+        val expirationButton: AppCompatButton = this.findViewById(R.id.expirationDateButton)
+        val sendButton: AppCompatButton = this.findViewById(R.id.sendButton)
+        val photoButton: AppCompatButton = this.findViewById(R.id.photoButton)
+        val image: ImageView = this.findViewById(R.id.productImage)
 
         val extras = this.intent.extras
 
-        this.sendButton.setOnClickListener {
+        sendButton.setOnClickListener {
             if (Utils.stringPattern(EvalMode.EMPTY, this.nameEditText.text.toString())) {
                 this.nameEditText.requestFocus()
                 Utils.toastShow(this, "Name is mandatory")
@@ -106,7 +101,7 @@ class AddDescriptionActivity : CameraLauncherActivity() {
             }
         }
 
-        this.photoButton.setOnClickListener {
+        photoButton.setOnClickListener {
             this.cameraLaunch({ bitmap ->  
                 image.setImageBitmap(bitmap)
             }, {
@@ -114,7 +109,7 @@ class AddDescriptionActivity : CameraLauncherActivity() {
             })
         }
 
-        this.expirationButton.setOnClickListener {
+        expirationButton.setOnClickListener {
             val datePicker = DatePicker(this)
             datePicker.minDate = Date().time
             AlertDialog.Builder(this)

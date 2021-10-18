@@ -22,6 +22,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.371875" />
         <entry key="app/src/main/res/drawable/ic_baseline_store_24.xml" value="0.371875" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.371875" />
+        <entry key="app/src/main/res/layout/activity_accept_suggestions.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/activity_add_description.xml" value="0.29528985507246375" />
         <entry key="app/src/main/res/layout/activity_bluetooth_manager.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/activity_buy.xml" value="0.35572916666666665" />
