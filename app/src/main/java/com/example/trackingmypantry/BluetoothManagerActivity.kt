@@ -40,11 +40,6 @@ class BluetoothManagerActivity : AppCompatActivity() {
         private const val BLUETOOTH_CONNECTED_SOCKET_KEY = 1
     }
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var devicesDescText: TextView
-    private lateinit var pairButton: AppCompatButton
-    private lateinit var acceptButton: AppCompatButton
-
     private lateinit var btAdapter: BluetoothAdapter
     private lateinit var receiver: BroadcastReceiver
     private lateinit var connectThread: ConnectThread
@@ -136,19 +131,19 @@ class BluetoothManagerActivity : AppCompatActivity() {
 
         this.setContentView(R.layout.activity_bluetooth_manager)
 
-        this.recyclerView = this.findViewById(R.id.btDevicesRecView)
-        this.devicesDescText = this.findViewById(R.id.devicesDescText)
-        this.pairButton = this.findViewById(R.id.pairButton)
-        this.acceptButton = this.findViewById(R.id.acceptButton)
+        val recyclerView: RecyclerView = this.findViewById(R.id.btDevicesRecView)
+        val devicesDescText: TextView = this.findViewById(R.id.devicesDescText)
+        val pairButton: AppCompatButton = this.findViewById(R.id.pairButton)
+        val acceptButton: AppCompatButton = this.findViewById(R.id.acceptButton)
 
-        this.recyclerView.adapter = BluetoothDevicesAdapter(this.connect, arrayOf<BluetoothDevice>())
-        this.recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = BluetoothDevicesAdapter(this.connect, arrayOf<BluetoothDevice>())
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        this.acceptButton.setOnClickListener {
+        acceptButton.setOnClickListener {
             AcceptThread(btAdapter, btInfoHandler).run()
         }
 
-        this.pairButton.setOnClickListener {
+        pairButton.setOnClickListener {
             val actionButtons = RadioGroup(this)
             val discoveryButton = RadioButton(this)
             val makeDiscoverableButton = RadioButton(this)
@@ -178,8 +173,12 @@ class BluetoothManagerActivity : AppCompatActivity() {
             BluetoothDevicesViewModelFactory(btAdapter)
         }
         model.getDevices().observe(this, Observer<List<BluetoothDevice>> {
-            val adapter = BluetoothDevicesAdapter(this.connect, it.toTypedArray())
-            this.recyclerView.adapter = adapter
+            if (it.isEmpty()) {
+                devicesDescText.text = "No paired devices"
+            } else {
+                val adapter = BluetoothDevicesAdapter(this.connect, it.toTypedArray())
+                recyclerView.adapter = adapter
+            }
         })
     }
 
