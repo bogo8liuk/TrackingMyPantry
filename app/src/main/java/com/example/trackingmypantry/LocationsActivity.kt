@@ -82,7 +82,7 @@ class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
             if (this.markedLocations.isNotEmpty()) {
                 DbSingleton.getInstance(this).insertPlaces(
                     places = this.markedLocations.map {
-                        Place(it.latitude, it.longitude, it.marker?.title)
+                        Place(it.latitude, it.longitude, it.marker?.title?:DEFAULT_LOCATION_NAME)
                     }.toTypedArray()
                 )
 

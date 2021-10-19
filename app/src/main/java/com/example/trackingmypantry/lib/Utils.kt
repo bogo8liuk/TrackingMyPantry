@@ -157,24 +157,35 @@ class Utils {
 
         fun placeToByteArray(place: Place): ByteArray {
             val encLatitude = doubleToByteArray(place.latitude)
-            val lenLatitude = intToByteArray(encLatitude.size)
-
             val encLongitude = doubleToByteArray(place.longitude)
-            val lenLongitude = intToByteArray(encLongitude.size)
+            val encTitle = place.title.toByteArray(Charsets.UTF_8)
+            val lenTitle = intToByteArray(encTitle.size)
 
-            return if (place.title != null) {
-                val encTitle = place.title.toByteArray(Charsets.UTF_8)
-                val lenTitle = intToByteArray(encTitle.size)
-
-                concatByteArrays(arrayOf(lenLatitude, encLatitude, lenLongitude, encLongitude,
-                    lenTitle, encTitle))
-            } else {
-                concatByteArrays(arrayOf(lenLatitude, encLatitude, lenLongitude, encLongitude))
-            }
+            return concatByteArrays(arrayOf(encLatitude, encLongitude, lenTitle, encTitle))
         }
 
         fun byteArrayToPlaceSuggestion(array: ByteArray): Triple<Double, Double, String> {
+            var oldCursor = 0
+            var cursor = DOUBLE_SIZE
 
+            val latitude = byteArrayToDouble(array.sliceArray(IntRange(oldCursor, cursor - 1)))
+
+            oldCursor = cursor
+            cursor += DOUBLE_SIZE
+
+            val longitude = byteArrayToDouble(array.sliceArray(IntRange(oldCursor, cursor - 1)))
+
+            oldCursor = cursor
+            cursor += INT_SIZE
+
+            val lenTitle = byteArrayToInt(array.sliceArray(IntRange(oldCursor, cursor - 1)))
+
+            oldCursor = cursor
+            cursor += lenTitle
+
+            val title = array.decodeToString(oldCursor, cursor)
+
+            return Triple(latitude, longitude, title)
         }
 
         fun stringPattern(mode: EvalMode, s: String): Boolean {
