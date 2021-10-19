@@ -16,23 +16,19 @@ import com.example.trackingmypantry.lib.viewmodels.LocationsViewModel
 import com.example.trackingmypantry.lib.viewmodels.DefaultAppViewModelFactory
 
 class RemoveLocationsActivity : AppCompatActivity() {
-    private lateinit var descriptionText: TextView
-    private lateinit var recView: RecyclerView
-    private lateinit var removeButton: AppCompatButton
-
     private val locationsToRemove = mutableListOf<Place>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_remove_locations)
 
-        this.descriptionText = this.findViewById(R.id.removeLocDescText)
-        this.recView = this.findViewById(R.id.locationsRecView)
-        this.removeButton = this.findViewById(R.id.deleteLocationsButton)
+        val descriptionText: TextView = this.findViewById(R.id.removeLocDescText)
+        val recView: RecyclerView = this.findViewById(R.id.locationsRecView)
+        val removeButton: AppCompatButton = this.findViewById(R.id.deleteLocationsButton)
 
         // Next two lines to avoid layout skipping
-        this.recView.adapter = LocationsToRemoveAdapter(arrayOf<Place>(), { _ -> }, { _ -> })
-        this.recView.layoutManager = LinearLayoutManager(this)
+        recView.adapter = LocationsToRemoveAdapter(arrayOf<Place>(), { _ -> }, { _ -> })
+        recView.layoutManager = LinearLayoutManager(this)
 
         val model: LocationsViewModel by viewModels {
             DefaultAppViewModelFactory(this.application)
@@ -40,12 +36,12 @@ class RemoveLocationsActivity : AppCompatActivity() {
 
         model.getPlaces().observe(this, Observer<List<Place>> {
             if (it.isEmpty()) {
-                this.descriptionText.text = "You did not saved any location yet"
+                descriptionText.text = "You did not saved any location yet"
             } else {
-                this.descriptionText.text = "Choose the locations you wish to delete"
+                descriptionText.text = "Choose the locations you wish to delete"
             }
 
-            this.recView.adapter = LocationsToRemoveAdapter(
+            recView.adapter = LocationsToRemoveAdapter(
                 it.toTypedArray(),
                 { place ->
                     this.locationsToRemove.add(place)
@@ -56,7 +52,7 @@ class RemoveLocationsActivity : AppCompatActivity() {
             )
         })
 
-        this.removeButton.setOnClickListener {
+        removeButton.setOnClickListener {
             if (this.locationsToRemove.isNotEmpty()) {
                 DbSingleton.getInstance(this).deletePlaces(
                     places = this.locationsToRemove.toTypedArray()
