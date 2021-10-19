@@ -91,6 +91,11 @@ class ShareActivity : AppCompatActivity() {
     }
 
     private val sendPlace: IndexedArrayCallback<Place> = {
-        //TODO
+        val socketKey = this.intent.extras!!.getInt(BLUETOOTH_SOCKET_EXTRA)
+        val socket = Utils.getSavedValue(socketKey) as BluetoothSocket
+
+        val data = Utils.placeToByteArray(it.array[it.index])
+
+        SendThread(this.writeHandler, socket, data).run()
     }
 }
