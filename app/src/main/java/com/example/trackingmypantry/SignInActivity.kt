@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import com.example.trackingmypantry.lib.EvalMode
 import com.example.trackingmypantry.lib.connectivity.net.HttpHandler
 import com.example.trackingmypantry.lib.Utils
@@ -20,10 +21,10 @@ class SignInActivity : AppCompatActivity() {
                 " try to sign in again")
         }
 
-        var usernameEditText = this.findViewById<EditText>(R.id.usernameEditText)
-        var emailEditText = this.findViewById<EditText>(R.id.emailEditText)
-        var passwordEditText = this.findViewById<EditText>(R.id.passwordEditText)
-        var signInButton = findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.signButton)
+        val usernameEditText = this.findViewById<EditText>(R.id.usernameEditText)
+        val emailEditText = this.findViewById<EditText>(R.id.emailEditText)
+        val passwordEditText = this.findViewById<EditText>(R.id.passwordEditText)
+        val signInButton = this.findViewById<AppCompatButton>(R.id.signButton)
 
         signInButton.setText(R.string.signIn)
         usernameEditText.visibility = android.view.View.GONE
