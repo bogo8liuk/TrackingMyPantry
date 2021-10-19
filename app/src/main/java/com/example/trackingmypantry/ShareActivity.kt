@@ -15,6 +15,7 @@ import com.example.trackingmypantry.db.entities.Place
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
 import com.example.trackingmypantry.lib.adapters.ShareAdapter
+import com.example.trackingmypantry.lib.connectivity.bluetooth.ConnectThread
 import com.example.trackingmypantry.lib.connectivity.bluetooth.MessageType
 import com.example.trackingmypantry.lib.connectivity.bluetooth.SendThread
 import com.example.trackingmypantry.lib.viewmodels.DefaultAppViewModelFactory
@@ -25,6 +26,7 @@ import com.example.trackingmypantry.lib.viewmodels.LocationsViewModel
 class ShareActivity : AppCompatActivity() {
     companion object {
         const val BLUETOOTH_SOCKET_EXTRA = "btSocket"
+        const val BLUETOOTH_THREAD_EXTRA = "btConnect"
     }
 
     private val writeHandler = object : Handler(Looper.getMainLooper()) {
@@ -79,6 +81,14 @@ class ShareActivity : AppCompatActivity() {
         terminateButton.setOnClickListener {
             this.finish()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        val threadKey = this.intent.extras!!.getInt(BLUETOOTH_THREAD_EXTRA)
+        val thread = Utils.getSavedValue(threadKey) as ConnectThread
+        thread.cancel()
     }
 
     private val sendItem: IndexedArrayCallback<Item> = {

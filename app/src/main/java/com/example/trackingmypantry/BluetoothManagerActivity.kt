@@ -38,27 +38,27 @@ class BluetoothManagerActivity : AppCompatActivity() {
     companion object {
         private const val BLUETOOTH_ACCEPTED_SOCKET_KEY = 0
         private const val BLUETOOTH_CONNECTED_SOCKET_KEY = 1
+        private const val BLUETOOTH_CONNECT_THREAD_KEY = 2
+        private const val BLUETOOTH_ACCEPT_THREAD_KEY = 3
     }
 
     private lateinit var btAdapter: BluetoothAdapter
     private lateinit var receiver: BroadcastReceiver
-    private lateinit var connectThread: ConnectThread
-    private lateinit var acceptThread: AcceptThread
 
     private val btInfoHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 MessageType.START_CONNECT -> {
-                    connectThread = msg.obj as ConnectThread
+                    val connectThread = msg.obj as ConnectThread
+                    Utils.saveValue(BLUETOOTH_CONNECT_THREAD_KEY, connectThread)
                 }
 
                 MessageType.START_ACCEPT -> {
-                    acceptThread = msg.obj as AcceptThread
+                    val acceptThread = msg.obj as AcceptThread
+                    Utils.saveValue(BLUETOOTH_ACCEPT_THREAD_KEY, acceptThread)
                 }
 
                 MessageType.CONNECTED -> {
-                    connectThread.cancel()
-
                     val socket = msg.obj as BluetoothSocket
                     Utils.saveValue(BLUETOOTH_CONNECTED_SOCKET_KEY, socket)
 
@@ -67,12 +67,14 @@ class BluetoothManagerActivity : AppCompatActivity() {
                         ShareActivity.BLUETOOTH_SOCKET_EXTRA,
                         BLUETOOTH_CONNECTED_SOCKET_KEY
                     )
+                    intent.putExtra(
+                        ShareActivity.BLUETOOTH_THREAD_EXTRA,
+                        BLUETOOTH_CONNECT_THREAD_KEY
+                    )
                     this@BluetoothManagerActivity.startActivity(intent)
                 }
 
                 MessageType.ACCEPTED -> {
-                    acceptThread.cancel()
-
                     val socket = msg.obj as BluetoothSocket
                     Utils.saveValue(BLUETOOTH_ACCEPTED_SOCKET_KEY, socket)
 
@@ -80,6 +82,10 @@ class BluetoothManagerActivity : AppCompatActivity() {
                     intent.putExtra(
                         AcceptSuggestionsActivity.BLUETOOTH_SOCKET_EXTRA,
                         BLUETOOTH_ACCEPTED_SOCKET_KEY
+                    )
+                    intent.putExtra(
+                        AcceptSuggestionsActivity.BLUETOOTH_THREAD_EXTRA,
+                        BLUETOOTH_ACCEPT_THREAD_KEY
                     )
                     this@BluetoothManagerActivity.startActivity(intent)
                 }
