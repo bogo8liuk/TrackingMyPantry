@@ -6,12 +6,11 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import android.widget.Toast
 import com.example.trackingmypantry.db.entities.Item
-import com.example.trackingmypantry.db.entities.ItemSuggestion
 import com.example.trackingmypantry.db.entities.Place
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
+import java.lang.RuntimeException
 import java.nio.ByteBuffer
-import java.nio.charset.Charset
 
 class Utils {
     companion object {
@@ -20,6 +19,13 @@ class Utils {
          */
         private const val INT_SIZE = Int.SIZE_BYTES
         private const val DOUBLE_SIZE = Double.SIZE_BYTES
+        private const val ITEM_ENCODING = 0
+        private const val PLACE_ENCODING = 1
+
+        enum class FollowingDataType {
+            ITEM_TYPE,
+            PLACE_TYPE
+        }
 
         private val hashMap = HashMap<Int, Any>()
 
@@ -186,6 +192,14 @@ class Utils {
             val title = array.decodeToString(oldCursor, cursor)
 
             return Triple(latitude, longitude, title)
+        }
+
+        fun encodedTypeOf(array: ByteArray): FollowingDataType {
+            return when (byteArrayToInt(array.sliceArray(IntRange(0, INT_SIZE)))) {
+                ITEM_ENCODING -> FollowingDataType.ITEM_TYPE
+                PLACE_ENCODING -> FollowingDataType.PLACE_TYPE
+                else -> throw RuntimeException()
+            }
         }
 
         fun stringPattern(mode: EvalMode, s: String): Boolean {
