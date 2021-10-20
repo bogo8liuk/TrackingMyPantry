@@ -97,7 +97,7 @@ class Utils {
             return res
         }
 
-        fun itemToByteArray(item: Item): ByteArray {
+        fun itemToByteArray(item: Item, username: String): ByteArray {
             val encType = ByteArray(1)
             encType[0] = ITEM_ENCODING
 
@@ -110,17 +110,25 @@ class Utils {
             val encDesc = item.description.toByteArray(Charsets.UTF_8)
             val lenDesc = intToByteArray(encDesc.size)
 
+            val encUser = username.toByteArray(Charsets.UTF_8)
+            val lenUser = intToByteArray(encUser.size)
+
             return if (item.image != null) {
                 val encImage = item.image.toByteArray(Charsets.UTF_8)
                 val lenImage = intToByteArray(encImage.size)
 
-                concatByteArrays(arrayOf(encType, lenBarcode, encBarcode, lenName, encName, lenDesc, encDesc,
-                    lenImage, encImage))
+                concatByteArrays(arrayOf(encType, lenBarcode, encBarcode, lenName, encName, lenDesc,
+                    encDesc, lenUser, encUser, lenImage, encImage))
             } else {
-                concatByteArrays(arrayOf(encType, lenBarcode, encBarcode, lenName, encName, lenDesc, encDesc))
+                concatByteArrays(arrayOf(encType, lenBarcode, encBarcode, lenName, encName, lenDesc,
+                    encDesc, lenUser, encUser))
             }
         }
 
+        /**
+         * It returns only the barcode, the name, the description, the username and the eventually
+         * the image of an ItemSuggestion.
+         */
         fun byteArrayToItemSuggestion(array: ByteArray): Array<String> {
             var oldCursor = 0
             var cursor = INT_SIZE
@@ -152,8 +160,18 @@ class Utils {
 
             val desc = array.decodeToString(oldCursor, cursor)
 
+            oldCursor = cursor
+            cursor += INT_SIZE
+
+            val lenUser = byteArrayToInt(array.sliceArray(IntRange(oldCursor, cursor - 1)))
+
+            oldCursor = cursor
+            cursor += lenUser
+
+            val user = array.decodeToString(oldCursor, cursor)
+
             if (array.size == cursor) {
-                return arrayOf(barcode, name, desc)
+                return arrayOf(barcode, name, desc, user)
             }
 
             oldCursor = cursor
@@ -166,10 +184,10 @@ class Utils {
 
             val image = array.decodeToString(oldCursor, cursor)
 
-            return arrayOf(barcode, name, desc, image)
+            return arrayOf(barcode, name, desc, user, image)
         }
 
-        fun placeToByteArray(place: Place): ByteArray {
+        fun placeToByteArray(place: Place, username: String): ByteArray {
             val encType = ByteArray(1)
             encType[0] = PLACE_ENCODING
 
@@ -179,10 +197,18 @@ class Utils {
             val encTitle = place.title.toByteArray(Charsets.UTF_8)
             val lenTitle = intToByteArray(encTitle.size)
 
-            return concatByteArrays(arrayOf(encLatitude, encLongitude, lenTitle, encTitle))
+            val encUser = username.toByteArray(Charsets.UTF_8)
+            val lenUser = intToByteArray(encUser.size)
+
+            return concatByteArrays(arrayOf(encLatitude, encLongitude, lenTitle, encTitle, lenUser,
+                encUser))
         }
 
-        fun byteArrayToPlaceSuggestion(array: ByteArray): Triple<Double, Double, String> {
+        /**
+         * It returns only the latitude, the the longitude, the title and the username
+         * of a PlaceSuggestion.
+         */
+        fun byteArrayToPlaceSuggestion(array: ByteArray): Tuple4<Double, Double, String, String> {
             var oldCursor = 0
             var cursor = DOUBLE_SIZE
 
@@ -203,7 +229,17 @@ class Utils {
 
             val title = array.decodeToString(oldCursor, cursor)
 
-            return Triple(latitude, longitude, title)
+            oldCursor = cursor
+            cursor += INT_SIZE
+
+            val lenUser = byteArrayToInt(array.sliceArray(IntRange(oldCursor, cursor - 1)))
+
+            oldCursor = cursor
+            cursor += lenUser
+
+            val user = array.decodeToString(oldCursor, cursor)
+
+            return Tuple4(latitude, longitude, title, user)
         }
 
         /**
@@ -253,3 +289,10 @@ enum class EvalMode {
     EMPTY,
     WHITESPACE
 }
+
+data class Tuple4<T1, T2, T3, T4> (
+    val t1: T1,
+    val t2: T2,
+    val t3: T3,
+    val t4: T4
+)

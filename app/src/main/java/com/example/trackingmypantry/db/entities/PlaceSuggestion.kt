@@ -9,5 +9,6 @@ data class PlaceSuggestion(
     val latitude: Double,
     val longitude: Double,
     val title: String,
+    val username: String,
     @PrimaryKey(autoGenerate = true) val id: Long = 0
 )

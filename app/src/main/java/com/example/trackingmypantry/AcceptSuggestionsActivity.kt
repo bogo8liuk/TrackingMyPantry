@@ -7,6 +7,9 @@ import android.os.Looper
 import android.os.Message
 import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.db.entities.Place
+import com.example.trackingmypantry.lib.Utils
+import com.example.trackingmypantry.lib.connectivity.bluetooth.BlueUtils
+import com.example.trackingmypantry.lib.connectivity.bluetooth.MessageType
 
 class AcceptSuggestionsActivity : AppCompatActivity() {
     companion object {
@@ -19,7 +22,26 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
 
     private val readHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
+            when (msg.what) {
+                MessageType.READ_DATA -> {
+                    val value = msg.obj as BlueUtils.IncomingData
 
+                    when (Utils.encodedTypeOf(value.data)) {
+                        Utils.Companion.FollowingDataType.ITEM_TYPE -> {
+                            val payload = Utils.payloadOf(value.data)
+                            val raw = Utils.byteArrayToItemSuggestion(payload)
+
+                            //TODO
+
+                            itemSuggestions.add()
+                        }
+
+                        Utils.Companion.FollowingDataType.PLACE_TYPE -> {
+
+                        }
+                    }
+                }
+            }
         }
     }
 

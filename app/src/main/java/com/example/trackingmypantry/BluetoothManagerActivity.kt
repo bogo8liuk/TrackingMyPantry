@@ -71,6 +71,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
                         ShareActivity.BLUETOOTH_THREAD_EXTRA,
                         BLUETOOTH_CONNECT_THREAD_KEY
                     )
+                    intent.putExtra(ShareActivity.BLUETOOTH_USERNAME_EXTRA, btAdapter.name)
                     this@BluetoothManagerActivity.startActivity(intent)
                 }
 

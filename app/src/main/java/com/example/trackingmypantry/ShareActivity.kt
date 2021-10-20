@@ -27,7 +27,10 @@ class ShareActivity : AppCompatActivity() {
     companion object {
         const val BLUETOOTH_SOCKET_EXTRA = "btSocket"
         const val BLUETOOTH_THREAD_EXTRA = "btConnect"
+        const val BLUETOOTH_USERNAME_EXTRA = "btUser"
     }
+
+    private var myUsername: String? = null
 
     private val writeHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
@@ -95,7 +98,11 @@ class ShareActivity : AppCompatActivity() {
         val socketKey = this.intent.extras!!.getInt(BLUETOOTH_SOCKET_EXTRA)
         val socket = Utils.getSavedValue(socketKey) as BluetoothSocket
 
-        val data = Utils.itemToByteArray(it.array[it.index])
+        if (this.myUsername == null) {
+            this.myUsername = this.intent.extras!!.getString(BLUETOOTH_USERNAME_EXTRA)!!
+        }
+
+        val data = Utils.itemToByteArray(it.array[it.index], this.myUsername!!)
 
         SendThread(this.writeHandler, socket, data).run()
     }
@@ -104,7 +111,11 @@ class ShareActivity : AppCompatActivity() {
         val socketKey = this.intent.extras!!.getInt(BLUETOOTH_SOCKET_EXTRA)
         val socket = Utils.getSavedValue(socketKey) as BluetoothSocket
 
-        val data = Utils.placeToByteArray(it.array[it.index])
+        if (this.myUsername == null) {
+            this.myUsername = this.intent.extras!!.getString(BLUETOOTH_USERNAME_EXTRA)!!
+        }
+
+        val data = Utils.placeToByteArray(it.array[it.index], this.myUsername!!)
 
         SendThread(this.writeHandler, socket, data).run()
     }
