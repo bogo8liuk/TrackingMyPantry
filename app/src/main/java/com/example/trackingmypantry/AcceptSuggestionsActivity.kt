@@ -12,6 +12,7 @@ import com.example.trackingmypantry.db.entities.PlaceSuggestion
 import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.connectivity.bluetooth.BlueUtils
+import com.example.trackingmypantry.lib.connectivity.bluetooth.ConnectThread
 import com.example.trackingmypantry.lib.connectivity.bluetooth.MessageType
 
 class AcceptSuggestionsActivity : AppCompatActivity() {
@@ -34,14 +35,18 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
                             val payload = Utils.payloadOf(value.data)
                             val suggestion = Utils.byteArrayToItemSuggestion(payload)
 
-                            itemSuggestions.add(suggestion)
+                            synchronized(itemSuggestions) {
+                                itemSuggestions.add(suggestion)
+                            }
                         }
 
                         Utils.Companion.FollowingDataType.PLACE_TYPE -> {
                             val payload = Utils.payloadOf(value.data)
                             val suggestion = Utils.byteArrayToPlaceSuggestion(payload)
 
-                            placeSuggestions.add(suggestion)
+                            synchronized(placeSuggestions) {
+                                placeSuggestions.add(suggestion)
+                            }
                         }
                     }
                 }
@@ -56,9 +61,6 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
         val endButton: AppCompatButton = this.findViewById(R.id.endConnectionButton)
 
         endButton.setOnClickListener {
-            DbSingleton.getInstance(this).insertItemSuggestions(*this.itemSuggestions.toTypedArray())
-            DbSingleton.getInstance(this).insertPlaceSuggestions(*this.placeSuggestions.toTypedArray())
-
             this.finish()
         }
 
@@ -72,5 +74,22 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
         livePlaceSuggestions.observe(this, {
             //TODO
         })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        synchronized(this.itemSuggestions) {
+            synchronized(this.placeSuggestions) {
+                DbSingleton.getInstance(this)
+                    .insertItemSuggestions(*this.itemSuggestions.toTypedArray())
+                DbSingleton.getInstance(this)
+                    .insertPlaceSuggestions(*this.placeSuggestions.toTypedArray())
+            }
+        }
+
+        val threadKey = this.intent.extras!!.getInt(BLUETOOTH_THREAD_EXTRA)
+        val thread = Utils.getSavedValue(threadKey) as ConnectThread
+        thread.cancel()
     }
 }
