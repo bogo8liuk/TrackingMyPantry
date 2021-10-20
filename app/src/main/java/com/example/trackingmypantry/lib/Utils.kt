@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import android.widget.Toast
 import com.example.trackingmypantry.db.entities.Item
+import com.example.trackingmypantry.db.entities.ItemSuggestion
 import com.example.trackingmypantry.db.entities.Place
+import com.example.trackingmypantry.db.entities.PlaceSuggestion
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
 import java.lang.RuntimeException
@@ -129,7 +131,7 @@ class Utils {
          * It returns only the barcode, the name, the description, the username and the eventually
          * the image of an ItemSuggestion.
          */
-        fun byteArrayToItemSuggestion(array: ByteArray): Array<String> {
+        fun byteArrayToItemSuggestion(array: ByteArray): ItemSuggestion {
             var oldCursor = 0
             var cursor = INT_SIZE
 
@@ -171,7 +173,7 @@ class Utils {
             val user = array.decodeToString(oldCursor, cursor)
 
             if (array.size == cursor) {
-                return arrayOf(barcode, name, desc, user)
+                return ItemSuggestion(barcode, name, desc, null, user)
             }
 
             oldCursor = cursor
@@ -184,7 +186,7 @@ class Utils {
 
             val image = array.decodeToString(oldCursor, cursor)
 
-            return arrayOf(barcode, name, desc, image, user)
+            return ItemSuggestion(barcode, name, desc, image, user)
         }
 
         fun placeToByteArray(place: Place, username: String): ByteArray {
@@ -208,7 +210,7 @@ class Utils {
          * It returns only the latitude, the the longitude, the title and the username
          * of a PlaceSuggestion.
          */
-        fun byteArrayToPlaceSuggestion(array: ByteArray): Tuple4<Double, Double, String, String> {
+        fun byteArrayToPlaceSuggestion(array: ByteArray): PlaceSuggestion {
             var oldCursor = 0
             var cursor = DOUBLE_SIZE
 
@@ -239,7 +241,7 @@ class Utils {
 
             val user = array.decodeToString(oldCursor, cursor)
 
-            return Tuple4(latitude, longitude, title, user)
+            return PlaceSuggestion(latitude, longitude, title, user)
         }
 
         /**
@@ -289,10 +291,3 @@ enum class EvalMode {
     EMPTY,
     WHITESPACE
 }
-
-data class Tuple4<T1, T2, T3, T4> (
-    val t1: T1,
-    val t2: T2,
-    val t3: T3,
-    val t4: T4
-)

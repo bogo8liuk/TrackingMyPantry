@@ -31,26 +31,16 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
                     when (Utils.encodedTypeOf(value.data)) {
                         Utils.Companion.FollowingDataType.ITEM_TYPE -> {
                             val payload = Utils.payloadOf(value.data)
-                            val raw = Utils.byteArrayToItemSuggestion(payload)
+                            val suggestion = Utils.byteArrayToItemSuggestion(payload)
 
-                            if (raw.size == 4) {
-                                itemSuggestions.add(
-                                    ItemSuggestion(raw[0], raw[1], raw[2], null, raw[3])
-                                )
-                            } else {
-                                itemSuggestions.add(
-                                    ItemSuggestion(raw[0], raw[1], raw[2], raw[3], raw[4])
-                                )
-                            }
+                            itemSuggestions.add(suggestion)
                         }
 
                         Utils.Companion.FollowingDataType.PLACE_TYPE -> {
                             val payload = Utils.payloadOf(value.data)
-                            val raw = Utils.byteArrayToPlaceSuggestion(payload)
+                            val suggestion = Utils.byteArrayToPlaceSuggestion(payload)
 
-                            placeSuggestions.add(
-                                PlaceSuggestion(raw.t1, raw.t2, raw.t3, raw.t4)
-                            )
+                            placeSuggestions.add(suggestion)
                         }
                     }
                 }
