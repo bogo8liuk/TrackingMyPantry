@@ -16,11 +16,16 @@ class Utils {
     companion object {
         /**
          * The actual size of Int in Bytes used to convert Int to ByteArray and viceversa.
+         * Same for Double
          */
         private const val INT_SIZE = Int.SIZE_BYTES
         private const val DOUBLE_SIZE = Double.SIZE_BYTES
-        private const val ITEM_ENCODING = 0
-        private const val PLACE_ENCODING = 1
+
+        /**
+         * Bytes used to tell the type of data encoded in a ByteArray.
+         */
+        private const val ITEM_ENCODING: Byte = 0
+        private const val PLACE_ENCODING: Byte = 1
 
         enum class FollowingDataType {
             ITEM_TYPE,
@@ -93,6 +98,9 @@ class Utils {
         }
 
         fun itemToByteArray(item: Item): ByteArray {
+            val encType = ByteArray(1)
+            encType[0] = ITEM_ENCODING
+
             val encBarcode = item.barcode.toByteArray(Charsets.UTF_8)
             val lenBarcode = intToByteArray(encBarcode.size)
 
@@ -106,10 +114,10 @@ class Utils {
                 val encImage = item.image.toByteArray(Charsets.UTF_8)
                 val lenImage = intToByteArray(encImage.size)
 
-                concatByteArrays(arrayOf(lenBarcode, encBarcode, lenName, encName, lenDesc, encDesc,
+                concatByteArrays(arrayOf(encType, lenBarcode, encBarcode, lenName, encName, lenDesc, encDesc,
                     lenImage, encImage))
             } else {
-                concatByteArrays(arrayOf(lenBarcode, encBarcode, lenName, encName, lenDesc, encDesc))
+                concatByteArrays(arrayOf(encType, lenBarcode, encBarcode, lenName, encName, lenDesc, encDesc))
             }
         }
 
@@ -162,8 +170,12 @@ class Utils {
         }
 
         fun placeToByteArray(place: Place): ByteArray {
+            val encType = ByteArray(1)
+            encType[0] = PLACE_ENCODING
+
             val encLatitude = doubleToByteArray(place.latitude)
             val encLongitude = doubleToByteArray(place.longitude)
+
             val encTitle = place.title.toByteArray(Charsets.UTF_8)
             val lenTitle = intToByteArray(encTitle.size)
 
@@ -194,8 +206,19 @@ class Utils {
             return Triple(latitude, longitude, title)
         }
 
+        /**
+         * It returns the array without the first byte, that is the byte which tells what
+         * type of data follows in the array.
+         */
+        fun payloadOf(array: ByteArray): ByteArray {
+            return array.sliceArray(IntRange(1, array.size - 1))
+        }
+
+        /**
+         * It returns the type of the data encoded in the array.
+         */
         fun encodedTypeOf(array: ByteArray): FollowingDataType {
-            return when (byteArrayToInt(array.sliceArray(IntRange(0, INT_SIZE)))) {
+            return when (array[0]) {
                 ITEM_ENCODING -> FollowingDataType.ITEM_TYPE
                 PLACE_ENCODING -> FollowingDataType.PLACE_TYPE
                 else -> throw RuntimeException()
