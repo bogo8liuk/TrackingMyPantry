@@ -184,7 +184,7 @@ class Utils {
 
             val image = array.decodeToString(oldCursor, cursor)
 
-            return arrayOf(barcode, name, desc, user, image)
+            return arrayOf(barcode, name, desc, image, user)
         }
 
         fun placeToByteArray(place: Place, username: String): ByteArray {
