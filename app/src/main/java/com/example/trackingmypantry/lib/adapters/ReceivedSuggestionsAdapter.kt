@@ -14,7 +14,7 @@ class ReceivedSuggestionsAdapter(
 ): RecyclerView.Adapter<ReceivedSuggestionsAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        val suggestionButton = view.findViewById<AppCompatButton>(R.id.receivedSuggestionButton)
+        val suggestionButton: AppCompatButton = view.findViewById(R.id.receivedSuggestionButton)
 
         init {
             suggestionButton.setOnClickListener {

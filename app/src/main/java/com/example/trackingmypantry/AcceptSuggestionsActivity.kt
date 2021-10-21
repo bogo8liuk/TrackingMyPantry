@@ -1,10 +1,13 @@
 package com.example.trackingmypantry
 
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +16,8 @@ import com.example.trackingmypantry.db.entities.ItemSuggestion
 import com.example.trackingmypantry.db.entities.PlaceSuggestion
 import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.Utils
+import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
+import com.example.trackingmypantry.lib.adapters.ReceivedSuggestionsAdapter
 import com.example.trackingmypantry.lib.connectivity.bluetooth.BlueUtils
 import com.example.trackingmypantry.lib.connectivity.bluetooth.ConnectThread
 import com.example.trackingmypantry.lib.connectivity.bluetooth.MessageType
@@ -77,7 +82,7 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = this.findViewById(R.id.waitSuggestRecView)
         val endButton: AppCompatButton = this.findViewById(R.id.endConnectionButton)
 
-        //TODO: recyclerView.adapter =
+        recyclerView.adapter = ReceivedSuggestionsAdapter(this.showInfo, arrayOf())
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         endButton.setOnClickListener {
@@ -86,7 +91,7 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
 
         val liveSuggestions = MutableLiveData<List<Suggestion>>(this.suggestions)
         liveSuggestions.observe(this, {
-            //TODO: recyclerView.adapter =
+            recyclerView.adapter = ReceivedSuggestionsAdapter(this.showInfo, it.toTypedArray())
         })
     }
 
@@ -105,5 +110,46 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
         val threadKey = this.intent.extras!!.getInt(BLUETOOTH_THREAD_EXTRA)
         val thread = Utils.getSavedValue(threadKey) as ConnectThread
         thread.cancel()
+    }
+
+    private val showInfo: IndexedArrayCallback<Suggestion> = {
+        val suggestion = it.array[it.index]
+
+        if (suggestion.isItem()) {
+            val itemSuggestion = suggestion.itemSuggestion!!
+
+            val imageEncoding = itemSuggestion.image
+            if (imageEncoding != null) {
+                val imageView = ImageView(this)
+                imageView.setImageBitmap(Utils.base64ToBitmap(imageEncoding))
+
+                AlertDialog.Builder(this)
+                    .setMessage(
+                        "Barcode: " + itemSuggestion.barcode +
+                        "\nDescription: " + itemSuggestion.description +
+                        "\nUsername: " + itemSuggestion.user
+                    )
+                    .setView(imageView)
+                    .setPositiveButton(R.string.positiveOk, null)
+                    .show()
+            } else {
+                AlertDialog.Builder(this)
+                    .setMessage(
+                        "Barcode: " + itemSuggestion.barcode +
+                        "\nDescription: " + itemSuggestion.description +
+                        "\nUsername: " + itemSuggestion.user
+                    )
+                    .show()
+            }
+        } else if (suggestion.isPlace()) {
+            val placeSuggestion = suggestion.placeSuggestion!!
+
+            AlertDialog.Builder(this)
+                .setMessage(
+                    "Username: " + placeSuggestion.username
+                )
+                .setPositiveButton(R.string.positiveOk, null)
+                .show()
+        }
     }
 }
