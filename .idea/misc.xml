@@ -41,6 +41,7 @@
         <entry key="app/src/main/res/layout/local_item_row.xml" value="0.30932971014492755" />
         <entry key="app/src/main/res/layout/location_to_remove_row.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/received_item_row.xml" value="0.35572916666666665" />
+        <entry key="app/src/main/res/layout/received_suggestion_row.xml" value="0.3292572463768116" />
         <entry key="app/src/main/res/layout/select_barcode.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/suggested_item_row.xml" value="0.34057971014492755" />
         <entry key="app/src/main/res/layout/suggested_place_row.xml" value="0.34057971014492755" />

@@ -7,6 +7,8 @@ import android.os.Looper
 import android.os.Message
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.db.entities.ItemSuggestion
 import com.example.trackingmypantry.db.entities.PlaceSuggestion
 import com.example.trackingmypantry.lib.DbSingleton
@@ -14,6 +16,7 @@ import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.connectivity.bluetooth.BlueUtils
 import com.example.trackingmypantry.lib.connectivity.bluetooth.ConnectThread
 import com.example.trackingmypantry.lib.connectivity.bluetooth.MessageType
+import com.example.trackingmypantry.lib.data.Suggestion
 
 class AcceptSuggestionsActivity : AppCompatActivity() {
     companion object {
@@ -23,6 +26,7 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
 
     private val itemSuggestions = mutableListOf<ItemSuggestion>()
     private val placeSuggestions = mutableListOf<PlaceSuggestion>()
+    private val suggestions = mutableListOf<Suggestion>()
 
     private val readHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
@@ -33,19 +37,31 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
                     when (Utils.encodedTypeOf(value.data)) {
                         Utils.Companion.FollowingDataType.ITEM_TYPE -> {
                             val payload = Utils.payloadOf(value.data)
-                            val suggestion = Utils.byteArrayToItemSuggestion(payload)
+                            val itemSuggestion = Utils.byteArrayToItemSuggestion(payload)
+                            val suggestion = Suggestion()
+                            suggestion.setItemSuggestion(itemSuggestion)
+
+                            synchronized(suggestions) {
+                                suggestions.add(suggestion)
+                            }
 
                             synchronized(itemSuggestions) {
-                                itemSuggestions.add(suggestion)
+                                itemSuggestions.add(itemSuggestion)
                             }
                         }
 
                         Utils.Companion.FollowingDataType.PLACE_TYPE -> {
                             val payload = Utils.payloadOf(value.data)
-                            val suggestion = Utils.byteArrayToPlaceSuggestion(payload)
+                            val placeSuggestion = Utils.byteArrayToPlaceSuggestion(payload)
+                            val suggestion = Suggestion()
+                            suggestion.setPlaceSuggestion(placeSuggestion)
+
+                            synchronized(suggestions) {
+                                suggestions.add(suggestion)
+                            }
 
                             synchronized(placeSuggestions) {
-                                placeSuggestions.add(suggestion)
+                                placeSuggestions.add(placeSuggestion)
                             }
                         }
                     }
@@ -58,21 +74,19 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_accept_suggestions)
 
+        val recyclerView: RecyclerView = this.findViewById(R.id.waitSuggestRecView)
         val endButton: AppCompatButton = this.findViewById(R.id.endConnectionButton)
+
+        //TODO: recyclerView.adapter =
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         endButton.setOnClickListener {
             this.finish()
         }
 
-        val liveItemSuggestions = MutableLiveData<List<ItemSuggestion>>(this.itemSuggestions)
-        val livePlaceSuggestions = MutableLiveData<List<PlaceSuggestion>>(this.placeSuggestions)
-
-        liveItemSuggestions.observe(this, {
-            //TODO
-        })
-
-        livePlaceSuggestions.observe(this, {
-            //TODO
+        val liveSuggestions = MutableLiveData<List<Suggestion>>(this.suggestions)
+        liveSuggestions.observe(this, {
+            //TODO: recyclerView.adapter =
         })
     }
 
