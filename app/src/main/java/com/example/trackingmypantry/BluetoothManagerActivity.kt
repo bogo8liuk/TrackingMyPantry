@@ -1,27 +1,26 @@
 package com.example.trackingmypantry
 
+import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
-import android.content.BroadcastReceiver
-import android.content.DialogInterface
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
+import android.location.LocationManager
+import android.os.*
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
+import android.provider.Settings
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.trackingmypantry.lib.PermissionEvaluer
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.BluetoothDevicesAdapter
 import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
@@ -131,6 +130,15 @@ class BluetoothManagerActivity : AppCompatActivity() {
         }
     }
 
+    private val gpsLauncher = this.registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result ->
+            when (result.resultCode) {
+                RESULT_OK -> {
+                    this.startDiscovery()
+                }
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -173,11 +181,31 @@ class BluetoothManagerActivity : AppCompatActivity() {
                 .setNegativeButton(R.string.negativeCanc, null)
                 .setPositiveButton(R.string.choose, DialogInterface.OnClickListener { _, _ ->
                     if (findButton.isChecked) {
-                        val success = this.btAdapter.startDiscovery()
-                        if (success) {
-                            Utils.toastShow(this, "It may take a few seconds")
+                        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+                            /* This check is necessary to start a discovery for bluetooth devices,
+                            * even if the necessary permissions are all granted. This checks if
+                            * location is enabled on the device. */
+                            val locationManager = this.getSystemService(Context.LOCATION_SERVICE)
+                                    as LocationManager
+
+                            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                AlertDialog.Builder(this)
+                                    .setTitle("Location enabling")
+                                    .setMessage("To start finding devices, you need first to enable " +
+                                            "your location, if you continue you will be prompted " +
+                                            "to a screen where you can enable location, continuing?")
+                                    .setNegativeButton(R.string.negative, null)
+                                    .setPositiveButton(R.string.positive, DialogInterface.OnClickListener { _, _ ->
+                                        this.gpsLauncher.launch(
+                                            Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                                        )
+                                    })
+                                    .show()
+                            } else {
+                                this.startDiscovery()
+                            }
                         } else {
-                            Utils.toastShow(this, "Cannot find other devices")
+                            this.startDiscovery()
                         }
                     } else if (makeDiscoverableButton.isChecked) {
                         BlueUtils.makeDiscoverable(this.makeDiscoverableLauncher)
@@ -204,6 +232,15 @@ class BluetoothManagerActivity : AppCompatActivity() {
         this.unregisterReceiver(this.receiver)
     }
 
+    private fun startDiscovery() {
+        val success = this.btAdapter.startDiscovery()
+        if (success) {
+            Utils.toastShow(this, "It may take a few seconds")
+        } else {
+            Utils.toastShow(this, "Cannot find other devices")
+        }
+    }
+
     private val connect: IndexedArrayCallback<BluetoothDevice> = {
         ConnectThread(this.btAdapter, it.array[it.index], this.btInfoHandler).run()
     }
@@ -212,7 +249,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
         if (device != null) {
             AlertDialog.Builder(this)
                 .setTitle("Device found")
-                .setMessage("You found the device with name ${device.name}, do" +
+                .setMessage("You found the device with name ${device.name}, do " +
                         "you want to connect to it?")
                 .setNegativeButton(R.string.negative, null)
                 .setPositiveButton(R.string.positive, DialogInterface.OnClickListener { _, _ ->
