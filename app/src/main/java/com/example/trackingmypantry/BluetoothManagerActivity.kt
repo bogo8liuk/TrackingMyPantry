@@ -3,7 +3,6 @@ package com.example.trackingmypantry
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
-import android.companion.BluetoothDeviceFilter
 import android.content.BroadcastReceiver
 import android.content.DialogInterface
 import android.content.Intent
@@ -211,9 +210,15 @@ class BluetoothManagerActivity : AppCompatActivity() {
 
     private val onFoundDevice = { device: BluetoothDevice? ->
         if (device != null) {
-            Utils.toastShow(this, "${device.name} found!")
-
-            ConnectThread(this.btAdapter, device, this.btInfoHandler).run()
+            AlertDialog.Builder(this)
+                .setTitle("Device found")
+                .setMessage("You found the device with name ${device.name}, do" +
+                        "you want to connect to it?")
+                .setNegativeButton(R.string.negative, null)
+                .setPositiveButton(R.string.positive, DialogInterface.OnClickListener { _, _ ->
+                    ConnectThread(this.btAdapter, device, this.btInfoHandler).run()
+                })
+                .show()
         }
     }
 }
