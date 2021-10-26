@@ -6,11 +6,13 @@ import android.bluetooth.BluetoothSocket
 import android.content.BroadcastReceiver
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.RadioButton
@@ -134,7 +136,10 @@ class BluetoothManagerActivity : AppCompatActivity() {
 
         this.btAdapter = BlueUtils.bluetoothAdapter(this)
         BlueUtils.enableRequestIfDisabled(this.btAdapter, this.enablingLauncher)
+
         this.receiver = BlueUtils.bluetoothDeviceReceiver(this.onNewPairedDevice)
+        val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
+        this.registerReceiver(this.receiver, filter)
 
         this.setContentView(R.layout.activity_bluetooth_manager)
 
@@ -168,7 +173,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
                 .setNegativeButton(R.string.negativeCanc, null)
                 .setPositiveButton(R.string.choose, DialogInterface.OnClickListener { _, _ ->
                     if (discoveryButton.isChecked) {
-                        this.btAdapter.startDiscovery()
+                        this.btAdapter.startDiscovery().toString()
                     } else if (makeDiscoverableButton.isChecked) {
                         BlueUtils.makeDiscoverable(this.makeDiscoverableLauncher)
                     }
@@ -198,7 +203,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
         ConnectThread(this.btAdapter, it.array[it.index], this.btInfoHandler).run()
     }
 
-    private val onNewPairedDevice = { device: BluetoothDevice? ->
+    private val onFoundDevice = { device: BluetoothDevice? ->
         if (device != null) {
             Utils.toastShow(this, "${device.name} found you!")
         }
