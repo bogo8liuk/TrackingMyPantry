@@ -3,6 +3,7 @@ package com.example.trackingmypantry
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
+import android.companion.BluetoothDeviceFilter
 import android.content.BroadcastReceiver
 import android.content.DialogInterface
 import android.content.Intent
@@ -12,9 +13,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.util.Log
-import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -27,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.BluetoothDevicesAdapter
-import com.example.trackingmypantry.lib.adapters.IndexedArray
 import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
 import com.example.trackingmypantry.lib.connectivity.bluetooth.AcceptThread
 import com.example.trackingmypantry.lib.connectivity.bluetooth.BlueUtils
@@ -122,7 +119,11 @@ class BluetoothManagerActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()) { result ->
         when (result.resultCode) {
             RESULT_OK -> {
-                // Success!
+                AlertDialog.Builder(this)
+                    .setMessage("If someone finds your device, please click " +
+                        "the button for accepting requests")
+                    .setPositiveButton(R.string.positiveOk, null)
+                    .show()
             }
 
             RESULT_CANCELED -> {
@@ -137,7 +138,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
         this.btAdapter = BlueUtils.bluetoothAdapter(this)
         BlueUtils.enableRequestIfDisabled(this.btAdapter, this.enablingLauncher)
 
-        this.receiver = BlueUtils.bluetoothDeviceReceiver(this.onNewPairedDevice)
+        this.receiver = BlueUtils.bluetoothDeviceReceiver(this.onFoundDevice)
         val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
         this.registerReceiver(this.receiver, filter)
 
@@ -145,7 +146,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
 
         val recyclerView: RecyclerView = this.findViewById(R.id.btDevicesRecView)
         val devicesDescText: TextView = this.findViewById(R.id.devicesDescText)
-        val pairButton: AppCompatButton = this.findViewById(R.id.pairButton)
+        val discoveryButton: AppCompatButton = this.findViewById(R.id.discoveryButton)
         val acceptButton: AppCompatButton = this.findViewById(R.id.acceptButton)
 
         recyclerView.adapter = BluetoothDevicesAdapter(this.connect, arrayOf<BluetoothDevice>())
@@ -155,15 +156,15 @@ class BluetoothManagerActivity : AppCompatActivity() {
             AcceptThread(btAdapter, btInfoHandler).run()
         }
 
-        pairButton.setOnClickListener {
+        discoveryButton.setOnClickListener {
             val actionButtons = RadioGroup(this)
-            val discoveryButton = RadioButton(this)
+            val findButton = RadioButton(this)
             val makeDiscoverableButton = RadioButton(this)
 
-            discoveryButton.text = "Find devices"
+            findButton.text = "Find devices"
             makeDiscoverableButton.text = "Make others to find you"
 
-            actionButtons.addView(discoveryButton)
+            actionButtons.addView(findButton)
             actionButtons.addView(makeDiscoverableButton)
 
             AlertDialog.Builder(this)
@@ -172,8 +173,13 @@ class BluetoothManagerActivity : AppCompatActivity() {
                 .setView(actionButtons)
                 .setNegativeButton(R.string.negativeCanc, null)
                 .setPositiveButton(R.string.choose, DialogInterface.OnClickListener { _, _ ->
-                    if (discoveryButton.isChecked) {
-                        this.btAdapter.startDiscovery().toString()
+                    if (findButton.isChecked) {
+                        val success = this.btAdapter.startDiscovery()
+                        if (success) {
+                            Utils.toastShow(this, "It may take a few seconds")
+                        } else {
+                            Utils.toastShow(this, "Cannot find other devices")
+                        }
                     } else if (makeDiscoverableButton.isChecked) {
                         BlueUtils.makeDiscoverable(this.makeDiscoverableLauncher)
                     }
@@ -205,7 +211,9 @@ class BluetoothManagerActivity : AppCompatActivity() {
 
     private val onFoundDevice = { device: BluetoothDevice? ->
         if (device != null) {
-            Utils.toastShow(this, "${device.name} found you!")
+            Utils.toastShow(this, "${device.name} found!")
+
+            ConnectThread(this.btAdapter, device, this.btInfoHandler).run()
         }
     }
 }

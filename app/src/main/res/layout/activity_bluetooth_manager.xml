@@ -57,11 +57,11 @@
         app:layout_constraintTop_toTopOf="@+id/guideline21" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/pairButton"
+        android:id="@+id/discoveryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/lightblue_medium_corner_button"
-        android:text="@string/pair"
+        android:text="@string/discovery"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline40"
