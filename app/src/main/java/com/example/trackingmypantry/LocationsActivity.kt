@@ -1,13 +1,11 @@
 package com.example.trackingmypantry
 
-import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationRequest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
@@ -16,6 +14,7 @@ import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.EvalMode
 import com.example.trackingmypantry.lib.PermissionEvaluer
 import com.example.trackingmypantry.lib.Utils
+import com.google.android.gms.location.LocationRequest.*
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -98,7 +97,6 @@ class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
-    @SuppressLint("MissingPermission")
     private fun getCurrentLocation() {
         val locationClient = LocationServices.getFusedLocationProviderClient(this)
         val task: Task<Location> = locationClient.getCurrentLocation(
@@ -118,6 +116,16 @@ class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
         map.setOnMapClickListener { location ->
             this.showSetNameDialog(location.latitude, location.longitude, map)
         }
+
+        DbSingleton.getInstance(this).getAllPlaces().observe(this, { places ->
+            places.forEach {
+                this.map.addMarker(
+                    MarkerOptions()
+                        .position(LatLng(it.latitude, it.longitude))
+                        .title(it.title)
+                )
+            }
+        })
 
         val myPositionButton: AppCompatButton = this.findViewById(R.id.myPositionButton)
         myPositionButton.setOnClickListener {
