@@ -100,20 +100,6 @@ class BluetoothManagerActivity : AppCompatActivity() {
         }
     }
 
-    private val enablingLauncher = this.registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()) { result ->
-        when (result.resultCode) {
-            RESULT_OK -> {
-                // Success: do nothing, the user can continue using this functionality
-            }
-
-            RESULT_CANCELED -> {
-                Utils.toastShow(this, "Enable bluetooth to use this functionality")
-                this.finish()
-            }
-        }
-    }
-
     private val makeDiscoverableLauncher = this.registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result ->
         when (result.resultCode) {
@@ -144,7 +130,6 @@ class BluetoothManagerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         this.btAdapter = BlueUtils.bluetoothAdapter(this)
-        BlueUtils.enableRequestIfDisabled(this.btAdapter, this.enablingLauncher)
 
         this.receiver = BlueUtils.bluetoothDeviceReceiver(this.onFoundDevice)
         val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
