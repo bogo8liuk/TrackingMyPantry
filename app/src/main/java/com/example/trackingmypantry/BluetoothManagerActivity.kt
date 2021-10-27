@@ -9,6 +9,7 @@ import android.location.LocationManager
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import android.provider.Settings
+import android.widget.ListView
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -151,13 +152,12 @@ class BluetoothManagerActivity : AppCompatActivity() {
 
         this.setContentView(R.layout.activity_bluetooth_manager)
 
-        val recyclerView: RecyclerView = this.findViewById(R.id.btDevicesRecView)
+        val listView: ListView = this.findViewById(R.id.btDevicesListView)
         val devicesDescText: TextView = this.findViewById(R.id.devicesDescText)
         val discoveryButton: AppCompatButton = this.findViewById(R.id.discoveryButton)
         val acceptButton: AppCompatButton = this.findViewById(R.id.acceptButton)
 
-        recyclerView.adapter = BluetoothDevicesAdapter(this.connect, arrayOf<BluetoothDevice>())
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        listView.adapter = BluetoothDevicesAdapter(this.connect, arrayOf<BluetoothDevice>())
 
         acceptButton.setOnClickListener {
             AcceptThread(btAdapter, btInfoHandler).run()
@@ -222,7 +222,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
                 devicesDescText.text = "No paired devices"
             } else {
                 val adapter = BluetoothDevicesAdapter(this.connect, it.toTypedArray())
-                recyclerView.adapter = adapter
+                listView.adapter = adapter
             }
         })
     }
