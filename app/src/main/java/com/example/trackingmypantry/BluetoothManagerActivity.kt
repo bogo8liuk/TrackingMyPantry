@@ -9,10 +9,7 @@ import android.location.LocationManager
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import android.provider.Settings
-import android.widget.ListView
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresPermission
@@ -40,6 +37,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
         private const val BLUETOOTH_ACCEPT_THREAD_KEY = 3
     }
 
+    private lateinit var devicesAdapter: ArrayAdapter<BluetoothDevice>
     private lateinit var btAdapter: BluetoothAdapter
     private lateinit var receiver: BroadcastReceiver
 
@@ -142,7 +140,8 @@ class BluetoothManagerActivity : AppCompatActivity() {
         val discoveryButton: AppCompatButton = this.findViewById(R.id.discoveryButton)
         val acceptButton: AppCompatButton = this.findViewById(R.id.acceptButton)
 
-        listView.adapter = BluetoothDevicesAdapter(this.connect, arrayOf<BluetoothDevice>())
+        this.devicesAdapter = ArrayAdapter<BluetoothDevice>(this, R.layout.bluetooth_device_row)
+        listView.adapter = this.devicesAdapter
 
         acceptButton.setOnClickListener {
             AcceptThread(btAdapter, btInfoHandler).run()
