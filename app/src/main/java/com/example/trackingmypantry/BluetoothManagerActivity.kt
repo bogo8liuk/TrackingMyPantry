@@ -1,6 +1,5 @@
 package com.example.trackingmypantry
 
-import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
@@ -12,13 +11,9 @@ import android.provider.Settings
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.trackingmypantry.lib.PermissionEvaluer
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.BluetoothDevicesAdapter
 import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
@@ -245,15 +240,9 @@ class BluetoothManagerActivity : AppCompatActivity() {
 
     private val onFoundDevice = { device: BluetoothDevice? ->
         if (device != null) {
-            AlertDialog.Builder(this)
-                .setTitle("Device found")
-                .setMessage("You found the device with name ${device.name}, do " +
-                        "you want to connect to it?")
-                .setNegativeButton(R.string.negative, null)
-                .setPositiveButton(R.string.positive, DialogInterface.OnClickListener { _, _ ->
-                    ConnectThread(this.btAdapter, device, this.btInfoHandler).run()
-                })
-                .show()
+            Utils.toastShow(this, "You found the device ${device.name}")
+
+            this.devicesAdapter.add(device)
         }
     }
 }

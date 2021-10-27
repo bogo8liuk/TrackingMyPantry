@@ -108,20 +108,24 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()) { result ->
         when (result.resultCode) {
             RESULT_OK -> {
-                if (!PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                    PermissionEvaluer.request(
-                        this,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                        BLUETOOTH_REQUEST_COARSE
-                    )
-                } else {
-                    this.locationCheck()
-                }
+                this.coarseLocationCheck()
             }
 
             RESULT_CANCELED -> {
                 Utils.toastShow(this, "Enable bluetooth to use this functionality")
             }
+        }
+    }
+
+    private fun coarseLocationCheck() {
+        if (!PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            PermissionEvaluer.request(
+                this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                BLUETOOTH_REQUEST_COARSE
+            )
+        } else {
+            this.locationCheck()
         }
     }
 
@@ -227,7 +231,9 @@ class MainActivity : AppCompatActivity() {
 
         suggestButton.setOnClickListener {
             val btAdapter = BlueUtils.bluetoothAdapter(this)
-            BlueUtils.enableRequestIfDisabled(btAdapter, this.enablingBtLauncher)
+            if (BlueUtils.enableRequestIfDisabled(btAdapter, this.enablingBtLauncher)) {
+                this.coarseLocationCheck()
+            }
         }
 
         locationsButton.setOnClickListener {

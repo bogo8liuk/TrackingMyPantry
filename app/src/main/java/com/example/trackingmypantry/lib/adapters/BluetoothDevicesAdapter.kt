@@ -25,6 +25,8 @@ class BluetoothDevicesAdapter(
         deviceButton.setOnClickListener {
             deviceClickCallback(IndexedArray(devices, position))
         }
+
+        return view
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

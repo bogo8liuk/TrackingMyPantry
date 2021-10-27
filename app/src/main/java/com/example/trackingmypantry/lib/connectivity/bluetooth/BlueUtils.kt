@@ -33,14 +33,20 @@ class BlueUtils {
         }
 
         /**
-         * It carries out a request of bluetooth enabling if bluetooth is not enabled.
+         * It carries out a request of bluetooth enabling if bluetooth is not enabled. It returns
+         * true if the bluetooth is already enabled, false otherwise.
          * @warning It calls `startActivityForResult`, so the request needs to be handled
          * by implementing `onActivityResult`.
          */
-        fun enableRequestIfDisabled(adapter: BluetoothAdapter, launcher: ActivityResultLauncher<Intent>) {
-            if (!adapter.isEnabled) {
+        fun enableRequestIfDisabled(adapter: BluetoothAdapter, launcher: ActivityResultLauncher<Intent>):
+        Boolean {
+            return if (!adapter.isEnabled) {
                 val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
                 launcher.launch(intent)
+
+                false
+            } else {
+                true
             }
         }
 
