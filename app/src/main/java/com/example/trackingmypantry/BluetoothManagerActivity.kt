@@ -140,7 +140,12 @@ class BluetoothManagerActivity : AppCompatActivity() {
         val discoveryButton: AppCompatButton = this.findViewById(R.id.discoveryButton)
         val acceptButton: AppCompatButton = this.findViewById(R.id.acceptButton)
 
-        this.devicesAdapter = ArrayAdapter<BluetoothDevice>(this, R.layout.bluetooth_device_row)
+        this.devicesAdapter = BluetoothDevicesAdapter(
+            this,
+            R.layout.bluetooth_device_row,
+            this.connect,
+            arrayOf()
+        )
         listView.adapter = this.devicesAdapter
 
         acceptButton.setOnClickListener {
@@ -205,8 +210,12 @@ class BluetoothManagerActivity : AppCompatActivity() {
             if (it.isEmpty()) {
                 devicesDescText.text = "No paired devices"
             } else {
-                val adapter = BluetoothDevicesAdapter(this.connect, it.toTypedArray())
-                listView.adapter = adapter
+                this.devicesAdapter = BluetoothDevicesAdapter(
+                    this,
+                    R.layout.bluetooth_device_row,
+                    this.connect,
+                    it.toTypedArray()
+                )
             }
         })
     }
