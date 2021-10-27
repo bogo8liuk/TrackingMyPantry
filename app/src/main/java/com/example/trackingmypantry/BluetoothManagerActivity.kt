@@ -229,10 +229,15 @@ class BluetoothManagerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        this.btAdapter.cancelDiscovery()
         this.unregisterReceiver(this.receiver)
     }
 
     private fun startDiscovery() {
+        if (this.btAdapter.isDiscovering()) {
+            this.btAdapter.cancelDiscovery()
+        }
+
         val success = this.btAdapter.startDiscovery()
         if (success) {
             Utils.toastShow(this, "It may take a few seconds")
