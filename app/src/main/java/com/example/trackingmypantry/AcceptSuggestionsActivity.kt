@@ -1,6 +1,6 @@
 package com.example.trackingmypantry
 
-import android.graphics.Bitmap
+import android.bluetooth.BluetoothSocket
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -21,6 +21,7 @@ import com.example.trackingmypantry.lib.adapters.ReceivedSuggestionsAdapter
 import com.example.trackingmypantry.lib.connectivity.bluetooth.BlueUtils
 import com.example.trackingmypantry.lib.connectivity.bluetooth.ConnectThread
 import com.example.trackingmypantry.lib.connectivity.bluetooth.MessageType
+import com.example.trackingmypantry.lib.connectivity.bluetooth.ReceiveThread
 import com.example.trackingmypantry.lib.data.Suggestion
 
 class AcceptSuggestionsActivity : AppCompatActivity() {
@@ -32,6 +33,9 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
     private val itemSuggestions = mutableListOf<ItemSuggestion>()
     private val placeSuggestions = mutableListOf<PlaceSuggestion>()
     private val suggestions = mutableListOf<Suggestion>()
+    private val liveSuggestions = MutableLiveData<List<Suggestion>>(this.suggestions)
+
+    private lateinit var receiveThread: ReceiveThread
 
     private val readHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
@@ -70,8 +74,17 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
                             }
                         }
                     }
+
+                    /* Little hack to notify the observer that dataset changed (in case of
+                    * collections, if the underlying collection has changes, the livedata will
+                    * not update anyway). */
+                    liveSuggestions.value = suggestions
                 }
             }
+
+            // Thread restart
+            this@AcceptSuggestionsActivity.receiveThread.cancel()
+            this@AcceptSuggestionsActivity.receiveThread.start()
         }
     }
 
@@ -89,19 +102,29 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
             this.finish()
         }
 
-        val liveSuggestions = MutableLiveData<List<Suggestion>>(this.suggestions)
-        liveSuggestions.observe(this, {
+        this.liveSuggestions.observe(this, {
             recyclerView.adapter = ReceivedSuggestionsAdapter(this.showInfo, it.toTypedArray())
         })
+
+        val socketKey = this.intent.extras!!.getInt(BLUETOOTH_SOCKET_EXTRA)
+        val socket = Utils.getSavedValue(socketKey) as BluetoothSocket
+
+        this.receiveThread = ReceiveThread(readHandler, socket)
+        this.receiveThread.start()
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
         synchronized(this.itemSuggestions) {
-            synchronized(this.placeSuggestions) {
+            if (this.itemSuggestions.isNotEmpty()) {
                 DbSingleton.getInstance(this)
                     .insertItemSuggestions(*this.itemSuggestions.toTypedArray())
+            }
+        }
+
+        synchronized(this.placeSuggestions) {
+            if (this.placeSuggestions.isNotEmpty()) {
                 DbSingleton.getInstance(this)
                     .insertPlaceSuggestions(*this.placeSuggestions.toTypedArray())
             }

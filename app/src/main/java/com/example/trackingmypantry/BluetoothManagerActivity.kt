@@ -258,6 +258,11 @@ class BluetoothManagerActivity : AppCompatActivity() {
             synchronized(this.foundDevicesList) {
                 this.foundDevicesList.add(device)
             }
+
+            /* Little hack to notify the observer that dataset changed (in case of
+            * collections, if the underlying collection has changes, the livedata will
+            * not update anyway). */
+            this.liveDevices.value = this.foundDevicesList
         }
     }
 }
