@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,7 +38,10 @@ class BluetoothManagerActivity : AppCompatActivity() {
     private lateinit var btAdapter: BluetoothAdapter
     private lateinit var receiver: BroadcastReceiver
 
-    private val devicesList: MutableList<BluetoothDevice> = mutableListOf()
+    private var displayedPaired = true
+    private val foundDevicesList: MutableList<BluetoothDevice> = mutableListOf()
+    private val liveDevices: MutableLiveData<List<BluetoothDevice>> =
+        MutableLiveData(foundDevicesList)
 
     private val btInfoHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
@@ -122,6 +126,39 @@ class BluetoothManagerActivity : AppCompatActivity() {
             }
         }
 
+    private fun changeDisplay() {
+        val displayButton: AppCompatButton = this.findViewById(R.id.displayDevicesButton)
+        val recyclerView: RecyclerView = this.findViewById(R.id.btDevicesRecView)
+
+        displayedPaired != displayedPaired
+        if (displayedPaired) {
+            displayButton.text = "Display paired devices"
+
+            val model: BluetoothDevicesViewModel by viewModels {
+                BluetoothDevicesViewModelFactory(btAdapter)
+            }
+            model.getDevices().observe(this, Observer<List<BluetoothDevice>> {
+                if (it.isNotEmpty()) {
+                    recyclerView.adapter = BluetoothDevicesAdapter(
+                        this.connect,
+                        it.toTypedArray()
+                    )
+                }
+            })
+        } else {
+            displayButton.text = "Display found devices"
+
+            this.liveDevices.observe(this, Observer<List<BluetoothDevice>> {
+                if (it.isNotEmpty()) {
+                    recyclerView.adapter = BluetoothDevicesAdapter(
+                        this.connect,
+                        it.toTypedArray()
+                    )
+                }
+            })
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -134,7 +171,6 @@ class BluetoothManagerActivity : AppCompatActivity() {
         this.setContentView(R.layout.activity_bluetooth_manager)
 
         val recyclerView: RecyclerView = this.findViewById(R.id.btDevicesRecView)
-        val devicesDescText: TextView = this.findViewById(R.id.devicesDescText)
         val discoveryButton: AppCompatButton = this.findViewById(R.id.discoveryButton)
         val acceptButton: AppCompatButton = this.findViewById(R.id.acceptButton)
 
@@ -198,20 +234,6 @@ class BluetoothManagerActivity : AppCompatActivity() {
                 })
                 .show()
         }
-
-        val model: BluetoothDevicesViewModel by viewModels {
-            BluetoothDevicesViewModelFactory(btAdapter)
-        }
-        model.getDevices().observe(this, Observer<List<BluetoothDevice>> {
-            if (it.isEmpty()) {
-                devicesDescText.text = "No paired devices"
-            } else {
-                recyclerView.adapter = BluetoothDevicesAdapter(
-                    this.connect,
-                    it.toTypedArray()
-                )
-            }
-        })
     }
 
     override fun onDestroy() {

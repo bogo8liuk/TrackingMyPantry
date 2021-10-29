@@ -35,18 +35,6 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.85" />
 
-    <!--Distinguish the case for no devices and the case for at least one device (text setting)-->
-    <TextView
-        android:id="@+id/devicesDescText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline21"
-        app:layout_constraintEnd_toStartOf="@+id/guideline38"
-        app:layout_constraintStart_toStartOf="@+id/guideline37"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/btDevicesRecView"
         android:layout_width="0dp"
@@ -86,5 +74,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/displayDevicesButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/lightblue_medium_corner_button"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/guideline21"
+        app:layout_constraintEnd_toStartOf="@+id/guideline38"
+        app:layout_constraintStart_toStartOf="@+id/guideline37" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
