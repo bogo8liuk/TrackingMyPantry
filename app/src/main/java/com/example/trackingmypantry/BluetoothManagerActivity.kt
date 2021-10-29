@@ -14,6 +14,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.BluetoothDevicesAdapter
 import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
@@ -34,6 +36,8 @@ class BluetoothManagerActivity : AppCompatActivity() {
 
     private lateinit var btAdapter: BluetoothAdapter
     private lateinit var receiver: BroadcastReceiver
+
+    private val devicesList: MutableList<BluetoothDevice> = mutableListOf()
 
     private val btInfoHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
@@ -129,17 +133,16 @@ class BluetoothManagerActivity : AppCompatActivity() {
 
         this.setContentView(R.layout.activity_bluetooth_manager)
 
-        val listView: ListView = this.findViewById(R.id.btDevicesListView)
+        val recyclerView: RecyclerView = this.findViewById(R.id.btDevicesRecView)
         val devicesDescText: TextView = this.findViewById(R.id.devicesDescText)
         val discoveryButton: AppCompatButton = this.findViewById(R.id.discoveryButton)
         val acceptButton: AppCompatButton = this.findViewById(R.id.acceptButton)
 
-        listView.adapter = BluetoothDevicesAdapter(
-            this,
-            R.layout.bluetooth_device_row,
+        recyclerView.adapter = BluetoothDevicesAdapter(
             this.connect,
-            ArrayList()
+            arrayOf()
         )
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         acceptButton.setOnClickListener {
             AcceptThread(btAdapter, btInfoHandler).run()
@@ -203,11 +206,9 @@ class BluetoothManagerActivity : AppCompatActivity() {
             if (it.isEmpty()) {
                 devicesDescText.text = "No paired devices"
             } else {
-                listView.adapter = BluetoothDevicesAdapter(
-                    this,
-                    R.layout.bluetooth_device_row,
+                recyclerView.adapter = BluetoothDevicesAdapter(
                     this.connect,
-                    ArrayList(it)
+                    it.toTypedArray()
                 )
             }
         })
@@ -240,8 +241,9 @@ class BluetoothManagerActivity : AppCompatActivity() {
         if (device != null && device.name != null) {
             Utils.toastShow(this, "You found the device ${device.name}")
 
-            val listView: ListView = this.findViewById(R.id.btDevicesListView)
-            (listView.adapter as BluetoothDevicesAdapter).add(device)
+            synchronized(devicesList) {
+                devicesList.add(device)
+            }
         }
     }
 }
