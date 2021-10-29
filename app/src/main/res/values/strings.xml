@@ -17,12 +17,10 @@
     <string name="chooseDevice">Choose the device you want to connect to</string>
     <string name="describe">Description</string>
     <string name="describeName">Set a name and a description for</string>
-    <string name="describeAdd">Add a description</string>
     <string name="rate">Rate</string>
     <string name="rateSet">Set a rate for</string>
     <string name="send">Send</string>
     <string name="barcode">Barcode</string>
-    <string name="name">Name</string>
     <string name="logout">Logout</string>
     <string name="productNew">New product</string>
     <string name="productWatch">See your products</string>
@@ -54,7 +52,9 @@
     <string name="emailHint">Email</string>
     <string name="usernameHint">Username</string>
     <string name="passwordHint">Password</string>
-    <string name="barcodeHint">Insert the barcode</string>
+    <string name="barcodeHint">Barcode</string>
+    <string name="nameHint">Name</string>
+    <string name="describeHint">Add a description</string>
     <!--Hints-->
 
     <!--Shared prefs-->
