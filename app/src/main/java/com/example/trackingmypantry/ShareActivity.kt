@@ -104,7 +104,7 @@ class ShareActivity : AppCompatActivity() {
 
         val data = Utils.itemToByteArray(it.array[it.index], this.myUsername!!)
 
-        SendThread(this.writeHandler, socket, data).run()
+        SendThread(this.writeHandler, socket, data).start()
     }
 
     private val sendPlace: IndexedArrayCallback<Place> = {
@@ -117,6 +117,6 @@ class ShareActivity : AppCompatActivity() {
 
         val data = Utils.placeToByteArray(it.array[it.index], this.myUsername!!)
 
-        SendThread(this.writeHandler, socket, data).run()
+        SendThread(this.writeHandler, socket, data).start()
     }
 }

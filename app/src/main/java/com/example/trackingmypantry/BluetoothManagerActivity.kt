@@ -178,7 +178,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         acceptButton.setOnClickListener {
-            AcceptThread(btAdapter, btInfoHandler).run()
+            AcceptThread(btAdapter, btInfoHandler).start()
         }
 
         discoveryButton.setOnClickListener {
@@ -259,7 +259,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
     }
 
     private val connect: IndexedArrayCallback<BluetoothDevice> = {
-        ConnectThread(this.btAdapter, it.array[it.index], this.btInfoHandler).run()
+        ConnectThread(this.btAdapter, it.array[it.index], this.btInfoHandler).start()
     }
 
     private val onFoundDevice = { device: BluetoothDevice? ->

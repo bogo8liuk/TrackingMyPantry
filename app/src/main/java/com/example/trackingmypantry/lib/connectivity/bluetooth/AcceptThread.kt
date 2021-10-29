@@ -16,43 +16,41 @@ class AcceptThread(
     private val handler: Handler): Thread() {
 
     private val SERVICE_NAME = "trmypa_service_name"
-    private val welcomingSocket: BluetoothServerSocket by lazy(LazyThreadSafetyMode.NONE) {
+    private val welcomingSocket: BluetoothServerSocket? by lazy(LazyThreadSafetyMode.NONE) {
         adapter.listenUsingRfcommWithServiceRecord(SERVICE_NAME, APP_UUID)
     }
 
     override fun run() {
-        var notAccepted = true
-        while (notAccepted) {
+        var accepting = true
+        while (accepting) {
             val socket: BluetoothSocket? = try {
                 val msg = handler.obtainMessage(MessageType.START_ACCEPT, this)
                 msg.sendToTarget()
 
-                this.welcomingSocket.accept()
+                this.welcomingSocket?.accept()
             } catch (exception: IOException) {
                 Log.e("Socket bt accept error", exception.message ?: "Cannot accept connections")
 
                 val msg = handler.obtainMessage(MessageType.ERROR_ACCEPT)
                 msg.sendToTarget()
 
-                notAccepted = false
+                accepting = false
                 null
             }
 
-            socket.also {
-                if (notAccepted) {
-                    val msg = handler.obtainMessage(MessageType.ACCEPTED, it)
-                    msg.sendToTarget()
-                    notAccepted = false
-                }
+            socket?.also {
+                val msg = handler.obtainMessage(MessageType.ACCEPTED, it)
+                msg.sendToTarget()
 
-                this.welcomingSocket.close()
+                this.welcomingSocket?.close()
+                accepting = false
             }
         }
     }
 
     fun cancel() {
         try {
-            this.welcomingSocket.close()
+            this.welcomingSocket?.close()
         } catch (exception: IOException) {
             Log.e("Socket bt close error", exception.message ?: "Cannot close connections")
         }

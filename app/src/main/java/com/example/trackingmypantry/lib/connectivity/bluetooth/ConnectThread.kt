@@ -16,14 +16,14 @@ class ConnectThread(
     device: BluetoothDevice,
     private val handler: Handler): Thread() {
 
-    private val connectSocket: BluetoothSocket by lazy(LazyThreadSafetyMode.NONE) {
+    private val connectSocket: BluetoothSocket? by lazy(LazyThreadSafetyMode.NONE) {
         device.createRfcommSocketToServiceRecord(APP_UUID)
     }
 
     override fun run() {
         this.adapter.cancelDiscovery()  //TODO: putting here?
 
-        this.connectSocket.let { it ->
+        this.connectSocket?.let { it ->
             try {
                 val startMsg = this.handler.obtainMessage(MessageType.START_CONNECT, this)
                 startMsg.sendToTarget()
@@ -43,7 +43,7 @@ class ConnectThread(
 
     fun cancel() {
         try {
-            this.connectSocket.close()
+            this.connectSocket?.close()
         } catch (exception: IOException) {
             Log.e("Socket bt close error", exception.message ?: "Cannot close connections")
         }
