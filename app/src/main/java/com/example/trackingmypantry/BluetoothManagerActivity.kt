@@ -116,16 +116,6 @@ class BluetoothManagerActivity : AppCompatActivity() {
         }
     }
 
-    private val gpsLauncher = this.registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()) { result ->
-        Log.e("pippo", result.resultCode.toString())
-            when (result.resultCode) {
-                RESULT_OK -> {
-                    this.startDiscovery()
-                }
-            }
-        }
-
     private fun changeDisplay() {
         val displayButton: AppCompatButton = this.findViewById(R.id.displayDevicesButton)
         val recyclerView: RecyclerView = this.findViewById(R.id.btDevicesRecView)
@@ -215,9 +205,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
                                             "to a screen where you can enable location, continuing?")
                                     .setNegativeButton(R.string.negative, null)
                                     .setPositiveButton(R.string.positive, DialogInterface.OnClickListener { _, _ ->
-                                        this.gpsLauncher.launch(
-                                            Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                                        )
+                                        this.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                                     })
                                     .show()
                             } else {
