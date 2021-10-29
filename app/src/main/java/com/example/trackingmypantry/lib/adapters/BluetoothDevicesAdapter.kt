@@ -14,7 +14,7 @@ class BluetoothDevicesAdapter(
     context: Context,
     private val resource: Int,
     private val deviceClickCallback: IndexedArrayCallback<BluetoothDevice>,
-    private val devices: Array<BluetoothDevice>
+    private val devices: ArrayList<BluetoothDevice>
 ): ArrayAdapter<BluetoothDevice>(context, resource, devices) {
     //): RecyclerView.Adapter<BluetoothDevicesAdapter.ViewHolder>() {
 
@@ -23,7 +23,7 @@ class BluetoothDevicesAdapter(
 
         deviceButton.text = this.devices[position].name
         deviceButton.setOnClickListener {
-            deviceClickCallback(IndexedArray(devices, position))
+            deviceClickCallback(IndexedArray(devices.toTypedArray(), position))
         }
 
         return view
@@ -36,32 +36,4 @@ class BluetoothDevicesAdapter(
             position
         )
     }
-
-    /*inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        val deviceButton = view.findViewById<AppCompatButton>(R.id.deviceButton)
-
-        init {
-            this.deviceButton.setOnClickListener {
-                deviceClickCallback(IndexedArray(devices, this.adapterPosition))
-            }
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(
-            R.layout.bluetooth_device_row,
-            parent,
-            false
-        )
-
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.deviceButton.text = devices[position].name
-    }
-
-    override fun getItemCount(): Int {
-        return devices.size
-    }*/
 }
