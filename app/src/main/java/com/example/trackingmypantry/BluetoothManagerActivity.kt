@@ -38,7 +38,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
     private lateinit var btAdapter: BluetoothAdapter
     private lateinit var receiver: BroadcastReceiver
 
-    private var displayedPaired = true
+    private var displayedPaired = false
     private val foundDevicesList: MutableList<BluetoothDevice> = mutableListOf()
     private val liveDevices: MutableLiveData<List<BluetoothDevice>> =
         MutableLiveData(foundDevicesList)
@@ -173,6 +173,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = this.findViewById(R.id.btDevicesRecView)
         val discoveryButton: AppCompatButton = this.findViewById(R.id.discoveryButton)
         val acceptButton: AppCompatButton = this.findViewById(R.id.acceptButton)
+        val displayButton: AppCompatButton = this.findViewById(R.id.displayDevicesButton)
 
         recyclerView.adapter = BluetoothDevicesAdapter(
             this.connect,
@@ -234,6 +235,10 @@ class BluetoothManagerActivity : AppCompatActivity() {
                 })
                 .show()
         }
+
+        displayButton.setOnClickListener {
+            this.changeDisplay()
+        }
     }
 
     override fun onDestroy() {
@@ -263,8 +268,8 @@ class BluetoothManagerActivity : AppCompatActivity() {
         if (device != null && device.name != null) {
             Utils.toastShow(this, "You found the device ${device.name}")
 
-            synchronized(devicesList) {
-                devicesList.add(device)
+            synchronized(this.foundDevicesList) {
+                this.foundDevicesList.add(device)
             }
         }
     }
