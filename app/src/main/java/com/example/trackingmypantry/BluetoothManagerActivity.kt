@@ -130,31 +130,27 @@ class BluetoothManagerActivity : AppCompatActivity() {
         val displayButton: AppCompatButton = this.findViewById(R.id.displayDevicesButton)
         val recyclerView: RecyclerView = this.findViewById(R.id.btDevicesRecView)
 
-        displayedPaired != displayedPaired
+        displayedPaired = !displayedPaired
         if (displayedPaired) {
-            displayButton.text = "Display paired devices"
+            displayButton.text = "Display found devices"
 
             val model: BluetoothDevicesViewModel by viewModels {
                 BluetoothDevicesViewModelFactory(btAdapter)
             }
             model.getDevices().observe(this, Observer<List<BluetoothDevice>> {
-                if (it.isNotEmpty()) {
-                    recyclerView.adapter = BluetoothDevicesAdapter(
-                        this.connect,
-                        it.toTypedArray()
-                    )
-                }
+                recyclerView.adapter = BluetoothDevicesAdapter(
+                    this.connect,
+                    it.toTypedArray()
+                )
             })
         } else {
-            displayButton.text = "Display found devices"
+            displayButton.text = "Display paired devices"
 
             this.liveDevices.observe(this, Observer<List<BluetoothDevice>> {
-                if (it.isNotEmpty()) {
-                    recyclerView.adapter = BluetoothDevicesAdapter(
-                        this.connect,
-                        it.toTypedArray()
-                    )
-                }
+                recyclerView.adapter = BluetoothDevicesAdapter(
+                    this.connect,
+                    it.toTypedArray()
+                )
             })
         }
     }
@@ -239,6 +235,8 @@ class BluetoothManagerActivity : AppCompatActivity() {
         displayButton.setOnClickListener {
             this.changeDisplay()
         }
+
+        this.changeDisplay()    // To initialize the UI
     }
 
     override fun onDestroy() {
@@ -265,7 +263,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
     }
 
     private val onFoundDevice = { device: BluetoothDevice? ->
-        if (device != null && device.name != null) {
+        if (device != null && device.name != null && !this.foundDevicesList.contains(device)) {
             Utils.toastShow(this, "You found the device ${device.name}")
 
             synchronized(this.foundDevicesList) {
