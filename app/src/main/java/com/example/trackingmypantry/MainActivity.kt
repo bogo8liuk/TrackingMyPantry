@@ -104,6 +104,30 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+    private val enablingBtLauncher = this.registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result ->
+        when (result.resultCode) {
+            RESULT_OK -> {
+                this.coarseLocationCheck()
+            }
+
+            RESULT_CANCELED -> {
+                Utils.toastShow(this, "Enable bluetooth to use this functionality")
+            }
+        }
+    }
+
+    private fun coarseLocationCheck() {
+        if (!PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            PermissionEvaluer.request(
+                this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                BLUETOOTH_REQUEST_COARSE
+            )
+        } else {
+            this.locationCheck()
+        }
+    }
 
     private fun showPermissionsInfo(performRequest: Boolean) {
         AlertDialog.Builder(this)
@@ -206,14 +230,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         suggestButton.setOnClickListener {
-            if (!PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                PermissionEvaluer.request(
-                    this,
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                    BLUETOOTH_REQUEST_COARSE
-                )
-            } else {
-                this.locationCheck()
+            val btAdapter = BlueUtils.bluetoothAdapter(this)
+            if (BlueUtils.enableRequestIfDisabled(btAdapter, this.enablingBtLauncher)) {
+                this.coarseLocationCheck()
             }
         }
 

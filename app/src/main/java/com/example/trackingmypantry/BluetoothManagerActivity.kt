@@ -1,6 +1,5 @@
 package com.example.trackingmypantry
 
-import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
@@ -9,18 +8,14 @@ import android.location.LocationManager
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import android.provider.Settings
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.trackingmypantry.lib.PermissionEvaluer
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.BluetoothDevicesAdapter
 import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
@@ -41,6 +36,8 @@ class BluetoothManagerActivity : AppCompatActivity() {
 
     private lateinit var btAdapter: BluetoothAdapter
     private lateinit var receiver: BroadcastReceiver
+
+    private val devicesList: MutableList<BluetoothDevice> = mutableListOf()
 
     private val btInfoHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
@@ -99,20 +96,6 @@ class BluetoothManagerActivity : AppCompatActivity() {
         }
     }
 
-    private val enablingLauncher = this.registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()) { result ->
-        when (result.resultCode) {
-            RESULT_OK -> {
-                // Success: do nothing, the user can continue using this functionality
-            }
-
-            RESULT_CANCELED -> {
-                Utils.toastShow(this, "Enable bluetooth to use this functionality")
-                this.finish()
-            }
-        }
-    }
-
     private val makeDiscoverableLauncher = this.registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result ->
         when (result.resultCode) {
@@ -143,7 +126,6 @@ class BluetoothManagerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         this.btAdapter = BlueUtils.bluetoothAdapter(this)
-        BlueUtils.enableRequestIfDisabled(this.btAdapter, this.enablingLauncher)
 
         this.receiver = BlueUtils.bluetoothDeviceReceiver(this.onFoundDevice)
         val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
@@ -156,7 +138,10 @@ class BluetoothManagerActivity : AppCompatActivity() {
         val discoveryButton: AppCompatButton = this.findViewById(R.id.discoveryButton)
         val acceptButton: AppCompatButton = this.findViewById(R.id.acceptButton)
 
-        recyclerView.adapter = BluetoothDevicesAdapter(this.connect, arrayOf<BluetoothDevice>())
+        recyclerView.adapter = BluetoothDevicesAdapter(
+            this.connect,
+            arrayOf()
+        )
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         acceptButton.setOnClickListener {
@@ -181,7 +166,7 @@ class BluetoothManagerActivity : AppCompatActivity() {
                 .setNegativeButton(R.string.negativeCanc, null)
                 .setPositiveButton(R.string.choose, DialogInterface.OnClickListener { _, _ ->
                     if (findButton.isChecked) {
-                        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                             /* This check is necessary to start a discovery for bluetooth devices,
                             * even if the necessary permissions are all granted. This checks if
                             * location is enabled on the device. */
@@ -221,8 +206,10 @@ class BluetoothManagerActivity : AppCompatActivity() {
             if (it.isEmpty()) {
                 devicesDescText.text = "No paired devices"
             } else {
-                val adapter = BluetoothDevicesAdapter(this.connect, it.toTypedArray())
-                recyclerView.adapter = adapter
+                recyclerView.adapter = BluetoothDevicesAdapter(
+                    this.connect,
+                    it.toTypedArray()
+                )
             }
         })
     }
@@ -251,16 +238,12 @@ class BluetoothManagerActivity : AppCompatActivity() {
     }
 
     private val onFoundDevice = { device: BluetoothDevice? ->
-        if (device != null) {
-            AlertDialog.Builder(this)
-                .setTitle("Device found")
-                .setMessage("You found the device with name ${device.name}, do " +
-                        "you want to connect to it?")
-                .setNegativeButton(R.string.negative, null)
-                .setPositiveButton(R.string.positive, DialogInterface.OnClickListener { _, _ ->
-                    ConnectThread(this.btAdapter, device, this.btInfoHandler).run()
-                })
-                .show()
+        if (device != null && device.name != null) {
+            Utils.toastShow(this, "You found the device ${device.name}")
+
+            synchronized(devicesList) {
+                devicesList.add(device)
+            }
         }
     }
 }
