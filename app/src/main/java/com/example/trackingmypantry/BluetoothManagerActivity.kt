@@ -8,6 +8,7 @@ import android.location.LocationManager
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import android.provider.Settings
+import android.util.Log
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -103,22 +104,21 @@ class BluetoothManagerActivity : AppCompatActivity() {
     private val makeDiscoverableLauncher = this.registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result ->
         when (result.resultCode) {
-            RESULT_OK -> {
-                AlertDialog.Builder(this)
-                    .setMessage("If someone finds your device, please click " +
-                        "the button for accepting requests")
-                    .setPositiveButton(R.string.positiveOk, null)
-                    .show()
-            }
-
             RESULT_CANCELED -> {
                 Utils.toastShow(this, "Your device has to be discoverable to be paired")
+            }
+
+            /* In case of success, the duration that device will be discoverable will be
+            * set, not RESULT_OK. */
+            else -> {
+                AcceptThread(this.btAdapter, this.btInfoHandler).start()
             }
         }
     }
 
     private val gpsLauncher = this.registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result ->
+        Log.e("pippo", result.resultCode.toString())
             when (result.resultCode) {
                 RESULT_OK -> {
                     this.startDiscovery()
@@ -178,7 +178,8 @@ class BluetoothManagerActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         acceptButton.setOnClickListener {
-            AcceptThread(btAdapter, btInfoHandler).start()
+            Utils.toastShow(this, "Waiting for others")
+            AcceptThread(this.btAdapter, this.btInfoHandler).start()
         }
 
         discoveryButton.setOnClickListener {

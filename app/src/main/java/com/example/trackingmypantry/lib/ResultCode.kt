@@ -1,18 +1,21 @@
 package com.example.trackingmypantry.lib
 
+import android.app.Activity
+
 /**
- * Using a class to avoid names conflicts: the class has the only purpose of namespace.
  * Set of possible returned values from activities started with `startActivityForResult`.
 */
 class ResultCode {
     companion object {
+        /* The add of Activity.RESULT_FIRST_USER guarantees that no clashes with os values
+        * will occur. */
         //        RESULT_CANCELED
         //        RESULT_OK
-        const val NETWORK_ERR = 2
-        const val EXISTENT_USER = 3
-        const val EXPIRED_TOKEN = 4
-        const val INVALID_SESSION_TOKEN = 5
-        const val DENIED_PERMISSIONS = 6
-        const val DEVICE_ERR = 7
+        const val NETWORK_ERR = Activity.RESULT_FIRST_USER + 1
+        const val EXISTENT_USER = Activity.RESULT_FIRST_USER + 2
+        const val EXPIRED_TOKEN = Activity.RESULT_FIRST_USER + 3
+        const val INVALID_SESSION_TOKEN = Activity.RESULT_FIRST_USER + 4
+        const val DENIED_PERMISSIONS = Activity.RESULT_FIRST_USER + 5
+        const val DEVICE_ERR = Activity.RESULT_FIRST_USER + 6
     }
 }
