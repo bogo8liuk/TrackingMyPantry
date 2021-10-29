@@ -20,17 +20,17 @@
 
     <EditText
         android:id="@+id/descEditText"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
         android:ems="10"
         android:gravity="start|top"
-        android:inputType="textMultiLine"
         android:hint="@string/describeHint"
+        android:inputType="textMultiLine"
+        android:textColor="@color/white"
         android:textColorHint="@color/grey"
         app:layout_constraintBottom_toTopOf="@+id/guideline22"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline62"
+        app:layout_constraintStart_toStartOf="@+id/guideline61" />
 
     <TextView
         android:id="@+id/descText"
@@ -84,16 +84,16 @@
 
     <EditText
         android:id="@+id/nameEditText"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="@string/nameHint"
+        android:inputType="textPersonName"
+        android:textColor="@color/white"
         android:textColorHint="@color/grey"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline62"
+        app:layout_constraintStart_toStartOf="@+id/guideline61" />
 
     <TextView
         android:id="@+id/nameText"
