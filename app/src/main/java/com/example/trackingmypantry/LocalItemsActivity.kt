@@ -86,7 +86,9 @@ class LocalItemsActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        DbSingleton.getInstance(this).removeMultipleItemsFromCollection(this.itemsToClear)
+        if (this.itemsToClear.isNotEmpty()) {
+            DbSingleton.getInstance(this).removeMultipleItemsFromCollection(this.itemsToClear)
+        }
 
         super.onBackPressed()
     }
