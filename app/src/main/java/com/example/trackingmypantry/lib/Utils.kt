@@ -202,8 +202,8 @@ class Utils {
             val encUser = username.toByteArray(Charsets.UTF_8)
             val lenUser = intToByteArray(encUser.size)
 
-            return concatByteArrays(arrayOf(encLatitude, encLongitude, lenTitle, encTitle, lenUser,
-                encUser))
+            return concatByteArrays(arrayOf(encType, encLatitude, encLongitude, lenTitle, encTitle,
+                lenUser, encUser))
         }
 
         /**

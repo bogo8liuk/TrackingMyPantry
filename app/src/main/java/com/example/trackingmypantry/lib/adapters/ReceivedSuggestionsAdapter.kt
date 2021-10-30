@@ -38,13 +38,13 @@ class ReceivedSuggestionsAdapter(
             holder.suggestionButton.text = suggestions[position].itemSuggestion!!.name
 
             holder.suggestionButton.setCompoundDrawablesWithIntrinsicBounds(
-                R.drawable.ic_baseline_location_on_dark_24, 0, 0, 0
+                R.drawable.ic_baseline_food_bank_24, 0, 0, 0
             )
         } else if (suggestions[position].isPlace()) {
             holder.suggestionButton.text = suggestions[position].placeSuggestion!!.title
 
             holder.suggestionButton.setCompoundDrawablesWithIntrinsicBounds(
-                R.drawable.ic_baseline_food_bank_24, 0, 0, 0
+                R.drawable.ic_baseline_location_on_dark_24, 0, 0, 0
             )
         }
     }
