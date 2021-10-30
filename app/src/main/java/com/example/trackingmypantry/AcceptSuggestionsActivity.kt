@@ -76,12 +76,12 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
                     * collections, if the underlying collection has changes, the livedata will
                     * not update anyway). */
                     liveSuggestions.value = suggestions
+
+                    // Thread restart
+                    this@AcceptSuggestionsActivity.receiveThread.cancel()
+                    this@AcceptSuggestionsActivity.receiveThread.start()
                 }
             }
-
-            // Thread restart
-            this@AcceptSuggestionsActivity.receiveThread.cancel()
-            this@AcceptSuggestionsActivity.receiveThread.start()
         }
     }
 
