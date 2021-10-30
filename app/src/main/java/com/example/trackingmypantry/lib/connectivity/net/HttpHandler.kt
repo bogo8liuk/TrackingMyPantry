@@ -20,7 +20,7 @@ import org.json.JSONObject
  */
 class HttpHandler() {
     companion object {
-        private const val DOMAIN = "https://lam21.iot-prism-lab.cs.unibo.it/explorer"
+        private const val DOMAIN = "https://lam21.iot-prism-lab.cs.unibo.it"
         private const val AUTH_PATH = "/auth/login"
         private const val REGISTER_PATH = "/users"
         private const val PRODUCT_PATH = "/products"
