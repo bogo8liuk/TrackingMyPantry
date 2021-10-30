@@ -16,18 +16,23 @@ class ReceiveThread(
         var readBytes: Int = 0
 
         while (true) {
-            readBytes = try {
-                this.stream.read(this.buffer)
+            try {
+                readBytes = this.stream.read(this.buffer)
+
+                val msg = handler.obtainMessage(
+                    MessageType.READ_DATA,
+                    BlueUtils.IncomingData(readBytes, this.buffer)
+                )
+                msg.sendToTarget()
             } catch(exception: IOException) {
+                val msg = handler.obtainMessage(
+                    MessageType.ERROR_READ
+                )
+                msg.sendToTarget()
+
                 break
             }
         }
-
-        val msg = handler.obtainMessage(
-            MessageType.READ_DATA,
-            BlueUtils.IncomingData(readBytes, this.buffer)
-        )
-        msg.sendToTarget()
     }
 
     fun cancel() {

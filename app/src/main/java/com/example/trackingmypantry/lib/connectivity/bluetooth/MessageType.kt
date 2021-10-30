@@ -9,6 +9,7 @@ class MessageType {
         const val ERROR_CONNECT = 4
         const val ERROR_ACCEPT = 5
         const val ERROR_WRITE = 6
+        const val ERROR_READ = 9
         const val START_CONNECT = 7
         const val START_ACCEPT = 8
     }
