@@ -18,10 +18,7 @@ import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
 import com.example.trackingmypantry.lib.adapters.ReceivedSuggestionsAdapter
-import com.example.trackingmypantry.lib.connectivity.bluetooth.BlueUtils
-import com.example.trackingmypantry.lib.connectivity.bluetooth.ConnectThread
-import com.example.trackingmypantry.lib.connectivity.bluetooth.MessageType
-import com.example.trackingmypantry.lib.connectivity.bluetooth.ReceiveThread
+import com.example.trackingmypantry.lib.connectivity.bluetooth.*
 import com.example.trackingmypantry.lib.data.Suggestion
 
 class AcceptSuggestionsActivity : AppCompatActivity() {
@@ -131,7 +128,7 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
         }
 
         val threadKey = this.intent.extras!!.getInt(BLUETOOTH_THREAD_EXTRA)
-        val thread = Utils.getSavedValue(threadKey) as ConnectThread
+        val thread = Utils.getSavedValue(threadKey) as AcceptThread
         thread.cancel()
     }
 

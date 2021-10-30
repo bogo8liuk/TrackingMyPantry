@@ -17,7 +17,7 @@ class ShareAdapter<T: Any>(
 ): RecyclerView.Adapter<ShareAdapter<T>.ViewHolder>() {
 
     init {
-        if (clazz != Item::class.java && clazz != Place::class.java) {
+        if (clazz != Item::class && clazz != Place::class) {
             throw RuntimeException()
         }
     }
