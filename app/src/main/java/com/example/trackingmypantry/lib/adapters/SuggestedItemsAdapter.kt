@@ -17,14 +17,6 @@ class SuggestedItemsAdapter(
 ): RecyclerView.Adapter<SuggestedItemsAdapter.ViewHolder>() {
     private var isExpanded = BooleanArray(suggestions.size) { _ -> false }
 
-    /**
-     * firstBindAt is used to prevent the re-set of those already set fields
-     * of the references of the viewholder that will keep their values
-     * "forever" (i.e. the barcode text of the TextView `barcodeText`), when
-     * one of the two nameButton is clicked.
-     */
-    private var firstBindAt = BooleanArray(suggestions.size) { _ -> true }
-
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameButton: AppCompatButton = view.findViewById(R.id.suggestedItemNameButton)
         val nameExpandedButton: AppCompatButton =
@@ -53,21 +45,17 @@ class SuggestedItemsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (firstBindAt[position]) {
-            holder.nameButton.text = suggestions[position].name
-            holder.nameExpandedButton.text = suggestions[position].name
-            holder.barcodeText.text = suggestions[position].barcode
-            holder.descriptionText.text = suggestions[position].description
-            holder.userText.text = suggestions[position].user
+        holder.nameButton.text = suggestions[position].name
+        holder.nameExpandedButton.text = suggestions[position].name
+        holder.barcodeText.text = suggestions[position].barcode
+        holder.descriptionText.text = suggestions[position].description
+        holder.userText.text = suggestions[position].user
 
-            val bitmap = suggestions[position].image
-            if (bitmap != null) {
-                holder.image.setImageBitmap(
-                    Utils.base64ToBitmap(bitmap)
-                )
-            }
-
-            firstBindAt[position] = false
+        val bitmap = suggestions[position].image
+        if (bitmap != null) {
+            holder.image.setImageBitmap(
+                Utils.base64ToBitmap(bitmap)
+            )
         }
 
         if (this.isExpanded[position]) {

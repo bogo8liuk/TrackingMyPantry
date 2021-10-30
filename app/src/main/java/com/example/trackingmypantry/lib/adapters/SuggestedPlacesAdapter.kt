@@ -20,8 +20,6 @@ class SuggestedPlacesAdapter(
     private val places: Array<PlaceSuggestion>
 ): RecyclerView.Adapter<SuggestedPlacesAdapter.ViewHolder>() {
     private var isExpanded = BooleanArray(places.size) { _ -> false }
-    // same as above
-    private var firstBindAt = BooleanArray(places.size) { _ -> true }
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val nameButton: AppCompatButton = view.findViewById(R.id.suggestedPlaceNameButton)
@@ -52,12 +50,8 @@ class SuggestedPlacesAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (firstBindAt[position]) {
-            holder.nameButton.text = places[position].title
-            holder.nameExpandedButton.text = places[position].title
-
-            firstBindAt[position] = false
-        }
+        holder.nameButton.text = places[position].title
+        holder.nameExpandedButton.text = places[position].title
 
         if (this.isExpanded[position]) {
             holder.nameButton.visibility = android.view.View.GONE

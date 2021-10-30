@@ -24,13 +24,6 @@ class LocalItemsAdapter(
     private val items: Array<Item>
     ): RecyclerView.Adapter<LocalItemsAdapter.ViewHolder>() {
     private var isExpanded = BooleanArray(items.size) { _ -> false }
-    /**
-     * firstBindAt is used to prevent the re-set of those already set fields
-     * of the references of the viewholder that will keep their values
-     * "forever" (i.e. the barcode text of the TextView `barcodeText`), when
-     * one of the two nameButton is clicked.
-     */
-    private var firstBindAt = BooleanArray(items.size) { _ -> true }
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val nameButton = view.findViewById<AppCompatButton>(R.id.localItemNameButton)
@@ -72,37 +65,33 @@ class LocalItemsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (firstBindAt[position]) {
-            val context = holder.barcodeText.context    // getting the context from a view (whatever it is)
+        val context = holder.barcodeText.context    // getting the context from a view (whatever it is)
 
-            val expiration = items[position].expiration_date
-            if (expiration != null && Date().after(expiration)) {  // Date() returns the allocation date
-                holder.nameButton.background = ContextCompat.getDrawable(context, R.color.red)
-                holder.nameExpandedButton.background = ContextCompat.getDrawable(context, R.color.red)
+        val expiration = items[position].expiration_date
+        if (expiration != null && Date().after(expiration)) {  // Date() returns the allocation date
+            holder.nameButton.background = ContextCompat.getDrawable(context, R.color.red)
+            holder.nameExpandedButton.background = ContextCompat.getDrawable(context, R.color.red)
+        }
+        holder.nameButton.text = items[position].name
+        holder.nameExpandedButton.text = items[position].name
+        holder.descText.text = items[position].description
+        holder.quantityText.text = "Quantity: " + items[position].quantity.toString()
+        holder.purchaseText.text = "Purchase date: " + items[position].purchase_date // TODO: safe?
+        holder.expirationText.text = "Expiration date: " + items[position].expiration_date
+        holder.barcodeText.text = "Barcode: " + items[position].barcode
+
+        if (this.isToRemove) {
+            holder.changeCollectionButton.text = "Remove from collection"
+        } else {
+            holder.changeCollectionButton.text = "Add to collection"
+        }
+
+        if (items[position].image != null) {
+            val bitmap = Utils.base64ToBitmap(items[position].image!!)
+
+            if (bitmap != null) {
+                holder.image.setImageBitmap(bitmap)
             }
-            holder.nameButton.text = items[position].name
-            holder.nameExpandedButton.text = items[position].name
-            holder.descText.text = items[position].description
-            holder.quantityText.text = "Quantity: " + items[position].quantity.toString()
-            holder.purchaseText.text = "Purchase date: " + items[position].purchase_date // TODO: safe?
-            holder.expirationText.text = "Expiration date: " + items[position].expiration_date
-            holder.barcodeText.text = "Barcode: " + items[position].barcode
-
-            if (this.isToRemove) {
-                holder.changeCollectionButton.text = "Remove from collection"
-            } else {
-                holder.changeCollectionButton.text = "Add to collection"
-            }
-
-            if (items[position].image != null) {
-                val bitmap = Utils.base64ToBitmap(items[position].image!!)
-
-                if (bitmap != null) {
-                    holder.image.setImageBitmap(bitmap)
-                }
-            }
-
-            firstBindAt[position] = false
         }
 
         if (this.isExpanded[position]) {

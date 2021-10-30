@@ -13,8 +13,6 @@ class ScannedBarcodesAdapter(private val barcodes: Array<String>):
     // It represents the position in the recycler view of the current checked box
     private var pos: Int = -1
 
-    private var firstBind = true
-
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         var checkBox: CheckBox = view.findViewById(R.id.barcodeCheckBox)
 
@@ -40,11 +38,7 @@ class ScannedBarcodesAdapter(private val barcodes: Array<String>):
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (firstBind) {
-            holder.checkBox.text = barcodes[position]
-
-            firstBind = false
-        }
+        holder.checkBox.text = barcodes[position]
 
         holder.checkBox.isChecked = false
     }
