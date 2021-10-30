@@ -130,6 +130,8 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
         val threadKey = this.intent.extras!!.getInt(BLUETOOTH_THREAD_EXTRA)
         val thread = Utils.getSavedValue(threadKey) as AcceptThread
         thread.cancel()
+
+        this.receiveThread.cancel()
     }
 
     private val showInfo: IndexedArrayCallback<Suggestion> = {

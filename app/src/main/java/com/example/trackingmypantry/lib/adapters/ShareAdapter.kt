@@ -43,9 +43,9 @@ class ShareAdapter<T: Any>(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (clazz == Item::class.java) {
+        if (clazz == Item::class) {
             holder.sendButton.text = (elements[position] as Item).name
-        } else if (clazz == Place::class.java) {
+        } else if (clazz == Place::class) {
             holder.sendButton.text = (elements[position] as Place).title
         }
     }
