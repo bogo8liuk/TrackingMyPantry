@@ -145,7 +145,7 @@ class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
         if (this.markedLocations.isNotEmpty()) {
             AlertDialog.Builder(this)
                 .setTitle("Unsaved changes")
-                .setMessage("There are unsaved changes, by going back you will" +
+                .setMessage("There are unsaved changes, by going back you will " +
                         "lose them. Continuing?")
                 .setNegativeButton(R.string.negative, null)
                 .setPositiveButton(R.string.positive, DialogInterface.OnClickListener { _, _ ->
