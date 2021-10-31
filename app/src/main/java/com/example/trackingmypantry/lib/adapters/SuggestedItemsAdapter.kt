@@ -65,6 +65,7 @@ class SuggestedItemsAdapter(
             holder.descriptionText.visibility = android.view.View.VISIBLE
             holder.userText.visibility = android.view.View.VISIBLE
             holder.image.visibility = android.view.View.VISIBLE
+            holder.deleteButton.visibility = android.view.View.VISIBLE
         } else {
             holder.nameButton.visibility = android.view.View.VISIBLE
             holder.nameExpandedButton.visibility = android.view.View.GONE
@@ -72,6 +73,7 @@ class SuggestedItemsAdapter(
             holder.descriptionText.visibility = android.view.View.GONE
             holder.userText.visibility = android.view.View.GONE
             holder.image.visibility = android.view.View.GONE
+            holder.deleteButton.visibility = android.view.View.GONE
         }
 
         holder.nameButton.setOnClickListener {
