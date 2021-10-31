@@ -31,13 +31,13 @@ class ShareActivity : AppCompatActivity() {
     }
 
     private var myUsername: String? = null
+    private lateinit var writeThread: SendThread
 
     private val writeHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 MessageType.WRITE_DATA -> {
                     val thread = msg.obj as SendThread
-                    thread.cancel()
                 }
 
                 MessageType.ERROR_WRITE -> {
@@ -104,7 +104,8 @@ class ShareActivity : AppCompatActivity() {
 
         val data = Utils.itemToByteArray(it.array[it.index], this.myUsername!!)
 
-        SendThread(this.writeHandler, socket, data).start()
+        this.writeThread = SendThread(this.writeHandler, socket, data)
+        this.writeThread.start()
     }
 
     private val sendPlace: IndexedArrayCallback<Place> = {
