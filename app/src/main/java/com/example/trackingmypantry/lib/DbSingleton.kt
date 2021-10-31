@@ -8,6 +8,7 @@ import androidx.room.Room
 import com.example.trackingmypantry.db.Db
 import com.example.trackingmypantry.db.entities.*
 import com.example.trackingmypantry.db.entities.Collection
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -78,12 +79,8 @@ class DbSingleton(context: Context) {
     fun removeMultipleItemsFromCollection(ids: List<Long>) {
         runBlocking {
             launch {
-                db.runInTransaction {
-                    this.launch {
-                        ids.forEach {
-                            itemDao.removeItemFromCollection(it)
-                        }
-                    }
+                ids.forEach {
+                    itemDao.removeItemFromCollection(it)
                 }
             }
         }
@@ -172,16 +169,12 @@ class DbSingleton(context: Context) {
     fun moveToPlaces(vararg suggestions: PlaceSuggestion) {
         runBlocking {
             launch {
-                db.runInTransaction {
-                    this.launch {
-                        val places = Array<Place>(suggestions.size) { i ->
-                            Place(suggestions[i].latitude, suggestions[i].longitude, suggestions[i].title)
-                        }
-
-                        placeDao.insertPlaces(*places)
-                        placeSuggestionDao.deletePlaceSuggestions(*suggestions)
-                    }
+                val places = Array<Place>(suggestions.size) { i ->
+                    Place(suggestions[i].latitude, suggestions[i].longitude, suggestions[i].title)
                 }
+
+                placeDao.insertPlaces(*places)
+                placeSuggestionDao.deletePlaceSuggestions(*suggestions)
             }
         }
     }
