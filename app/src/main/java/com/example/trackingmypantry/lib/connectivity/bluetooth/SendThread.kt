@@ -21,7 +21,7 @@ class SendThread(
         } catch (exception: IOException) {
             Log.e("Socket bt write error", exception.message ?: "Cannot send data")
 
-            val msg = handler.obtainMessage(MessageType.ERROR_WRITE, "Cannot send data")
+            val msg = handler.obtainMessage(MessageType.ERROR_WRITE, this)
             msg.sendToTarget()
             return
         }
