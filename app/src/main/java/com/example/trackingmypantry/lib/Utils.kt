@@ -86,7 +86,7 @@ class Utils {
 
         private fun doubleToByteArray(d: Double): Pair<ByteArray, Int> {
             val s = d.toString()
-            val array = s.toByteArray()
+            val array = s.toByteArray(Charsets.UTF_8)
             return Pair(array, array.size)
             /*val res = ByteArray(DOUBLE_SIZE)
             ByteBuffer.wrap(res).putDouble(d)
@@ -142,7 +142,6 @@ class Utils {
             var cursor = INT_SIZE
 
             val lenBarcode = byteArrayToInt(array.sliceArray(IntRange(oldCursor, cursor - 1)))
-            Log.e("pippo", lenBarcode.toString()) //TODO
 
             oldCursor = cursor
             cursor += lenBarcode

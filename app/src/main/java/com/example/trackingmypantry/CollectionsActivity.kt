@@ -66,8 +66,8 @@ class CollectionsActivity : AppCompatActivity() {
             val itemsButton = RadioButton(this)
             val placesButton = RadioButton(this)
 
-            itemsButton.text = "Add new locations"
-            placesButton.text = "Remove your locations"
+            itemsButton.text = "Suggestions for items"
+            placesButton.text = "Suggestions for places"
 
             actionButtons.addView(itemsButton)
             actionButtons.addView(placesButton)
