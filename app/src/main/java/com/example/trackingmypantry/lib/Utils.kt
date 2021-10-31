@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import android.util.Log
 import android.widget.Toast
 import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.db.entities.ItemSuggestion
@@ -13,6 +14,7 @@ import java.io.ByteArrayOutputStream
 import java.lang.Exception
 import java.lang.RuntimeException
 import java.nio.ByteBuffer
+import java.nio.ByteOrder
 
 class Utils {
     companion object {
@@ -60,33 +62,41 @@ class Utils {
         }
 
         private fun intToByteArray(n: Int): ByteArray {
-            val buffer = ByteArray(INT_SIZE)
+            return ByteBuffer.allocate(INT_SIZE).order(ByteOrder.nativeOrder()).putInt(n).array()
+            /*val buffer = ByteArray(INT_SIZE)
 
             for (i in 0 until INT_SIZE) {
                 buffer[i] = (n shr (i * 8)).toByte()
             }
 
-            return buffer
+            return buffer*/
         }
 
         private fun byteArrayToInt(array: ByteArray): Int {
-            var res = 0
+            return ByteBuffer.wrap(array).order(ByteOrder.nativeOrder()).int
+            /*var res = 0
 
+            if (ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN)
             for (i in 0 until INT_SIZE) {
-                res = res or (array[i].toInt() shl (i * 8))
+                res = res or (array[i].toInt() shl ((INT_SIZE - i) * 8))
             }
 
-            return res
+            return res*/
         }
 
-        private fun doubleToByteArray(d: Double): ByteArray {
-            val res = ByteArray(DOUBLE_SIZE)
+        private fun doubleToByteArray(d: Double): Pair<ByteArray, Int> {
+            val s = d.toString()
+            val array = s.toByteArray()
+            return Pair(array, array.size)
+            /*val res = ByteArray(DOUBLE_SIZE)
             ByteBuffer.wrap(res).putDouble(d)
-            return res
+            return res*/
         }
 
         private fun byteArrayToDouble(array: ByteArray): Double {
-            return ByteBuffer.wrap(array).double
+            val s = array.toString()
+            return s.toDouble()
+            /*return ByteBuffer.wrap(array).double*/
         }
 
         private fun concatByteArrays(arrays: Array<ByteArray>): ByteArray {
@@ -127,15 +137,12 @@ class Utils {
             }
         }
 
-        /**
-         * It returns only the barcode, the name, the description, the username and the eventually
-         * the image of an ItemSuggestion.
-         */
         fun byteArrayToItemSuggestion(array: ByteArray): ItemSuggestion {
             var oldCursor = 0
             var cursor = INT_SIZE
 
             val lenBarcode = byteArrayToInt(array.sliceArray(IntRange(oldCursor, cursor - 1)))
+            Log.e("pippo", lenBarcode.toString()) //TODO
 
             oldCursor = cursor
             cursor += lenBarcode
@@ -193,8 +200,13 @@ class Utils {
             val encType = ByteArray(1)
             encType[0] = PLACE_ENCODING
 
-            val encLatitude = doubleToByteArray(place.latitude)
-            val encLongitude = doubleToByteArray(place.longitude)
+            val latitude = doubleToByteArray(place.latitude)
+            val lenLatitude = intToByteArray(latitude.second)
+            val encLatitude = latitude.first
+
+            val longitude = doubleToByteArray(place.longitude)
+            val lenLongitude = intToByteArray(longitude.second)
+            val encLongitude = longitude.first
 
             val encTitle = place.title.toByteArray(Charsets.UTF_8)
             val lenTitle = intToByteArray(encTitle.size)
@@ -202,8 +214,8 @@ class Utils {
             val encUser = username.toByteArray(Charsets.UTF_8)
             val lenUser = intToByteArray(encUser.size)
 
-            return concatByteArrays(arrayOf(encType, encLatitude, encLongitude, lenTitle, encTitle,
-                lenUser, encUser))
+            return concatByteArrays(arrayOf(encType, lenLatitude, encLatitude, lenLongitude,
+                encLongitude, lenTitle, encTitle, lenUser, encUser))
         }
 
         /**
@@ -212,12 +224,22 @@ class Utils {
          */
         fun byteArrayToPlaceSuggestion(array: ByteArray): PlaceSuggestion {
             var oldCursor = 0
-            var cursor = DOUBLE_SIZE
+            var cursor = INT_SIZE
+
+            val lenLatitude = byteArrayToInt(array.sliceArray(IntRange(oldCursor, cursor - 1)))
+
+            oldCursor = cursor
+            cursor += lenLatitude
 
             val latitude = byteArrayToDouble(array.sliceArray(IntRange(oldCursor, cursor - 1)))
 
             oldCursor = cursor
-            cursor += DOUBLE_SIZE
+            cursor += INT_SIZE
+
+            val lenLongitude = byteArrayToInt(array.sliceArray(IntRange(oldCursor, cursor - 1)))
+
+            oldCursor = cursor
+            cursor += lenLongitude
 
             val longitude = byteArrayToDouble(array.sliceArray(IntRange(oldCursor, cursor - 1)))
 
