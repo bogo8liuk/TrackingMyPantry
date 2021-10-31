@@ -75,6 +75,7 @@ class CollectionsActivity : AppCompatActivity() {
             AlertDialog.Builder(this)
                 .setTitle("Choose an action")
                 .setMessage("Choose what to see")
+                .setView(actionButtons)
                 .setNegativeButton(R.string.negativeCanc, null)
                 .setPositiveButton(R.string.positiveOk, DialogInterface.OnClickListener { _, _ ->
                     if (itemsButton.isChecked) {
