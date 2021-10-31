@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.db.entities.ItemSuggestion
 import com.example.trackingmypantry.db.entities.PlaceSuggestion
 import com.example.trackingmypantry.lib.DbSingleton
+import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
 import com.example.trackingmypantry.lib.adapters.SuggestedItemsAdapter
 import com.example.trackingmypantry.lib.adapters.SuggestedPlacesAdapter
@@ -96,14 +97,35 @@ class SuggestionsActivity : AppCompatActivity() {
     }
 
     private val deleteItemSuggestion: IndexedArrayCallback<ItemSuggestion> = {
-        this.itemSuggestionsToRemove.add(it.array[it.index])
+        val suggestion = it.array[it.index]
+
+        if (!this.itemSuggestionsToRemove.contains(suggestion)) {
+            this.itemSuggestionsToRemove.add(suggestion)
+            Utils.toastShow(this, "It will be removed soon")
+        } else {
+            Utils.toastShow(this, "Suggestion already removed")
+        }
     }
 
     private val deletePlaceSuggestion: IndexedArrayCallback<PlaceSuggestion> = {
-        this.placeSuggestionsToRemove.add(it.array[it.index])
+        val suggestion = it.array[it.index]
+
+        if (!this.placeSuggestionsToRemove.contains(suggestion)) {
+            this.placeSuggestionsToRemove.add(suggestion)
+            Utils.toastShow(this, "It will be removed soon")
+        } else {
+            Utils.toastShow(this, "Suggestion already removed")
+        }
     }
 
     private val movePlaceSuggestion: IndexedArrayCallback<PlaceSuggestion> = {
-        this.placeSuggestionsToMove.add(it.array[it.index])
+        val suggestion = it.array[it.index]
+
+        if (!this.placeSuggestionsToMove.contains(suggestion)) {
+            this.placeSuggestionsToMove.add(it.array[it.index])
+            Utils.toastShow(this, "It will be moved soon")
+        } else {
+            Utils.toastShow(this, "Suggestion already moved")
+        }
     }
 }
