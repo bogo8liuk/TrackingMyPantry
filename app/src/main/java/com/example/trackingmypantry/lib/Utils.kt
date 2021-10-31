@@ -84,18 +84,15 @@ class Utils {
             return res*/
         }
 
-        private fun doubleToByteArray(d: Double): Pair<ByteArray, Int> {
-            val s = d.toString()
-            val array = s.toByteArray(Charsets.UTF_8)
-            return Pair(array, array.size)
+        private fun doubleToByteArray(d: Double): ByteArray {
+            return ByteBuffer.allocate(DOUBLE_SIZE).order(ByteOrder.nativeOrder()).putDouble(d).array()
             /*val res = ByteArray(DOUBLE_SIZE)
             ByteBuffer.wrap(res).putDouble(d)
             return res*/
         }
 
         private fun byteArrayToDouble(array: ByteArray): Double {
-            val s = array.toString()
-            return s.toDouble()
+            return ByteBuffer.wrap(array).order(ByteOrder.nativeOrder()).double
             /*return ByteBuffer.wrap(array).double*/
         }
 
@@ -199,13 +196,8 @@ class Utils {
             val encType = ByteArray(1)
             encType[0] = PLACE_ENCODING
 
-            val latitude = doubleToByteArray(place.latitude)
-            val lenLatitude = intToByteArray(latitude.second)
-            val encLatitude = latitude.first
-
-            val longitude = doubleToByteArray(place.longitude)
-            val lenLongitude = intToByteArray(longitude.second)
-            val encLongitude = longitude.first
+            val encLatitude = doubleToByteArray(place.latitude)
+            val encLongitude = doubleToByteArray(place.longitude)
 
             val encTitle = place.title.toByteArray(Charsets.UTF_8)
             val lenTitle = intToByteArray(encTitle.size)
@@ -213,32 +205,18 @@ class Utils {
             val encUser = username.toByteArray(Charsets.UTF_8)
             val lenUser = intToByteArray(encUser.size)
 
-            return concatByteArrays(arrayOf(encType, lenLatitude, encLatitude, lenLongitude,
-                encLongitude, lenTitle, encTitle, lenUser, encUser))
+            return concatByteArrays(arrayOf(encType, encLatitude, encLongitude, lenTitle, encTitle,
+                lenUser, encUser))
         }
 
-        /**
-         * It returns only the latitude, the the longitude, the title and the username
-         * of a PlaceSuggestion.
-         */
         fun byteArrayToPlaceSuggestion(array: ByteArray): PlaceSuggestion {
             var oldCursor = 0
-            var cursor = INT_SIZE
-
-            val lenLatitude = byteArrayToInt(array.sliceArray(IntRange(oldCursor, cursor - 1)))
-
-            oldCursor = cursor
-            cursor += lenLatitude
+            var cursor = DOUBLE_SIZE
 
             val latitude = byteArrayToDouble(array.sliceArray(IntRange(oldCursor, cursor - 1)))
 
             oldCursor = cursor
-            cursor += INT_SIZE
-
-            val lenLongitude = byteArrayToInt(array.sliceArray(IntRange(oldCursor, cursor - 1)))
-
-            oldCursor = cursor
-            cursor += lenLongitude
+            cursor += DOUBLE_SIZE
 
             val longitude = byteArrayToDouble(array.sliceArray(IntRange(oldCursor, cursor - 1)))
 
