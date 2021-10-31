@@ -38,12 +38,12 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/searchButton"
         android:layout_width="@dimen/mediumButtonWidth"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mediumButtonHeight"
         android:background="@drawable/green_medium_corner_button"
         android:text="@string/search"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline13"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
     <LinearLayout
@@ -58,7 +58,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/signupButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/mediumButtonHeight"
             android:layout_marginBottom="10dp"
             android:background="@drawable/green_medium_corner_button"
             android:text="@string/signUp"
@@ -67,7 +67,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/signinButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/mediumButtonHeight"
             android:layout_marginBottom="10dp"
             android:background="@drawable/green_medium_corner_button"
             android:text="@string/signIn"
@@ -76,7 +76,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/logoutButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/mediumButtonHeight"
             android:layout_marginBottom="10dp"
             android:background="@drawable/green_medium_corner_button"
             android:text="@string/logout"
@@ -85,7 +85,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/localButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/mediumButtonHeight"
             android:layout_marginBottom="10dp"
             android:background="@drawable/orange_medium_corner_button"
             android:drawableStart="@drawable/ic_baseline_store_24"
@@ -95,7 +95,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bluetoothButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/mediumButtonHeight"
             android:layout_marginBottom="10dp"
             android:background="@drawable/lightblue_medium_corner_button"
             android:drawableStart="@drawable/ic_baseline_bluetooth_24"
@@ -105,7 +105,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/locationsButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/mediumButtonHeight"
             android:background="@drawable/lightblue_medium_corner_button"
             android:drawableStart="@drawable/ic_baseline_location_on_24"
             android:text="@string/locations"

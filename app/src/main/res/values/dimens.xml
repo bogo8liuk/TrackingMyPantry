@@ -3,7 +3,7 @@
     <dimen name="largeButtonWidth">215dp</dimen>
     <dimen name="largeButtonHeight">100dp</dimen>
     <dimen name="mediumButtonWidth">110dp</dimen>
-    <dimen name="mediumButtonHeight">45dp</dimen>
+    <dimen name="mediumButtonHeight">40dp</dimen>
     <dimen name="circleButtonWidth">60dp</dimen>
     <dimen name="circleButtonHeight">60dp</dimen>
 </resources>

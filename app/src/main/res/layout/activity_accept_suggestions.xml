@@ -57,7 +57,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/endConnectionButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mediumButtonHeight"
         android:background="@drawable/green_medium_corner_button"
         android:text="@string/end"
         android:textColor="@color/white"

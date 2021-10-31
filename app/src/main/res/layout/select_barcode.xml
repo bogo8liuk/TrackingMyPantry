@@ -56,7 +56,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/selectBarcodeButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mediumButtonHeight"
         android:background="@drawable/orange_medium_corner_button"
         android:text="@string/select"
         android:textColor="@color/white"
@@ -67,7 +67,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/retryScanButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mediumButtonHeight"
         android:background="@drawable/orange_medium_corner_button"
         android:text="@string/retry"
         android:textColor="@color/white"

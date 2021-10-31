@@ -51,7 +51,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/createCollectionButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mediumButtonHeight"
         android:layout_marginTop="10dp"
         android:background="@drawable/orange_medium_corner_button"
         android:text="@string/collectionCreate"
@@ -63,7 +63,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/localItemsButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mediumButtonHeight"
         android:layout_marginTop="10dp"
         android:background="@drawable/orange_medium_corner_button"
         android:text="@string/productWatch"
@@ -75,7 +75,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/suggestionsButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mediumButtonHeight"
         android:layout_marginTop="10dp"
         android:background="@drawable/orange_medium_corner_button"
         android:text="@string/suggestWatch"

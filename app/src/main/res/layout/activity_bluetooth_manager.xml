@@ -47,7 +47,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/discoveryButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mediumButtonHeight"
         android:background="@drawable/lightblue_medium_corner_button"
         android:text="@string/find"
         android:textColor="@color/white"
@@ -59,7 +59,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/acceptButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mediumButtonHeight"
         android:background="@drawable/lightblue_medium_corner_button"
         android:text="@string/requestAccept"
         android:textColor="@color/white"
@@ -78,7 +78,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/displayDevicesButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mediumButtonHeight"
         android:layout_marginBottom="10dp"
         android:background="@drawable/lightblue_medium_corner_button"
         android:textColor="@color/white"

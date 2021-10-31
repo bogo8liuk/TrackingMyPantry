@@ -38,7 +38,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/itemsWatchButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mediumButtonHeight"
         android:background="@drawable/orange_medium_corner_button"
         android:text="@string/productWatch"
         android:textColor="@color/white"
@@ -50,7 +50,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/locationsWatchButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mediumButtonHeight"
         android:layout_marginTop="10dp"
         android:background="@drawable/orange_medium_corner_button"
         android:text="@string/locationsWatch"
@@ -71,7 +71,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/terminateButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mediumButtonHeight"
         android:layout_marginTop="10dp"
         android:background="@drawable/green_medium_corner_button"
         android:text="@string/end"

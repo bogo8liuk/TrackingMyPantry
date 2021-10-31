@@ -10,7 +10,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sendButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mediumButtonHeight"
         android:background="@drawable/green_medium_corner_button"
         android:text="@string/send"
         android:textColor="@color/white"
@@ -125,7 +125,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/photoButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mediumButtonHeight"
         android:layout_marginBottom="10dp"
         android:background="@drawable/lightblue_medium_corner_button"
         android:text="@string/pictureTake"
@@ -144,7 +144,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/expirationDateButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mediumButtonHeight"
         android:background="@drawable/lightblue_medium_corner_button"
         android:text="@string/dateExpire"
         android:textColor="@color/white"
