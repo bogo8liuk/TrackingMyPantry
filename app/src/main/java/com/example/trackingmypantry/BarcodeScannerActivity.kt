@@ -46,7 +46,7 @@ class BarcodeScannerActivity : CameraActivity() {
         val barcodesText: TextView = this.findViewById(R.id.scannedBarcodesDescText)
         val selectButton: AppCompatButton = this.findViewById(R.id.selectBarcodeButton)
         val retryButton: AppCompatButton = this.findViewById(R.id.retryScanButton)
-        val homeButton: AppCompatButton = this.findViewById(R.id.homeButton)
+        val homeButton: AppCompatImageButton = this.findViewById(R.id.homeButton)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -58,7 +58,7 @@ class BarcodeScannerActivity : CameraActivity() {
                 }
             }
 
-            if (list.isNotEmpty()) {
+            if (list.isEmpty()) {
                 barcodesText.text = "No scanned barcodes, please retry"
             } else {
                 barcodesText.text = "Scanned barcodes:"
@@ -85,7 +85,9 @@ class BarcodeScannerActivity : CameraActivity() {
         }
 
         retryButton.setOnClickListener {
+            this.barcodes.clear()
             this.setContentCamera()
+            this.startCamera()
         }
 
         homeButton.setOnClickListener {
@@ -122,9 +124,9 @@ class BarcodeScannerActivity : CameraActivity() {
                 val imageAnalysis = ImageAnalysis.Builder()
                     .build()
                     .also {
-                        it.setAnalyzer(this.cameraExecutor, BarcodeAnalyzer({ scannered ->
-                            if (scannered != null) {
-                                this.barcodes.addAll(scannered)
+                        it.setAnalyzer(this.cameraExecutor, BarcodeAnalyzer({ scanned ->
+                            if (scanned != null) {
+                                this.barcodes.addAll(scanned)
                             }
                         },
                         {
