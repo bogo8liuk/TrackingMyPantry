@@ -12,6 +12,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.example.trackingmypantry.lib.PermissionEvaluer
 
 open class CameraLauncherActivity : AppCompatActivity() {
+    companion object {
+        const val BITMAP_EXTRA = "data"
+    }
+
     protected var encodedImage: Bitmap? = null
         private set
 
@@ -23,7 +27,7 @@ open class CameraLauncherActivity : AppCompatActivity() {
         ) { result ->
             when (result.resultCode) {
                 RESULT_OK -> {
-                    val bitmap = result.data!!.extras!!["data"] as Bitmap
+                    val bitmap = result.data!!.extras!![BITMAP_EXTRA] as Bitmap
                     this.encodedImage = bitmap
                     this.successCallback(bitmap)
                 }

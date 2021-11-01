@@ -11,12 +11,16 @@ import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.ResultCode
 
 class SignInActivity : AppCompatActivity() {
+    companion object {
+        const val RETRY_EXTRA = "retry"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_sign)
 
         val extras = this.intent.extras
-        if (extras != null && extras.getBoolean("retry", false)) {
+        if (extras != null && extras.getBoolean(RETRY_EXTRA, false)) {
             Utils.toastShow(this, "A network error occurred," +
                 " try to sign in again")
         }

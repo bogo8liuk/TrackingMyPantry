@@ -39,7 +39,7 @@ class CollectionsActivity : AppCompatActivity() {
 
         itemsButton.setOnClickListener {
             val intent = Intent(this, LocalItemsActivity::class.java)
-            intent.putExtra("collection", -1L)   // No collection provided, just want to show all the items
+            intent.putExtra(LocalItemsActivity.COLLECTION_EXTRA, -1L)   // No collection provided, just want to show all the items
             this.startActivity(intent)
         }
 

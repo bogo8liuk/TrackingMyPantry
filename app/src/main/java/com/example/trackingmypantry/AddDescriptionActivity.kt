@@ -19,6 +19,10 @@ import org.json.JSONObject
 import java.util.*
 
 class AddDescriptionActivity : CameraLauncherActivity() {
+    companion object {
+        const val BARCODE_EXTRA = "barcode"
+    }
+
     private var expirationDate: Date? = null
 
     /* Implementing here because there are two points where this function is called:
@@ -93,10 +97,10 @@ class AddDescriptionActivity : CameraLauncherActivity() {
                     .setTitle("No description provided")
                     .setNegativeButton(R.string.negative, null)
                     .setPositiveButton(R.string.positive, DialogInterface.OnClickListener { _, _ ->
-                        this.send(extras!!["barcode"] as String)
+                        this.send(extras!![BARCODE_EXTRA] as String)
                     })
             } else {
-                this.send(extras!!["barcode"] as String)
+                this.send(extras!![BARCODE_EXTRA] as String)
             }
         }
 

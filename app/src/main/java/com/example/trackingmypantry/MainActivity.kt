@@ -27,8 +27,12 @@ import com.example.trackingmypantry.lib.credentials.CredentialsHandler
 import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
-    private val BLUETOOTH_REQUEST_BACKGROUND = 1
-    private val BLUETOOTH_REQUEST_COARSE = 2
+    companion object {
+        private const val BLUETOOTH_REQUEST_BACKGROUND = 1
+        private const val BLUETOOTH_REQUEST_COARSE = 2
+
+        const val SCANNED_BARCODE_EXTRA = "barcode"
+    }
 
     // Activity launchers
     private val signupLauncher = this.registerForActivityResult(
@@ -81,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
             ResultCode.EXPIRED_TOKEN -> {
                 val intent = Intent(this, SignInActivity::class.java)
-                intent.putExtra("retry", true)
+                intent.putExtra(SignInActivity.RETRY_EXTRA, true)
                 this.signinLauncher.launch(intent)
             }
         }
@@ -91,7 +95,7 @@ class MainActivity : AppCompatActivity() {
         when (result.resultCode) {
             RESULT_OK -> {
                 var intent = Intent(this, BuyActivity::class.java)
-                intent.putExtra("barcode", result.data!!.extras!!["barcode"] as String)
+                intent.putExtra(BuyActivity.BARCODE_EXTRA, result.data!!.extras!![SCANNED_BARCODE_EXTRA] as String)
                 this.buyLauncher.launch(intent)
             }
 
@@ -205,7 +209,7 @@ class MainActivity : AppCompatActivity() {
                 barcodeText.requestFocus()
             } else {
                 var intent = Intent(this, BuyActivity::class.java)
-                intent.putExtra("barcode", barcodeText.text.toString())
+                intent.putExtra(BuyActivity.BARCODE_EXTRA, barcodeText.text.toString())
                 this.buyLauncher.launch(intent)
             }
         }
@@ -215,9 +219,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         cameraButton.setOnClickListener {
-            var intent = Intent(this, BarcodeScannerActivity::class.java)
-            intent.putExtra("imageCapturing", false)
-            this.barcodeScanLauncher.launch(intent)
+            this.barcodeScanLauncher.launch(Intent(this, BarcodeScannerActivity::class.java))
         }
 
         logoutButton.setOnClickListener {

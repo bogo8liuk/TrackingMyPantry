@@ -3,7 +3,6 @@ package com.example.trackingmypantry
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
@@ -76,7 +75,7 @@ class BarcodeScannerActivity : CameraActivity() {
 
             if (checkedBarcode != null) {
                 var intent = Intent()
-                intent.putExtra("barcode", checkedBarcode)
+                intent.putExtra(MainActivity.SCANNED_BARCODE_EXTRA, checkedBarcode)
                 this.setResult(RESULT_OK, intent)
                 this.finish()
             } else {

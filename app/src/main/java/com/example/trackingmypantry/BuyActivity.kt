@@ -27,8 +27,12 @@ import com.example.trackingmypantry.lib.viewmodels.ReceivedItemsViewModelFactory
 import java.util.*
 
 class BuyActivity() : AppCompatActivity() {
-    private val MIN_RATE = 1
-    private val MAX_RATE = 5
+    companion object {
+        private const val MIN_RATE = 1
+        private const val MAX_RATE = 5
+
+        const val BARCODE_EXTRA = "barcode"
+    }
 
     private var expDate: Date? = null
     private lateinit var barcode: String
@@ -56,11 +60,11 @@ class BuyActivity() : AppCompatActivity() {
         )    // To avoid layout skipping
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        this.barcode = this.intent.extras?.get("barcode") as String
+        this.barcode = this.intent.extras?.get(BARCODE_EXTRA) as String
 
         newProdButton.setOnClickListener {
             val intent = Intent(this, AddDescriptionActivity::class.java)
-            intent.putExtra("barcode", this.barcode)
+            intent.putExtra(AddDescriptionActivity.BARCODE_EXTRA, this.barcode)
             this.addDescLauncher.launch(intent)
         }
 
