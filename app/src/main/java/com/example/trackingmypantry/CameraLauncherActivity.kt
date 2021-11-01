@@ -4,9 +4,9 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import androidx.appcompat.app.AppCompatActivity
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.example.trackingmypantry.lib.PermissionEvaluer
 
 open class CameraLauncherActivity : AppCompatActivity() {

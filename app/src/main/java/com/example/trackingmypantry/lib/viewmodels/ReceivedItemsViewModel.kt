@@ -4,10 +4,11 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.trackingmypantry.lib.connectivity.net.HttpHandler
 import com.example.trackingmypantry.lib.credentials.TokenHandler
 import com.example.trackingmypantry.lib.credentials.TokenType
-import com.example.trackingmypantry.lib.connectivity.net.HttpHandler
-import com.example.trackingmypantry.lib.data.*
+import com.example.trackingmypantry.lib.data.Product
+import com.example.trackingmypantry.lib.data.specialErrProduct
 import org.json.JSONException
 import org.json.JSONObject
 

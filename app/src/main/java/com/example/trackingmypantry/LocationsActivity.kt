@@ -4,10 +4,10 @@ import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationRequest
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import com.example.trackingmypantry.db.entities.Place
 import com.example.trackingmypantry.lib.DbSingleton

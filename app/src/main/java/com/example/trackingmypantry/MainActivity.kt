@@ -15,11 +15,11 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
 import com.example.trackingmypantry.lib.EvalMode
 import com.example.trackingmypantry.lib.PermissionEvaluer
+import com.example.trackingmypantry.lib.ResultCode
+import com.example.trackingmypantry.lib.Utils
+import com.example.trackingmypantry.lib.connectivity.bluetooth.BlueUtils
 import com.example.trackingmypantry.lib.credentials.TokenHandler
 import com.example.trackingmypantry.lib.credentials.TokenType
-import com.example.trackingmypantry.lib.Utils
-import com.example.trackingmypantry.lib.ResultCode
-import com.example.trackingmypantry.lib.connectivity.bluetooth.BlueUtils
 
 class MainActivity : AppCompatActivity() {
     companion object {

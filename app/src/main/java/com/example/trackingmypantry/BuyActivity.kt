@@ -2,7 +2,6 @@ package com.example.trackingmypantry
 
 import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.DatePicker
 import android.widget.ImageView
@@ -11,6 +10,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +21,8 @@ import com.example.trackingmypantry.lib.ResultCode
 import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
 import com.example.trackingmypantry.lib.adapters.ReceivedItemsAdapter
 import com.example.trackingmypantry.lib.connectivity.net.HttpHandler
-import com.example.trackingmypantry.lib.data.*
+import com.example.trackingmypantry.lib.data.ERR_FIELD
+import com.example.trackingmypantry.lib.data.Product
 import com.example.trackingmypantry.lib.viewmodels.ReceivedItemsViewModel
 import com.example.trackingmypantry.lib.viewmodels.ReceivedItemsViewModelFactory
 import java.util.*

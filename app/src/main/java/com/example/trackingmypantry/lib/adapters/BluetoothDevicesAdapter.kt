@@ -1,11 +1,9 @@
 package com.example.trackingmypantry.lib.adapters
 
 import android.bluetooth.BluetoothDevice
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R

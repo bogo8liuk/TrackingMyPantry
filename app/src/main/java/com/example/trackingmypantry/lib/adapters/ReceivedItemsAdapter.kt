@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R
-import com.example.trackingmypantry.lib.*
+import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.data.Product
 
 class ReceivedItemsAdapter(

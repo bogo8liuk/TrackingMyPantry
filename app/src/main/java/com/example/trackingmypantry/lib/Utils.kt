@@ -4,15 +4,12 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
-import android.util.Log
 import android.widget.Toast
 import com.example.trackingmypantry.db.entities.Item
 import com.example.trackingmypantry.db.entities.ItemSuggestion
 import com.example.trackingmypantry.db.entities.Place
 import com.example.trackingmypantry.db.entities.PlaceSuggestion
 import java.io.ByteArrayOutputStream
-import java.lang.Exception
-import java.lang.RuntimeException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 

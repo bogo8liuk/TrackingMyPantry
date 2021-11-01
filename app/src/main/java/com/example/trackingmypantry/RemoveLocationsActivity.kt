@@ -1,9 +1,9 @@
 package com.example.trackingmypantry
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,8 +12,8 @@ import com.example.trackingmypantry.db.entities.Place
 import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.LocationsToRemoveAdapter
-import com.example.trackingmypantry.lib.viewmodels.LocationsViewModel
 import com.example.trackingmypantry.lib.viewmodels.DefaultAppViewModelFactory
+import com.example.trackingmypantry.lib.viewmodels.LocationsViewModel
 
 class RemoveLocationsActivity : AppCompatActivity() {
     private val locationsToRemove = mutableListOf<Place>()

@@ -6,9 +6,9 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import com.example.trackingmypantry.lib.EvalMode
-import com.example.trackingmypantry.lib.connectivity.net.HttpHandler
-import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.ResultCode
+import com.example.trackingmypantry.lib.Utils
+import com.example.trackingmypantry.lib.connectivity.net.HttpHandler
 
 class SignInActivity : AppCompatActivity() {
     companion object {

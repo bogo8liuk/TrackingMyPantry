@@ -1,6 +1,5 @@
 package com.example.trackingmypantry.lib
 
-import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager

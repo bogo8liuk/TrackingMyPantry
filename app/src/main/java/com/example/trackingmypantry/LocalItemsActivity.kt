@@ -1,12 +1,12 @@
 package com.example.trackingmypantry
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +16,10 @@ import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.IndexedArrayCallback
 import com.example.trackingmypantry.lib.adapters.LocalItemsAdapter
-import com.example.trackingmypantry.lib.viewmodels.*
+import com.example.trackingmypantry.lib.viewmodels.CollectionsViewModel
+import com.example.trackingmypantry.lib.viewmodels.DefaultAppViewModelFactory
+import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModel
+import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModelFactory
 
 class LocalItemsActivity : AppCompatActivity() {
     companion object {

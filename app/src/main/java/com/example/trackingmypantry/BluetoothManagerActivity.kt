@@ -6,12 +6,12 @@ import android.bluetooth.BluetoothSocket
 import android.content.*
 import android.location.LocationManager
 import android.os.*
-import androidx.appcompat.app.AppCompatActivity
 import android.provider.Settings
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer

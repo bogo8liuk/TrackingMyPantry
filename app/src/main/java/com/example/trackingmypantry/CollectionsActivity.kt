@@ -2,7 +2,6 @@ package com.example.trackingmypantry
 
 import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.GridView
@@ -10,6 +9,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.Observer
 import com.example.trackingmypantry.db.entities.Collection

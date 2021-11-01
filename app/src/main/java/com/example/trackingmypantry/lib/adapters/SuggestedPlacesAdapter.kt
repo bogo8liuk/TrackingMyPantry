@@ -3,16 +3,11 @@ package com.example.trackingmypantry.lib.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R
-import com.example.trackingmypantry.db.entities.ItemSuggestion
 import com.example.trackingmypantry.db.entities.PlaceSuggestion
-import com.example.trackingmypantry.lib.DbSingleton
-import com.example.trackingmypantry.lib.Utils
 
 class SuggestedPlacesAdapter(
     private val deleteCallback: IndexedArrayCallback<PlaceSuggestion>,
