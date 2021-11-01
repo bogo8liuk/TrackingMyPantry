@@ -21,7 +21,7 @@ class ConnectThread(
     }
 
     override fun run() {
-        this.adapter.cancelDiscovery()  //TODO: putting here?
+        this.adapter.cancelDiscovery()
 
         this.connectSocket?.let { it ->
             try {

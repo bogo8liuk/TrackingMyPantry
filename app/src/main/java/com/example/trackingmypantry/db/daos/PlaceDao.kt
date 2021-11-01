@@ -16,5 +16,5 @@ interface PlaceDao {
     suspend fun insertPlaces(vararg places: Place)
 
     @Delete
-    suspend fun deletePlaces(vararg places: Place)  //TODO: only by id???
+    suspend fun deletePlaces(vararg places: Place)
 }

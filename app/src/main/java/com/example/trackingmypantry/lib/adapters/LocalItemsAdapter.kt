@@ -77,8 +77,8 @@ class LocalItemsAdapter(
         holder.nameExpandedButton.text = items[position].name
         holder.descText.text = items[position].description
         holder.quantityText.text = "Quantity: " + items[position].quantity.toString()
-        holder.purchaseText.text = "Purchase date: " + items[position].purchase_date // TODO: safe?
-        holder.expirationText.text = "Expiration date: " + (items[position].expiration_date ?: "Unspecified")
+        holder.purchaseText.text = "Purchase date: " + items[position].purchase_date.toString()
+        holder.expirationText.text = "Expiration date: " + (items[position].expiration_date?.toString() ?: "Unspecified")
         holder.barcodeText.text = "Barcode: " + items[position].barcode
 
         if (this.isToRemove) {
