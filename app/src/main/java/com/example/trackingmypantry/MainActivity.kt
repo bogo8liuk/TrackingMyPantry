@@ -5,13 +5,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
@@ -23,8 +20,6 @@ import com.example.trackingmypantry.lib.credentials.TokenType
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.ResultCode
 import com.example.trackingmypantry.lib.connectivity.bluetooth.BlueUtils
-import com.example.trackingmypantry.lib.credentials.CredentialsHandler
-import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
     companion object {

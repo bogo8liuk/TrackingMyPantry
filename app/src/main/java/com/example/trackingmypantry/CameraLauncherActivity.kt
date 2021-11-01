@@ -5,8 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.PersistableBundle
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.trackingmypantry.lib.PermissionEvaluer

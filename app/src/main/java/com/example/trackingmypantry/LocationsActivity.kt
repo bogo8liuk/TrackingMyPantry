@@ -14,7 +14,6 @@ import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.EvalMode
 import com.example.trackingmypantry.lib.PermissionEvaluer
 import com.example.trackingmypantry.lib.Utils
-import com.google.android.gms.location.LocationRequest.*
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import com.example.trackingmypantry.db.entities.Item
@@ -99,6 +98,7 @@ class AddDescriptionActivity : CameraLauncherActivity() {
                     .setPositiveButton(R.string.positive, DialogInterface.OnClickListener { _, _ ->
                         this.send(extras!![BARCODE_EXTRA] as String)
                     })
+                    .show()
             } else {
                 this.send(extras!![BARCODE_EXTRA] as String)
             }

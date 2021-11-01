@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.HandlerThread
 import android.os.IBinder
 import android.os.Process
-import android.util.Log
 import com.example.trackingmypantry.lib.credentials.CredentialsHandler
 import com.example.trackingmypantry.lib.credentials.TokenHandler
 import com.example.trackingmypantry.lib.credentials.TokenType

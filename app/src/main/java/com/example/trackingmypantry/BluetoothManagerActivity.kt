@@ -8,7 +8,6 @@ import android.location.LocationManager
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import android.provider.Settings
-import android.util.Log
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
