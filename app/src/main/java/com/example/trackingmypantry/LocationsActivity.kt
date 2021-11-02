@@ -101,12 +101,6 @@ class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun getCurrentLocation() {
-        val locationClient = LocationServices.getFusedLocationProviderClient(this)
-        val task: Task<Location> = locationClient.getCurrentLocation(
-            LocationRequest.QUALITY_HIGH_ACCURACY,
-            CancellationTokenSource().token
-        )
-
         val locationManager = this.getSystemService(Context.LOCATION_SERVICE)
                 as LocationManager
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -123,9 +117,17 @@ class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
                 })
                 .show()
         } else {
+            val locationClient = LocationServices.getFusedLocationProviderClient(this)
+            val task: Task<Location> = locationClient.getCurrentLocation(
+                LocationRequest.QUALITY_HIGH_ACCURACY,
+                CancellationTokenSource().token
+            )
+
             task.addOnSuccessListener { location ->
                 this.showSetNameDialog(location.latitude, location.longitude, this.map)
             }
+
+            Utils.toastShow(this, "It might take a few seconds")
         }
     }
 
