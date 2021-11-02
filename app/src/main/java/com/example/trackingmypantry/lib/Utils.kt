@@ -60,37 +60,18 @@ class Utils {
 
         private fun intToByteArray(n: Int): ByteArray {
             return ByteBuffer.allocate(INT_SIZE).order(ByteOrder.nativeOrder()).putInt(n).array()
-            /*val buffer = ByteArray(INT_SIZE)
-
-            for (i in 0 until INT_SIZE) {
-                buffer[i] = (n shr (i * 8)).toByte()
-            }
-
-            return buffer*/
         }
 
         private fun byteArrayToInt(array: ByteArray): Int {
             return ByteBuffer.wrap(array).order(ByteOrder.nativeOrder()).int
-            /*var res = 0
-
-            if (ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN)
-            for (i in 0 until INT_SIZE) {
-                res = res or (array[i].toInt() shl ((INT_SIZE - i) * 8))
-            }
-
-            return res*/
         }
 
         private fun doubleToByteArray(d: Double): ByteArray {
             return ByteBuffer.allocate(DOUBLE_SIZE).order(ByteOrder.nativeOrder()).putDouble(d).array()
-            /*val res = ByteArray(DOUBLE_SIZE)
-            ByteBuffer.wrap(res).putDouble(d)
-            return res*/
         }
 
         private fun byteArrayToDouble(array: ByteArray): Double {
             return ByteBuffer.wrap(array).order(ByteOrder.nativeOrder()).double
-            /*return ByteBuffer.wrap(array).double*/
         }
 
         private fun concatByteArrays(arrays: Array<ByteArray>): ByteArray {
@@ -119,16 +100,8 @@ class Utils {
             val encUser = username.toByteArray(Charsets.UTF_8)
             val lenUser = intToByteArray(encUser.size)
 
-            return if (item.image != null) {
-                val encImage = item.image.toByteArray(Charsets.UTF_8)
-                val lenImage = intToByteArray(encImage.size)
-
-                concatByteArrays(arrayOf(encType, lenBarcode, encBarcode, lenName, encName, lenDesc,
-                    encDesc, lenUser, encUser, lenImage, encImage))
-            } else {
-                concatByteArrays(arrayOf(encType, lenBarcode, encBarcode, lenName, encName, lenDesc,
-                    encDesc, lenUser, encUser))
-            }
+            return concatByteArrays(arrayOf(encType, lenBarcode, encBarcode, lenName, encName, lenDesc,
+                encDesc, lenUser, encUser))
         }
 
         fun byteArrayToItemSuggestion(array: ByteArray): ItemSuggestion {
@@ -172,21 +145,7 @@ class Utils {
 
             val user = array.decodeToString(oldCursor, cursor)
 
-            if (array.size == cursor) {
-                return ItemSuggestion(barcode, name, desc, null, user)
-            }
-
-            oldCursor = cursor
-            cursor += INT_SIZE
-
-            val lenImage = byteArrayToInt(array.sliceArray(IntRange(oldCursor, cursor - 1)))
-
-            oldCursor = cursor
-            cursor += lenImage
-
-            val image = array.decodeToString(oldCursor, cursor)
-
-            return ItemSuggestion(barcode, name, desc, image, user)
+            return ItemSuggestion(barcode, name, desc, user)
         }
 
         fun placeToByteArray(place: Place, username: String): ByteArray {
