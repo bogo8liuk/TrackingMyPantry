@@ -51,9 +51,12 @@ class ReceivedItemsAdapter(
         holder.nameButton.text = products[position].name
         holder.nameExpandedButton.text = products[position].name
         holder.descriptionTextView.text = products[position].description
+
         val bitmap = products[position].image?.let { Utils.base64ToBitmap(it) }
         if (bitmap != null) {
             holder.image.setImageBitmap(bitmap)
+        } else {
+            holder.image.setImageBitmap(null)   // to avoid view recycling
         }
 
         if (this.isExpanded[position]) {

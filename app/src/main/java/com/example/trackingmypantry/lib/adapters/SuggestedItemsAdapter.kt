@@ -3,13 +3,11 @@ package com.example.trackingmypantry.lib.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R
 import com.example.trackingmypantry.db.entities.ItemSuggestion
-import com.example.trackingmypantry.lib.Utils
 
 class SuggestedItemsAdapter(
     private val deleteCallback: IndexedArrayCallback<ItemSuggestion>,
@@ -24,7 +22,6 @@ class SuggestedItemsAdapter(
         val barcodeText: TextView = view.findViewById(R.id.suggestedItemBarcode)
         val descriptionText: TextView = view.findViewById(R.id.suggestedItemDescription)
         val userText: TextView = view.findViewById(R.id.suggestedItemUser)
-        val image: ImageView = view.findViewById(R.id.suggestedItemImage)
         val deleteButton: AppCompatButton = view.findViewById(R.id.removeSuggestedItemButton)
 
         init {
@@ -51,20 +48,12 @@ class SuggestedItemsAdapter(
         holder.descriptionText.text = suggestions[position].description
         holder.userText.text = suggestions[position].user
 
-        val bitmap = suggestions[position].image
-        if (bitmap != null) {
-            holder.image.setImageBitmap(
-                Utils.base64ToBitmap(bitmap)
-            )
-        }
-
         if (this.isExpanded[position]) {
             holder.nameButton.visibility = android.view.View.GONE
             holder.nameExpandedButton.visibility = android.view.View.VISIBLE
             holder.barcodeText.visibility = android.view.View.VISIBLE
             holder.descriptionText.visibility = android.view.View.VISIBLE
             holder.userText.visibility = android.view.View.VISIBLE
-            holder.image.visibility = android.view.View.VISIBLE
             holder.deleteButton.visibility = android.view.View.VISIBLE
         } else {
             holder.nameButton.visibility = android.view.View.VISIBLE
@@ -72,7 +61,6 @@ class SuggestedItemsAdapter(
             holder.barcodeText.visibility = android.view.View.GONE
             holder.descriptionText.visibility = android.view.View.GONE
             holder.userText.visibility = android.view.View.GONE
-            holder.image.visibility = android.view.View.GONE
             holder.deleteButton.visibility = android.view.View.GONE
         }
 

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
@@ -140,29 +139,13 @@ class AcceptSuggestionsActivity : AppCompatActivity() {
         if (suggestion.isItem()) {
             val itemSuggestion = suggestion.itemSuggestion!!
 
-            val imageEncoding = itemSuggestion.image
-            if (imageEncoding != null) {
-                val imageView = ImageView(this)
-                imageView.setImageBitmap(Utils.base64ToBitmap(imageEncoding))
-
-                AlertDialog.Builder(this)
-                    .setMessage(
-                        "Barcode: " + itemSuggestion.barcode +
-                        "\nDescription: " + itemSuggestion.description +
-                        "\nUsername: " + itemSuggestion.user
-                    )
-                    .setView(imageView)
-                    .setPositiveButton(R.string.positiveOk, null)
-                    .show()
-            } else {
-                AlertDialog.Builder(this)
-                    .setMessage(
-                        "Barcode: " + itemSuggestion.barcode +
-                        "\nDescription: " + itemSuggestion.description +
-                        "\nUsername: " + itemSuggestion.user
-                    )
-                    .show()
-            }
+            AlertDialog.Builder(this)
+                .setMessage(
+                    "Barcode: " + itemSuggestion.barcode +
+                    "\nDescription: " + itemSuggestion.description +
+                    "\nUsername: " + itemSuggestion.user
+                )
+                .show()
         } else if (suggestion.isPlace()) {
             val placeSuggestion = suggestion.placeSuggestion!!
 

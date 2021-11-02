@@ -93,6 +93,8 @@ class LocalItemsAdapter(
             if (bitmap != null) {
                 holder.image.setImageBitmap(bitmap)
             }
+        } else {
+            holder.image.setImageBitmap(null)   // to avoid view recycling
         }
 
         if (this.isExpanded[position]) {
