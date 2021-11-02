@@ -1,10 +1,14 @@
 package com.example.trackingmypantry
 
+import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationManager
 import android.location.LocationRequest
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -103,10 +107,25 @@ class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
             CancellationTokenSource().token
         )
 
-        Utils.toastShow(this, "It might take a few second")
-
-        task.addOnSuccessListener { location ->
-            this.showSetNameDialog(location.latitude, location.longitude, this.map)
+        val locationManager = this.getSystemService(Context.LOCATION_SERVICE)
+                as LocationManager
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            AlertDialog.Builder(this)
+                .setTitle("Location enabling")
+                .setMessage(
+                    "To get your current position, you need first to enable " +
+                            "your location, if you continue you will be prompted " +
+                            "to a screen where you can enable location, continuing?"
+                )
+                .setNegativeButton(R.string.negative, null)
+                .setPositiveButton(R.string.positive, DialogInterface.OnClickListener { _, _ ->
+                    this.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                })
+                .show()
+        } else {
+            task.addOnSuccessListener { location ->
+                this.showSetNameDialog(location.latitude, location.longitude, this.map)
+            }
         }
     }
 
