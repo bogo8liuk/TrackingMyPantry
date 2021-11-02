@@ -53,11 +53,7 @@ class ReceivedItemsAdapter(
         holder.descriptionTextView.text = products[position].description
 
         val bitmap = products[position].image?.let { Utils.base64ToBitmap(it) }
-        if (bitmap != null) {
-            holder.image.setImageBitmap(bitmap)
-        } else {
-            holder.image.setImageBitmap(null)   // to avoid view recycling
-        }
+        holder.image.setImageBitmap(bitmap)
 
         if (this.isExpanded[position]) {
             holder.nameButton.visibility = android.view.View.GONE

@@ -90,11 +90,9 @@ class LocalItemsAdapter(
         if (items[position].image != null) {
             val bitmap = Utils.base64ToBitmap(items[position].image!!)
 
-            if (bitmap != null) {
-                holder.image.setImageBitmap(bitmap)
-            }
+            holder.image.setImageBitmap(bitmap)
         } else {
-            holder.image.setImageBitmap(null)   // to avoid view recycling
+            holder.image.setImageBitmap(null)  // to avoid view recycling
         }
 
         if (this.isExpanded[position]) {
