@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.DatePicker
 import android.widget.EditText
-import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import com.example.trackingmypantry.db.entities.Item
@@ -82,7 +81,6 @@ class AddDescriptionActivity : CameraLauncherActivity() {
         val expirationButton: AppCompatButton = this.findViewById(R.id.expirationDateButton)
         val sendButton: AppCompatButton = this.findViewById(R.id.sendButton)
         val photoButton: AppCompatButton = this.findViewById(R.id.photoButton)
-        val image: ImageView = this.findViewById(R.id.productImage)
 
         val extras = this.intent.extras
 
@@ -105,8 +103,8 @@ class AddDescriptionActivity : CameraLauncherActivity() {
         }
 
         photoButton.setOnClickListener {
-            this.cameraLaunch({ bitmap ->  
-                image.setImageBitmap(bitmap)
+            this.cameraLaunch({ bitmap ->
+                Utils.toastShow(this, "Image saved")
             }, {
                 // do nothing
             })

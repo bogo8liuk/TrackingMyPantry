@@ -25,7 +25,7 @@
         android:ems="10"
         android:gravity="start|top"
         android:hint="@string/describeHint"
-        android:inputType="textMultiLine"
+        android:inputType="textLongMessage"
         android:textColor="@color/white"
         android:textColorHint="@color/grey"
         app:layout_constraintBottom_toTopOf="@+id/guideline22"
@@ -114,25 +114,17 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.55" />
 
-    <ImageView
-        android:id="@+id/productImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/guideline30"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/photoButton"
         android:layout_width="0dp"
         android:layout_height="@dimen/mediumButtonHeight"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/lightblue_medium_corner_button"
         android:text="@string/pictureTake"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/productImage"
         app:layout_constraintEnd_toStartOf="@+id/guideline62"
-        app:layout_constraintStart_toStartOf="@+id/guideline61" />
+        app:layout_constraintStart_toStartOf="@+id/guideline61"
+        app:layout_constraintTop_toTopOf="@+id/guideline29" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline30"
