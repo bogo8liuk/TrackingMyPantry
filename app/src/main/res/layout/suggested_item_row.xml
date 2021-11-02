@@ -8,12 +8,18 @@
         android:id="@+id/suggestedItemNameButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:textColor="@color/black"
         android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/suggestedItemNameExpandedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:textColor="@color/black"
         android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_up_24"
         android:visibility="gone"/>
 

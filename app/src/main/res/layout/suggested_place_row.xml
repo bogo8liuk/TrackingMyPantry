@@ -8,12 +8,18 @@
         android:id="@+id/suggestedPlaceNameButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:textColor="@color/black"
         android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/suggestedPlaceNameExpandedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:textColor="@color/black"
         android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_up_24"
         android:visibility="gone"/>
 
@@ -22,6 +28,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:visibility="gone">
 
         <androidx.appcompat.widget.AppCompatButton
