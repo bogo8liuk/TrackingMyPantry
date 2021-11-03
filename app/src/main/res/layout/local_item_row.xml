@@ -110,6 +110,7 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/green_medium_corner_button"
         android:text="@string/dateExpire"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:visibility="gone"/>
 
 </LinearLayout>

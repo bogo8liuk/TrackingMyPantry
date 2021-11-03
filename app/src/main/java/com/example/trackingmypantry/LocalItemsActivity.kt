@@ -1,7 +1,9 @@
 package com.example.trackingmypantry
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
+import android.widget.DatePicker
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -20,6 +22,7 @@ import com.example.trackingmypantry.lib.viewmodels.CollectionsViewModel
 import com.example.trackingmypantry.lib.viewmodels.DefaultAppViewModelFactory
 import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModel
 import com.example.trackingmypantry.lib.viewmodels.LocalItemsViewModelFactory
+import java.util.*
 
 class LocalItemsActivity : AppCompatActivity() {
     companion object {
@@ -40,6 +43,7 @@ class LocalItemsActivity : AppCompatActivity() {
             this.addQuantityToItem,
             this.removeQuantityToItem,
             this.removeItemFromCollection,
+            this.setExpirationDate,
             true,
             arrayOf<Item>()
         )    // To avoid layout skipping
@@ -67,6 +71,7 @@ class LocalItemsActivity : AppCompatActivity() {
                         this.addQuantityToItem,
                         this.removeQuantityToItem,
                         this.addItemToCollection,
+                        this.setExpirationDate,
                         false,
                         items.toTypedArray()
                     )
@@ -179,5 +184,27 @@ class LocalItemsActivity : AppCompatActivity() {
     private val removeItemFromCollection: IndexedArrayCallback<Item> = {
         this.itemsToClear.add(it.array[it.index].id)
         Utils.toastShow(this, "Your item will be updated soon")
+    }
+
+    private val setExpirationDate: IndexedArrayCallback<Item> = {
+        val datePicker = DatePicker(this)
+        datePicker.minDate = Date().time
+
+        AlertDialog.Builder(this)
+            .setTitle("Expiration date")
+            .setMessage("Set an expiration date, it will be saved")
+            .setView(datePicker)
+            .setNegativeButton(R.string.negativeCanc, null)
+            .setPositiveButton(R.string.set, DialogInterface.OnClickListener { _, _ ->
+                val expirationDate = Calendar.getInstance().also {
+                    it.set(datePicker.year, datePicker.month, datePicker.dayOfMonth) }
+                    .time
+
+                DbSingleton.getInstance(this).changeExpirationDate(
+                    it.array[it.index].id,
+                    expirationDate
+                )
+            })
+            .show()
     }
 }

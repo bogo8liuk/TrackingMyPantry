@@ -19,6 +19,7 @@ class LocalItemsAdapter(
     private val addQuantityCallback: IndexedArrayCallback<Item>,
     private val removeQuantityCallback: IndexedArrayCallback<Item>,
     private val changeCollectionCallback: IndexedArrayCallback<Item>,
+    private val setExpirationCallback: IndexedArrayCallback<Item>,
     private val isToRemove: Boolean,
     private val items: Array<Item>
 ): RecyclerView.Adapter<LocalItemsAdapter.ViewHolder>() {
@@ -37,6 +38,7 @@ class LocalItemsAdapter(
         val addQuantityButton: AppCompatImageButton = handleItemLayout.findViewById(R.id.addQuantityButton)
         val removeQuantityButton: AppCompatImageButton = handleItemLayout.findViewById(R.id.removeQuantityButton)
         val changeCollectionButton: AppCompatButton = handleItemLayout.findViewById(R.id.changeCollectionButton)
+        val expirationDateButton: AppCompatButton = view.findViewById(R.id.setExpirationDateButton)
 
         init {
             this.addQuantityButton.setOnClickListener {
@@ -49,6 +51,10 @@ class LocalItemsAdapter(
 
             this.changeCollectionButton.setOnClickListener {
                 changeCollectionCallback(IndexedArray(items, this.adapterPosition))
+            }
+
+            this.expirationDateButton.setOnClickListener {
+                setExpirationCallback(IndexedArray(items, this.adapterPosition))
             }
         }
     }
@@ -105,6 +111,7 @@ class LocalItemsAdapter(
             holder.expirationText.visibility = android.view.View.VISIBLE
             holder.handleItemLayout.visibility = android.view.View.VISIBLE
             holder.image.visibility = android.view.View.VISIBLE
+            holder.expirationDateButton.visibility = android.view.View.VISIBLE
         } else {
             holder.nameButton.visibility = android.view.View.VISIBLE
             holder.nameExpandedButton.visibility = android.view.View.GONE
@@ -115,6 +122,7 @@ class LocalItemsAdapter(
             holder.expirationText.visibility = android.view.View.GONE
             holder.handleItemLayout.visibility = android.view.View.GONE
             holder.image.visibility = android.view.View.GONE
+            holder.expirationDateButton.visibility = android.view.View.GONE
         }
 
         holder.nameButton.setOnClickListener {
