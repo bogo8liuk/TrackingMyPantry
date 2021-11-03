@@ -9,6 +9,7 @@ import com.example.trackingmypantry.db.entities.*
 import com.example.trackingmypantry.db.entities.Collection
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.util.*
 
 class DbSingleton(context: Context) {
     // Boilerplate code equal to ReqQueueSingleton
@@ -85,6 +86,14 @@ class DbSingleton(context: Context) {
         runBlocking {
             launch {
                 itemDao.insertItemIntoCollection(id, collection)
+            }
+        }
+    }
+
+    fun changeExpirationDate(id: Long, date: Date) {
+        runBlocking {
+            launch {
+                itemDao.changeExpirationDate(id, date)
             }
         }
     }

@@ -3,6 +3,7 @@ package com.example.trackingmypantry.db.daos
 import androidx.room.*
 import com.example.trackingmypantry.db.entities.Item
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 @Dao
 interface ItemDao {
@@ -32,4 +33,8 @@ interface ItemDao {
     // Update
     @Query("update Item set collection=:collectionId where id like :itemId")
     suspend fun insertItemIntoCollection(itemId: Long, collectionId: Long)
+
+    // Update
+    @Query("update Item set expiration_date=:date where id like :itemId")
+    suspend fun changeExpirationDate(itemId: Long, date: Date)
 }
