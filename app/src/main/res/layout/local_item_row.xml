@@ -102,4 +102,14 @@
             android:background="@drawable/orange_medium_corner_button"/>
 
     </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/setExpirationDateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/green_medium_corner_button"
+        android:text="@string/dateExpire"
+        android:textColor="@color/white"/>
+
 </LinearLayout>
