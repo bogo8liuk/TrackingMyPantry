@@ -85,6 +85,7 @@ class LocalItemsActivity : AppCompatActivity() {
                     this.addQuantityToItem,
                     this.removeQuantityToItem,
                     this.removeItemFromCollection,
+                    this.setExpirationDate,
                     true,
                     it.toTypedArray()
                 )
