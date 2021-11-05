@@ -10,7 +10,7 @@ class TokenHandler() {
         private const val ACCESS = "accessToken"
         private const val SESSION = "sessionToken"
 
-        const val INEXISTENT_TOKEN = "__IT"
+        val INEXISTENT_TOKEN: String? = null
 
         fun setToken(context: Context, type: TokenType, token: String) {
             val pref = Encrypted.sharedPrefs(context)
@@ -28,9 +28,9 @@ class TokenHandler() {
             val pref = Encrypted.sharedPrefs(context)
             val editor = pref.edit()
             if (type == TokenType.ACCESS)
-                editor.putString(ACCESS, INEXISTENT_TOKEN)
+                editor.remove(ACCESS)
             else
-                editor.putString(SESSION, INEXISTENT_TOKEN)
+                editor.remove(SESSION)
             editor.apply()
         }
 
@@ -38,18 +38,18 @@ class TokenHandler() {
          * @warning: A call to this function with @param `type` as ACCESS remove the token, if @param
          * `remove` is true. If @param `type` has value SESSION, @param `remove` is ignored
          */
-        fun getToken(context: Context, type: TokenType, remove: Boolean): String {
+        fun getToken(context: Context, type: TokenType, remove: Boolean): String? {
             val pref = Encrypted.sharedPrefs(context)
             return if (type == TokenType.ACCESS) {
-                val token = pref.getString(ACCESS, INEXISTENT_TOKEN) ?: INEXISTENT_TOKEN
-                if (remove) {
+                val token = pref.getString(ACCESS, INEXISTENT_TOKEN)
+                if (remove && token != null) {
                     val editor = pref.edit()
-                    editor.putString(ACCESS, INEXISTENT_TOKEN)
+                    editor.remove(ACCESS)
                     editor.apply()
                 }
                 token
             } else
-                pref.getString(SESSION, INEXISTENT_TOKEN) ?: INEXISTENT_TOKEN
+                pref.getString(SESSION, INEXISTENT_TOKEN)
         }
     }
 }
