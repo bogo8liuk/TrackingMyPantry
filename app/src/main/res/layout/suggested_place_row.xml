@@ -23,6 +23,14 @@
         android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_up_24"
         android:visibility="gone"/>
 
+    <TextView
+        android:id="@+id/suggestedPlaceUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:id="@+id/handleSuggestionLayout"
         android:orientation="horizontal"

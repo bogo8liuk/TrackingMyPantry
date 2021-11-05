@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.R
@@ -19,6 +20,7 @@ class SuggestedPlacesAdapter(
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val nameButton: AppCompatButton = view.findViewById(R.id.suggestedPlaceNameButton)
         val nameExpandedButton: AppCompatButton = view.findViewById(R.id.suggestedPlaceNameExpandedButton)
+        val userText: TextView = view.findViewById(R.id.suggestedPlaceUser)
         val layout: LinearLayout = view.findViewById(R.id.handleSuggestionLayout)
         val deleteButton: AppCompatButton = layout.findViewById(R.id.removeSuggestedPlaceButton)
         val sendButton: AppCompatButton = layout.findViewById(R.id.sendSuggestedPlaceButton)
@@ -47,6 +49,7 @@ class SuggestedPlacesAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.nameButton.text = places[position].title
         holder.nameExpandedButton.text = places[position].title
+        holder.userText.text = places[position].username
 
         if (this.isExpanded[position]) {
             holder.nameButton.visibility = android.view.View.GONE
