@@ -128,35 +128,56 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showPermissionsInfo(performRequest: Boolean) {
-        AlertDialog.Builder(this)
-            .setTitle("SENSITIVE PERMISSIONS")
-            .setMessage(
-                "In order to use this functionality you have to grant location permission. " +
-                "By clicking 'OK', a screen where you are asked to grant this type of " +
-                "permission will be displayed. If this is not going to happen, you have to " +
-                "navigate the android settings and grant the permission from there. Anyway, " +
-                "it's important that you select the entry 'ALLOW ALL THE TIME'"
+    private fun showPermissionsInfoAndRequest() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+
+            AlertDialog.Builder(this)
+                .setTitle("SENSITIVE PERMISSIONS")
+                .setMessage(
+                    "In order to use this functionality you have to grant location permission. " +
+                            "By clicking 'OK', a screen where you are asked to grant this type of " +
+                            "permission will be displayed, if you did not already do it. " +
+                            "It's important that you select the entry 'ALLOW ALL THE TIME', " +
+                            "if this entry is not present, then you have to navigate the " +
+                            "settings and grant it from there"
+                )
+                .setPositiveButton(R.string.positiveOk, DialogInterface.OnClickListener() { _, _ ->
+                    if (!PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                        PermissionEvaluer.request(
+                            this,
+                            android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                            BLUETOOTH_REQUEST_COARSE
+                        )
+                    } else {
+                        this.locationCheck()
+                    }
+                })
+                .show()
+
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q &&
+            !PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
+
+            PermissionEvaluer.request(
+                this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                BLUETOOTH_REQUEST_COARSE
             )
-            .setPositiveButton(R.string.positiveOk, DialogInterface.OnClickListener() { _, _ ->
-                if (performRequest) {
-                    PermissionEvaluer.request(
-                        this,
-                        android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-                        BLUETOOTH_REQUEST_BACKGROUND
-                    )
-                }
-            })
-            .show()
+
+        } else {
+            this.locationCheck()
+        }
     }
 
     private fun locationCheck() {
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q &&
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q &&
             !PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-            this.showPermissionsInfo(true)
-        } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q &&
-            !PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-            this.showPermissionsInfo(false)
+
+            PermissionEvaluer.request(
+                this,
+                android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                BLUETOOTH_REQUEST_BACKGROUND
+            )
+
         } else {
             this.startActivity(Intent(this, BluetoothManagerActivity::class.java))
         }
@@ -229,7 +250,7 @@ class MainActivity : AppCompatActivity() {
         suggestButton.setOnClickListener {
             val btAdapter = BlueUtils.bluetoothAdapter(this)
             if (BlueUtils.enableRequestIfDisabled(btAdapter, this.enablingBtLauncher)) {
-                this.coarseLocationCheck()
+                this.showPermissionsInfoAndRequest()
             }
         }
 
