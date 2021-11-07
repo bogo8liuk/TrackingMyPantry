@@ -16,7 +16,7 @@ import androidx.appcompat.widget.AppCompatButton
 import com.example.trackingmypantry.db.entities.Place
 import com.example.trackingmypantry.lib.DbSingleton
 import com.example.trackingmypantry.lib.EvalMode
-import com.example.trackingmypantry.lib.PermissionEvaluer
+import com.example.trackingmypantry.lib.PermissionEvaluator
 import com.example.trackingmypantry.lib.Utils
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
@@ -149,8 +149,8 @@ class LocationsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val myPositionButton: AppCompatButton = this.findViewById(R.id.myPositionButton)
         myPositionButton.setOnClickListener {
-            if (!PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
-                PermissionEvaluer.request(
+            if (!PermissionEvaluator.got(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+                PermissionEvaluator.request(
                     this,
                     android.Manifest.permission.ACCESS_FINE_LOCATION,
                     LOCATION_REQUEST_FINE

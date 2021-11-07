@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackingmypantry.lib.BarcodeAnalyzer
-import com.example.trackingmypantry.lib.PermissionEvaluer
+import com.example.trackingmypantry.lib.PermissionEvaluator
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.adapters.ScannedBarcodesAdapter
 import com.google.mlkit.vision.barcode.Barcode
@@ -31,10 +31,10 @@ class BarcodeScannerActivity : CameraActivity() {
         super.onCreate(savedInstanceState)
         this.setContentCamera()
 
-        if (PermissionEvaluer.got(this, Manifest.permission.CAMERA)) {
+        if (PermissionEvaluator.got(this, Manifest.permission.CAMERA)) {
             this.startCamera()
         } else {
-            PermissionEvaluer.request(this, Manifest.permission.CAMERA, PERMISSION_REQUEST_CODE)
+            PermissionEvaluator.request(this, Manifest.permission.CAMERA, PERMISSION_REQUEST_CODE)
         }
     }
 

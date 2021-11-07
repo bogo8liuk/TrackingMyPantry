@@ -7,7 +7,7 @@ import android.graphics.Bitmap
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.example.trackingmypantry.lib.PermissionEvaluer
+import com.example.trackingmypantry.lib.PermissionEvaluator
 
 open class CameraLauncherActivity : AppCompatActivity() {
     companion object {
@@ -40,11 +40,11 @@ open class CameraLauncherActivity : AppCompatActivity() {
         this.successCallback = success
         this.errorCallback = error
 
-        if (PermissionEvaluer.got(this, Manifest.permission.CAMERA)) {
+        if (PermissionEvaluator.got(this, Manifest.permission.CAMERA)) {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             this.cameraLauncher.launch(intent)
         } else {
-            PermissionEvaluer.request(this, Manifest.permission.CAMERA)
+            PermissionEvaluator.request(this, Manifest.permission.CAMERA)
         }
     }
 

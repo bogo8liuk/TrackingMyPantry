@@ -6,7 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
 
-class PermissionEvaluer {
+class PermissionEvaluator {
     companion object {
         const val DEFAULT_REQUEST_CODE = 0
 

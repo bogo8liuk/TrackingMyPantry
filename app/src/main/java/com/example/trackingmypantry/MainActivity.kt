@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
 import com.example.trackingmypantry.lib.EvalMode
-import com.example.trackingmypantry.lib.PermissionEvaluer
+import com.example.trackingmypantry.lib.PermissionEvaluator
 import com.example.trackingmypantry.lib.ResultCode
 import com.example.trackingmypantry.lib.Utils
 import com.example.trackingmypantry.lib.connectivity.bluetooth.BlueUtils
@@ -117,8 +117,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun coarseLocationCheck() {
-        if (!PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
-            PermissionEvaluer.request(
+        if (!PermissionEvaluator.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            PermissionEvaluator.request(
                 this,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION,
                 BLUETOOTH_REQUEST_COARSE
@@ -142,8 +142,8 @@ class MainActivity : AppCompatActivity() {
                             "settings and grant it from there"
                 )
                 .setPositiveButton(R.string.positiveOk, DialogInterface.OnClickListener() { _, _ ->
-                    if (!PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                        PermissionEvaluer.request(
+                    if (!PermissionEvaluator.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                        PermissionEvaluator.request(
                             this,
                             android.Manifest.permission.ACCESS_COARSE_LOCATION,
                             BLUETOOTH_REQUEST_COARSE
@@ -155,9 +155,9 @@ class MainActivity : AppCompatActivity() {
                 .show()
 
         } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q &&
-            !PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            !PermissionEvaluator.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
-            PermissionEvaluer.request(
+            PermissionEvaluator.request(
                 this,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION,
                 BLUETOOTH_REQUEST_COARSE
@@ -170,9 +170,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun locationCheck() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q &&
-            !PermissionEvaluer.got(this, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+            !PermissionEvaluator.got(this, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
 
-            PermissionEvaluer.request(
+            PermissionEvaluator.request(
                 this,
                 android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
                 BLUETOOTH_REQUEST_BACKGROUND
