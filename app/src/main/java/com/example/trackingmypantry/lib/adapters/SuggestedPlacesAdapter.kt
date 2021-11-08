@@ -54,10 +54,12 @@ class SuggestedPlacesAdapter(
         if (this.isExpanded[position]) {
             holder.nameButton.visibility = android.view.View.GONE
             holder.nameExpandedButton.visibility = android.view.View.VISIBLE
+            holder.userText.visibility = android.view.View.VISIBLE
             holder.layout.visibility = android.view.View.VISIBLE
         } else {
             holder.nameButton.visibility = android.view.View.VISIBLE
             holder.nameExpandedButton.visibility = android.view.View.GONE
+            holder.userText.visibility = android.view.View.GONE
             holder.layout.visibility = android.view.View.GONE
         }
 
