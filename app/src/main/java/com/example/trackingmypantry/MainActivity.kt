@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()) { result ->
         when (result.resultCode) {
             RESULT_OK -> {
-                this.coarseLocationCheck()
+                this.showPermissionsInfoAndRequest()
             }
 
             RESULT_CANCELED -> {
@@ -129,28 +129,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showPermissionsInfoAndRequest() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q &&
+            !PermissionEvaluator.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
             AlertDialog.Builder(this)
                 .setTitle("SENSITIVE PERMISSIONS")
                 .setMessage(
-                    "In order to use this functionality you have to grant location permission. " +
-                            "By clicking 'OK', a screen where you are asked to grant this type of " +
-                            "permission will be displayed, if you did not already do it. " +
-                            "It's important that you select the entry 'ALLOW ALL THE TIME', " +
-                            "if this entry is not present, then you have to navigate the " +
-                            "settings and grant it from there"
+                    "In order to use this functionality you have to grant multiple location permissions. " +
+                            "By clicking 'OK', screens where you are asked to grant this type of " +
+                            "permissions will be displayed, if you did not already grant it. " +
+                            "It's important that you select the entry 'ALLOW ALL THE TIME' in the last " +
+                            "screen. You can navigate the settings and grant it from there as well"
                 )
                 .setPositiveButton(R.string.positiveOk, DialogInterface.OnClickListener() { _, _ ->
-                    if (!PermissionEvaluator.got(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                        PermissionEvaluator.request(
-                            this,
-                            android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                            BLUETOOTH_REQUEST_COARSE
-                        )
-                    } else {
-                        this.locationCheck()
-                    }
+                    PermissionEvaluator.request(
+                        this,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                        BLUETOOTH_REQUEST_COARSE
+                    )
                 })
                 .show()
 
