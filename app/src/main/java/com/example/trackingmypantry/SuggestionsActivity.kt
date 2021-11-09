@@ -110,7 +110,9 @@ class SuggestionsActivity : AppCompatActivity() {
     private val deletePlaceSuggestion: IndexedArrayCallback<PlaceSuggestion> = {
         val suggestion = it.array[it.index]
 
-        if (!this.placeSuggestionsToRemove.contains(suggestion)) {
+        if (this.placeSuggestionsToMove.contains(suggestion)) {
+            Utils.toastShow(this, "Suggestion already moved")
+        } else if (!this.placeSuggestionsToRemove.contains(suggestion)) {
             this.placeSuggestionsToRemove.add(suggestion)
             Utils.toastShow(this, "It will be removed soon")
         } else {
@@ -121,7 +123,9 @@ class SuggestionsActivity : AppCompatActivity() {
     private val movePlaceSuggestion: IndexedArrayCallback<PlaceSuggestion> = {
         val suggestion = it.array[it.index]
 
-        if (!this.placeSuggestionsToMove.contains(suggestion)) {
+        if (this.placeSuggestionsToRemove.contains(suggestion)) {
+            Utils.toastShow(this, "Suggestion already removed")
+        } else if (!this.placeSuggestionsToMove.contains(suggestion)) {
             this.placeSuggestionsToMove.add(it.array[it.index])
             Utils.toastShow(this, "It will be moved soon")
         } else {

@@ -136,21 +136,25 @@ class LocalItemsActivity : AppCompatActivity() {
     }
 
     private val removeQuantityToItem: IndexedArrayCallback<Item> = {
-        val quantityPicker = NumberPicker(this)
-        quantityPicker.minValue = 1
-        quantityPicker.maxValue = it.array[it.index].quantity
-        AlertDialog.Builder(this)
-            .setTitle("Remove")
-            .setMessage("Choose the quantity of this product you want to remove")
-            .setView(quantityPicker)
-            .setNegativeButton(R.string.negativeCanc, null)
-            .setPositiveButton(R.string.remove) { _, _ ->
-                DbSingleton.getInstance(this).changeItemQuantity(
-                    it.array[it.index].id,
-                    -quantityPicker.value
-                )
-            }
-            .show()
+        if (it.array[it.index].quantity > 0) {
+            val quantityPicker = NumberPicker(this)
+            quantityPicker.minValue = 1
+            quantityPicker.maxValue = it.array[it.index].quantity
+            AlertDialog.Builder(this)
+                .setTitle("Remove")
+                .setMessage("Choose the quantity of this product you want to remove")
+                .setView(quantityPicker)
+                .setNegativeButton(R.string.negativeCanc, null)
+                .setPositiveButton(R.string.remove) { _, _ ->
+                    DbSingleton.getInstance(this).changeItemQuantity(
+                        it.array[it.index].id,
+                        -quantityPicker.value
+                    )
+                }
+                .show()
+        } else {
+            Utils.toastShow(this, "No products to remove")
+        }
     }
 
     private val addItemToCollection: IndexedArrayCallback<Item> = {
